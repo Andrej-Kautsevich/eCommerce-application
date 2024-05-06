@@ -21,3 +21,40 @@ This platform replicates real-world shopping experiences in a digital environmen
 - Trello (Task board)🗂️
 - Husky🐕
 - Vitest🧪
+## Local Installation
+
+- 1.Install Node.js
+- 2.Clone this repo `https://github.com/Andrej-Kautsevich/eCommerce-application`
+- 3.Go to folder `eCommerce-application`
+- 4.To install all dependencies use `npm install`
+
+- 5.To run project, run the following command:
+```bash
+  npm run dev
+```
+
+## Scripts
+#### Tests
+
+```bash
+  npm run test
+  npm run test:ui
+  npm run test:watch
+```
+#### ESLint && Prettier
+
+```bash
+  npm run lint
+  npm run lint:fix
+  npm run prettier
+```
+#### Husky
+
+```bash
+  npm run prepare
+```
+#### Type Check
+
+```bash
+  npm run typecheck
+```
