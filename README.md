@@ -26,13 +26,10 @@ This platform replicates real-world shopping experiences in a digital environmen
 
 - 1.Install Node.js
 - 2.Clone this repo `https://github.com/Andrej-Kautsevich/eCommerce-application`
-- 3.Go to folder `eCommerce-application`
-- 4.To install all dependencies use `npm install`
-
-- 5.To run project, run the following command:
+- 3.To install all dependencies use `npm install`
+- 4.To run project, run the following command:
 ```bash
   npm run dev
-```
 
 ## Scripts
 #### Tests
