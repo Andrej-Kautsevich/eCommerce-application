@@ -25,7 +25,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-    "react/function-component-definition": "off",
+    'react/function-component-definition': 'off',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/self-closing-comp': [
