@@ -15,6 +15,7 @@ This platform replicates real-world shopping experiences in a digital environmen
 
 ## Technology Stack 💻📚
 - React ⚛️
+- Vite
 - TypeScript
 - ESLint
 - Prettier
