@@ -1,2 +1,3 @@
 npx validate-branch-name -r '(feature|develop|bugfix|release)/[A-Za-z-]+'
-npm run lint 
+npm run typecheck 
+npm run lint
