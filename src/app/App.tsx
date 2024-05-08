@@ -1,5 +1,7 @@
+import LoginTab from '../components/login/loginTab';
+
 const App = () => {
-  return <div> </div>;
+  return <LoginTab />;
 };
 
 export default App;

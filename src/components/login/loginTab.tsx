@@ -1,4 +1,7 @@
 import EmailInput from './emailInput';
+import PassInput from './passInput';
+import RememberMeBox from './rememberMe';
+import SignInBtn from './signInButton';
 
 export default function LoginTab() {
   return (
@@ -12,6 +15,9 @@ export default function LoginTab() {
         Sign into your existing account to earn rewards, check existing orders and more
       </span>
       <EmailInput />
+      <PassInput />
+      <RememberMeBox />
+      <SignInBtn />
     </div>
   );
 }
