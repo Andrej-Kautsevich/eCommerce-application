@@ -27,32 +27,40 @@ This platform replicates real-world shopping experiences in a digital environmen
 - 1.Install Node.js
 - 2.Clone this repo `https://github.com/Andrej-Kautsevich/eCommerce-application`
 - 3.To install all dependencies use `npm install`
-- 4.To run project, run the following command:
+- 4.Start the local dev server using:
 ```bash
   npm run dev
-
-## Scripts
-#### Tests
-
-```bash
-  npm run test
-  npm run test:ui
-  npm run test:watch
 ```
-#### ESLint && Prettier
 
-```bash
-  npm run lint
-  npm run lint:fix
-  npm run prettier
-```
-#### Husky
+## Setting Up Your Environment Variables
+In this project, we use environment variables to keep sensitive data like API keys, database URIs, and other confidential information secure. We store these variables in a .env file which is not tracked by version control systems like Git.
 
-```bash
-  npm run prepare
-```
-#### Type Check
+In the `.env.example` file, you can find an example of basic parameter settings for the `.env` file.
+You will need to create an **commercetools** account and [get your own api client](https://docs.commercetools.com/getting-started/create-api-client)
+To apply the modified parameters, you will need to restart the server.
 
-```bash
-  npm run typecheck
-```
+## Available Scripts
+
+In the project directory, you can run:
+
+- `npm run dev`: Starts the development server using Vite.
+
+- `npm run build`: Compiles your TypeScript files and builds the application for production using Vite.
+
+- `npm run preview`: Serves the production build of your application for previewing purposes.
+
+- `npm run lint`: Runs ESLint on your `.ts` and `.tsx` files. It reports unused ESLint directives and fails if there are any warnings.
+
+- `npm run lint:fix`: Similar to `npm run lint`, but it also automatically fixes problems in your code that can be fixed by ESLint.
+
+- `npm run prettier`: Formats your code using Prettier. It ignores files that Prettier doesn't recognize and writes the formatted code back to the file system.
+
+- `npm run typecheck`: Checks your code for type errors using the TypeScript compiler. It doesn't emit any output files (`--noEmit`).
+
+- `npm run prepare`: Sets up Husky, a tool for managing git hooks.
+
+- `npm run test`: Runs your tests using Vitest.
+
+- `npm run test:ui`: Opens the Vitest user interface for running and inspecting tests.
+
+- `npm run test:watch`: Runs your tests in watch mode using Vitest. It re-runs the tests as you make changes to your code.
