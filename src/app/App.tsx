@@ -6,7 +6,7 @@ const App = () => {
 
   const getData = async () => {
     try {
-      const data = await apiRoot.get().execute();
+      const data = await apiRoot.categories().get().execute();
 
       setDataDetails(data.body);
     } catch (e) {
@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <div>
-      <button type="button" onClick={() => console.log(JSON.stringify(dataDetails, undefined, 2))}>
+      <button type="button" onClick={() => console.log(dataDetails)}>
         click!
       </button>
     </div>

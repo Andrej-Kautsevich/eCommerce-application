@@ -30,10 +30,12 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 };
 
+const isDevMode = import.meta.env.MODE === 'development';
 // Export the ClientBuilder
 const ctpClient = new ClientBuilder()
   .withClientCredentialsFlow(authMiddlewareOptions)
-  .withHttpMiddleware(httpMiddlewareOptions)
-  .build();
+  .withHttpMiddleware(httpMiddlewareOptions);
 
-export default ctpClient;
+if (isDevMode) ctpClient.withLoggerMiddleware(); // Include middleware for logging in dev mode
+
+export default ctpClient.build();
