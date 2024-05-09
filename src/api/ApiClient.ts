@@ -9,13 +9,18 @@ import {
 class ApiClient {
   public apiRoot: ByProjectKeyRequestBuilder;
 
-  private clientBuilder = new ClientBuilder()
-    .withHttpMiddleware(ApiClient.httpMiddlewareOptions)
-    .withLoggerMiddleware();
+  private defaultClientBuilder = ApiClient.createDefaultClientBuilder();
 
   constructor() {
     this.apiRoot = this.setAnonymousFlow();
   }
+
+  private static createDefaultClientBuilder = () => {
+    const clientBuilder = new ClientBuilder().withHttpMiddleware(ApiClient.httpMiddlewareOptions);
+
+    if (import.meta.env.DEV) clientBuilder.withLoggerMiddleware(); // Include middleware for logging in dev mode
+    return clientBuilder;
+  };
 
   private static getApiRoot = (clientBuilder: ClientBuilder) => {
     return createApiBuilderFromCtpClient(clientBuilder.build()).withProjectKey({
@@ -24,7 +29,7 @@ class ApiClient {
   };
 
   public setAnonymousFlow = () => {
-    const clientBuilder = this.clientBuilder.withAnonymousSessionFlow(ApiClient.anonymousAuthMiddlewareOptions);
+    const clientBuilder = this.defaultClientBuilder.withAnonymousSessionFlow(ApiClient.anonymousAuthMiddlewareOptions);
     this.apiRoot = ApiClient.getApiRoot(clientBuilder);
     return this.apiRoot;
   };
@@ -45,7 +50,7 @@ class ApiClient {
       fetch,
     };
 
-    const clientBuilder = this.clientBuilder.withPasswordFlow(passwordAuthMiddlewareOptions);
+    const clientBuilder = this.defaultClientBuilder.withPasswordFlow(passwordAuthMiddlewareOptions);
 
     this.apiRoot = ApiClient.getApiRoot(clientBuilder);
     return this.apiRoot;
