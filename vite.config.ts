@@ -8,6 +8,11 @@ export default defineConfig({
   define: {
     global: {},
   },
+  resolve: {
+    alias: {
+      'node-fetch': 'isomorphic-fetch',
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',
