@@ -1,7 +1,7 @@
 import apiClient from '../ApiClient';
 
-const userLogout = () => {
+const customerLogout = () => {
   return apiClient.setAnonymousFlow();
 };
 
-export default userLogout;
+export default customerLogout;

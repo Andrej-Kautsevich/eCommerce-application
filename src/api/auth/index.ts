@@ -1,5 +1,5 @@
-import userLogin from './userLogin';
-import userLogout from './userLogout';
-import userSignUp from './userSignUp';
+import customerLogin from './customerLogin';
+import customerLogout from './customerLogout';
+import customerSignUp from './customerSignUp';
 
-export { userLogin, userLogout, userSignUp };
+export { customerLogin, customerLogout, customerSignUp };
