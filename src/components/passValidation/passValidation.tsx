@@ -16,6 +16,10 @@ const schema = yup.object().shape({
     .matches(/[0-9]/, 'Password requires a number')
     .matches(/[a-z]/, 'Password requires a lowercase letter')
     .matches(/[A-Z]/, 'Password requires an uppercase letter')
-    .matches(/[0-9]/, 'Password requires a number'),
+    .matches(/[0-9]/, 'Password requires a number')
+    .matches(
+      /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{5,})$/,
+      'Password must not contain leading or trailing whitespace',
+    ),
 });
 export default schema;
