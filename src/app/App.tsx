@@ -1,27 +1,36 @@
-import { useEffect, useState } from 'react';
-import apiRoot from '../api/apiRoot';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { MyCustomerSignin } from '@commercetools/platform-sdk';
+import { customerLogin, customerLogout } from '../api/auth';
+import apiClient from '../api/ApiClient';
+import { getCustomer } from '../api/customer';
 
 const App = () => {
-  const [dataDetails, setDataDetails] = useState({});
+  const user: MyCustomerSignin = { email: 'example@example.com', password: 'example' };
 
-  const getData = async () => {
-    try {
-      const data = await apiRoot.categories().get().execute();
-
-      setDataDetails(data.body);
-    } catch (e) {
-      console.log(e);
-    }
+  const login = async () => {
+    await customerLogin(user)
+      .then((res) => console.log(res.body))
+      .then(() => apiClient.setPasswordFlow(user));
   };
 
-  useEffect(() => {
-    getData().catch((error: Error) => error);
-  }, []);
+  const getUser = async () => {
+    await getCustomer();
+  };
+
+  const logOut = async () => {
+    customerLogout();
+  };
 
   return (
     <div>
-      <button type="button" onClick={() => console.log(dataDetails)}>
+      <button type="button" onClick={login}>
         click!
+      </button>
+      <button type="button" onClick={getUser}>
+        getCart!
+      </button>
+      <button type="button" onClick={logOut}>
+        logOut!
       </button>
     </div>
   );

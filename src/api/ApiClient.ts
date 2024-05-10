@@ -5,6 +5,7 @@ import {
   HttpMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
+import tokenCache from '../shared/utils/tokenCache';
 
 class ApiClient {
   /**
@@ -55,9 +56,11 @@ class ApiClient {
         },
       },
       scopes: ApiClient.options.scopes,
+      tokenCache,
       fetch,
     };
 
+    console.log(tokenCache.get());
     const clientBuilder = this.defaultClientBuilder.withPasswordFlow(passwordAuthMiddlewareOptions);
 
     this.apiRoot = ApiClient.getApiRoot(clientBuilder);
@@ -87,6 +90,7 @@ class ApiClient {
       clientSecret: ApiClient.options.clientSecret,
     },
     scopes: ApiClient.options.scopes,
+    tokenCache,
     fetch,
   };
 }
