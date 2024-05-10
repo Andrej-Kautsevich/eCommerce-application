@@ -9,22 +9,22 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import schema from '../passValidation/passValidation';
+// import schema from '../passValidation/passValidation';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const value = {
-      email: data.get('email'),
-      password: data.get('password'),
-    };
-    schema
-      .validate(value)
-      .then((valid) => console.log(valid))
-      .catch((error) => alert(error));
+    // const data = new FormData(event.currentTarget);
+    // const value = {
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // };
+    // schema
+    //   .validate(value)
+    //   .then((valid) => console.log(valid))
+    //   .catch((error) => alert(error));
   };
 
   return (
