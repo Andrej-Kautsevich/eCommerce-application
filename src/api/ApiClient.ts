@@ -7,6 +7,14 @@ import {
 } from '@commercetools/sdk-client-v2';
 
 class ApiClient {
+  /**
+   * **usage example**
+   *
+   * This code has the same effect as sending a GET request to the commercetools Composable Commerce API without any endpoints.
+   * ```jsx
+   * apiRoot.get().execute()
+   * ```
+   */
   public apiRoot: ByProjectKeyRequestBuilder;
 
   private defaultClientBuilder = ApiClient.createDefaultClientBuilder();
