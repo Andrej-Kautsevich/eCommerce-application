@@ -9,22 +9,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import * as yup from 'yup';
+import schema from '../passValidation/passValidation';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const schema = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().required().min(6),
-  });
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
     const value = {
       email: data.get('email'),
       password: data.get('password'),
@@ -32,7 +24,7 @@ export default function SignIn() {
     schema
       .validate(value)
       .then((valid) => console.log(valid))
-      .catch((error) => console.log(error));
+      .catch((error) => alert(error));
   };
 
   return (
