@@ -1,16 +1,25 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { MyCustomerSignin } from '@commercetools/platform-sdk';
-import { customerLogin, customerLogout } from '../api/auth';
-import apiClient from '../api/ApiClient';
-import { getCustomer } from '../api/customer';
+import { useEffect } from 'react';
+import useApiClient from '../api/useApiClient';
+import { useCustomer, useCustomerAuth } from '../api/hooks';
 
 const App = () => {
   const user: MyCustomerSignin = { email: 'example@example.com', password: 'example' };
 
+  const { apiRoot, setAnonymousFlow, setPasswordFlow } = useApiClient();
+
+  useEffect(() => {
+    if (!apiRoot) {
+      setAnonymousFlow();
+    }
+  }, [apiRoot, setAnonymousFlow]);
+
+  const { customerLogin, customerLogOut } = useCustomerAuth();
+  const { getCustomer } = useCustomer();
+
   const login = async () => {
-    await customerLogin(user)
-      .then((res) => console.log(res.body))
-      .then(() => apiClient.setPasswordFlow(user));
+    await customerLogin(user).then(() => setPasswordFlow(user));
   };
 
   const getUser = async () => {
@@ -18,7 +27,7 @@ const App = () => {
   };
 
   const logOut = async () => {
-    customerLogout();
+    customerLogOut();
   };
 
   return (
