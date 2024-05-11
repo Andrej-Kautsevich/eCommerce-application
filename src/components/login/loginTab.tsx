@@ -1,4 +1,5 @@
 import Avatar from '@mui/material/Avatar';
+import './style.css';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,29 +11,44 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
-import schema from '../passValidation/passValidation';
-// TODO remove, this demo shouldn't need to reset the theme.
+import schema from '../validation/emailValidation';
+import schemaPass from '../validation/passValidation';
+
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const [content, setContent] = useState('');
   const [testContent, setTestContent] = useState('password');
+  const [emailCon, setEmailCon] = useState('');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const value = {
-      email: data.get('email'),
-      password: data.get('password'),
+  };
+
+  function validationEmail(data: string) {
+    const formData = {
+      email: data,
     };
     schema
-      .validate(value)
+      .validate(formData)
+      .then(() => setEmailCon(''))
+      .catch((error) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        setEmailCon(error.message);
+      });
+  }
+  function validationPass(data: string) {
+    const formData = {
+      password: data,
+    };
+    schemaPass
+      .validate(formData)
       .then(() => setContent(''))
       .catch((error) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         setContent(error.message);
       });
-  };
+  }
 
   return (
     <>
@@ -68,7 +84,14 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={(e) => validationEmail(e.target.value)}
               />
+              <h4
+                style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
+                className="error-message-displaying"
+              >
+                {emailCon}
+              </h4>
               <TextField
                 margin="normal"
                 required
@@ -78,8 +101,14 @@ export default function SignIn() {
                 type={testContent}
                 id="password"
                 autoComplete="current-password"
+                onChange={(e) => validationPass(e.target.value)}
               />
-              <h4 style={{ color: 'red', fontWeight: 300 }}>{content}</h4>
+              <h4
+                style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
+                className="error-message-displaying"
+              >
+                {content}
+              </h4>
               <FormControlLabel
                 control={
                   <Checkbox
