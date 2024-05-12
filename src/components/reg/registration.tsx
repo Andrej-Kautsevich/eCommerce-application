@@ -11,11 +11,24 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import schemaPass from '../validation/passValidation';
+import schema from '../validation/emailValidation';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  // state for error messages
+  // const [firstNameCon, firstNameSet] = useState('');
+  // const [lastNameCon, lastNameSet] = useState('');
+  // const [dateCon, dateSet] = useState('');
+  // const [cityCon, citySet] = useState('');
+  // const [streetCon, streetSet] = useState('');
+  // const [postalCon, postalSet] = useState('');
+  const [emailCon, emailSet] = useState('');
+  const [passCon, passSet] = useState('');
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
@@ -24,6 +37,30 @@ export default function SignUp() {
     //   password: data.get('password'),
     // });
   };
+  function validationPass(data: string) {
+    const formData = {
+      password: data,
+    };
+    schemaPass
+      .validate(formData)
+      .then(() => passSet(''))
+      .catch((error) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        passSet(error.message);
+      });
+  }
+  function validationEmail(data: string) {
+    const formData = {
+      email: data,
+    };
+    schema
+      .validate(formData)
+      .then(() => emailSet(''))
+      .catch((error) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+        emailSet(error.message);
+      });
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -55,6 +92,9 @@ export default function SignUp() {
                   label="First Name"
                   autoFocus
                 />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  Hello this is error message
+                </p>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -65,6 +105,9 @@ export default function SignUp() {
                   name="lastName"
                   autoComplete="family-name"
                 />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  Hello this is error message
+                </p>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -75,7 +118,11 @@ export default function SignUp() {
                   helperText="Please type your bithday"
                   name="Birthday"
                   autoComplete="email"
+                  onChange={(e) => console.log(e.target.value)}
                 />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  Hello this is error message
+                </p>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -91,9 +138,15 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField type="text" required fullWidth id="city" label="City" name="City" />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  Hello this is error message
+                </p>
               </Grid>
               <Grid item xs={12}>
                 <TextField type="text" required fullWidth id="street" name="Street" label="Street" />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  Hello this is error message
+                </p>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -105,9 +158,23 @@ export default function SignUp() {
                   label="Postal code"
                   autoComplete="email"
                 />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  Hello this is error message
+                </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField required fullWidth id="email" label="Email Address" name="email" autoComplete="email" />
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  onChange={(e) => validationEmail(e.target.value)}
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  {emailCon}
+                </p>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -118,7 +185,11 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(e) => validationPass(e.target.value)}
                 />
+                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                  {passCon}
+                </p>
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
