@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -63,6 +64,46 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="date"
+                  required
+                  fullWidth
+                  id="date"
+                  helperText="Please type your bithday"
+                  name="Birthday"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  select
+                  helperText="Please select your country"
+                  required
+                  fullWidth
+                  id="contry"
+                  label="Country"
+                  name="Contry"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField type="text" required fullWidth id="city" label="City" name="City" />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField type="text" required fullWidth id="street" name="Street" label="Street" />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  type="text"
+                  required
+                  fullWidth
+                  id="postal"
+                  name="PostalCode"
+                  label="Postal code"
+                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
