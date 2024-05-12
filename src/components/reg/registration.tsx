@@ -118,7 +118,7 @@ export default function SignUp() {
                   helperText="Please type your bithday"
                   name="Birthday"
                   autoComplete="email"
-                  onChange={(e) => console.log(e.target.value)}
+                  // onChange={(e) => console.log(e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
                   Hello this is error message
