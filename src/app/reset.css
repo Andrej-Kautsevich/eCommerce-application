@@ -23,8 +23,6 @@
 /* Fix mobile Safari increase font-size on landscape mode */
 html {
   text-size-adjust: none;
-  text-size-adjust: none;
-  text-size-adjust: none;
 }
 
 /* Reapply the pointer cursor for anchor tags */
@@ -65,7 +63,6 @@ textarea {
 
 /* minimum style to allow to style meter element */
 meter {
-  appearance: revert;
   appearance: revert;
 }
 
