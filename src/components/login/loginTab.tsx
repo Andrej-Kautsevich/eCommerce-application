@@ -18,10 +18,9 @@ import handleSubmit from '../reg/submitFunction';
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const [content, setContent] = useState('');
-  const [testContent, setTestContent] = useState('password');
-  const [emailCon, setEmailCon] = useState('');
-
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordVisibility, setPasswordVisibility] = useState('password');
+  const [emailError, setEmailError] = useState('');
   function validationEmail(data: string) {
     const formData = {
       email: data,
