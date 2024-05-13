@@ -14,14 +14,16 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import schemaPass from '../validation/passValidation';
 import schema from '../validation/emailValidation';
+import schemaName from '../validation/nameValidation';
+import handleSubmit from './submitFunction';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUp() {
   // state for error messages
-  // const [firstNameCon, firstNameSet] = useState('');
-  // const [lastNameCon, lastNameSet] = useState('');
+  const [firstNameCon, firstNameSet] = useState('');
+  const [lastNameCon, lastNameSet] = useState('');
   // const [dateCon, dateSet] = useState('');
   // const [cityCon, citySet] = useState('');
   // const [streetCon, streetSet] = useState('');
@@ -29,14 +31,6 @@ export default function SignUp() {
   const [emailCon, emailSet] = useState('');
   const [passCon, passSet] = useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
-  };
   function validationPass(data: string) {
     const formData = {
       password: data,
@@ -44,8 +38,7 @@ export default function SignUp() {
     schemaPass
       .validate(formData)
       .then(() => passSet(''))
-      .catch((error) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      .catch((error: Error) => {
         passSet(error.message);
       });
   }
@@ -56,9 +49,30 @@ export default function SignUp() {
     schema
       .validate(formData)
       .then(() => emailSet(''))
-      .catch((error) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      .catch((error: Error) => {
         emailSet(error.message);
+      });
+  }
+  function validationFirstName(data: string) {
+    const formData = {
+      FirstName: data,
+    };
+    schemaName
+      .validate(formData)
+      .then(() => firstNameSet(''))
+      .catch((error: Error) => {
+        firstNameSet(error.message);
+      });
+  }
+  function validationLastName(data: string) {
+    const formData = {
+      FirstName: data,
+    };
+    schemaName
+      .validate(formData)
+      .then(() => lastNameSet(''))
+      .catch((error: Error) => {
+        lastNameSet(error.message);
       });
   }
 
@@ -91,9 +105,10 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={(e) => validationFirstName(e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  Hello this is error message
+                  {firstNameCon}
                 </p>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -104,9 +119,10 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={(e) => validationLastName(e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  Hello this is error message
+                  {lastNameCon}
                 </p>
               </Grid>
               <Grid item xs={12}>

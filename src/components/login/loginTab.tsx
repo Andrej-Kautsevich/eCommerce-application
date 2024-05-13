@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import schema from '../validation/emailValidation';
 import schemaPass from '../validation/passValidation';
+import handleSubmit from '../reg/submitFunction';
 
 const defaultTheme = createTheme();
 
@@ -21,10 +22,6 @@ export default function SignIn() {
   const [testContent, setTestContent] = useState('password');
   const [emailCon, setEmailCon] = useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   function validationEmail(data: string) {
     const formData = {
       email: data,
@@ -32,8 +29,7 @@ export default function SignIn() {
     schema
       .validate(formData)
       .then(() => setEmailCon(''))
-      .catch((error) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      .catch((error: Error) => {
         setEmailCon(error.message);
       });
   }
@@ -44,8 +40,7 @@ export default function SignIn() {
     schemaPass
       .validate(formData)
       .then(() => setContent(''))
-      .catch((error) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      .catch((error: Error) => {
         setContent(error.message);
       });
   }
