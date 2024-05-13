@@ -3,6 +3,7 @@ import { Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AuthContext, { AuthContextType } from '../context';
 import useLogout from '../useLogout';
+import Routes from '../../shared/types/enum';
 
 const Buttons = () => {
   const { isAuth } = useContext(AuthContext) as AuthContextType;
@@ -11,11 +12,11 @@ const Buttons = () => {
 
   return !isAuth ? (
     <Box>
-      <Button color="inherit" onClick={() => navigate('/login')}>
+      <Button color="inherit" onClick={() => navigate(Routes.LOGIN)}>
         Login
       </Button>
 
-      <Button color="inherit" onClick={() => navigate('/registration')}>
+      <Button color="inherit" onClick={() => navigate(Routes.REGISTRATION)}>
         Register
       </Button>
     </Box>
