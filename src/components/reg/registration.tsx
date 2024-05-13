@@ -12,6 +12,9 @@ import Container from '@mui/material/Container';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import schemaPass from '../validation/passValidation';
 import schema from '../validation/emailValidation';
@@ -35,6 +38,11 @@ export default function SignUp() {
   const [postalCon, postalSet] = useState('');
   const [emailCon, emailSet] = useState('');
   const [passCon, passSet] = useState('');
+  const [age, setAge] = useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value);
+  };
 
   function validationPass(data: string) {
     const formData = {
@@ -190,28 +198,24 @@ export default function SignUp() {
                 </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  select
-                  helperText="Please select your country"
-                  required
-                  fullWidth
-                  id="contry"
-                  label="Country"
-                >
-                  <MenuItem key="Belarus" value="Belarus">
-                    Belarus
-                  </MenuItem>
-                  <MenuItem key="Poland" value="Poland">
-                    Poland
-                  </MenuItem>
-                  <MenuItem key="Ukraine" value="Ukraine">
-                    Ukraine
-                  </MenuItem>
-                  <MenuItem key="United States" value="United States">
-                    United States
-                  </MenuItem>
-                </TextField>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Country</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={age}
+                      label="Country"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value={1}>Belarus</MenuItem>
+                      <MenuItem value={2}>Latvia</MenuItem>
+                      <MenuItem value={3}>Poland</MenuItem>
+                      <MenuItem value={4}>Germany</MenuItem>
+                      <MenuItem value={5}>Belgium</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </Grid>
               <Grid item xs={12}>
                 <TextField

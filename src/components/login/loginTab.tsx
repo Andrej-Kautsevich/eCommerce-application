@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import './style.css';
+import './loginTab.module.css';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -27,9 +27,9 @@ export default function SignIn() {
     };
     schema
       .validate(formData)
-      .then(() => setEmailCon(''))
+      .then(() => setEmailError(''))
       .catch((error: Error) => {
-        setEmailCon(error.message);
+        setEmailError(error.message);
       });
   }
   function validationPass(data: string) {
@@ -38,9 +38,9 @@ export default function SignIn() {
     };
     schemaPass
       .validate(formData)
-      .then(() => setContent(''))
+      .then(() => setPasswordError(''))
       .catch((error: Error) => {
-        setContent(error.message);
+        setPasswordError(error.message);
       });
   }
 
@@ -84,7 +84,7 @@ export default function SignIn() {
                 style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
                 className="error-message-displaying"
               >
-                {emailCon}
+                {emailError}
               </h4>
               <TextField
                 margin="normal"
@@ -92,7 +92,7 @@ export default function SignIn() {
                 fullWidth
                 name="password"
                 label="Password"
-                type={testContent}
+                type={passwordVisibility}
                 id="password"
                 autoComplete="current-password"
                 onChange={(e) => validationPass(e.target.value)}
@@ -101,16 +101,16 @@ export default function SignIn() {
                 style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
                 className="error-message-displaying"
               >
-                {content}
+                {passwordError}
               </h4>
               <FormControlLabel
                 control={
                   <Checkbox
                     onClick={() => {
-                      if (testContent === 'password') {
-                        setTestContent('text');
+                      if (passwordVisibility === 'password') {
+                        setPasswordVisibility('text');
                       } else {
-                        setTestContent('password');
+                        setPasswordVisibility('password');
                       }
                     }}
                     value="remember"
