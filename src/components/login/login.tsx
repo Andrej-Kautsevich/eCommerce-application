@@ -1,5 +1,4 @@
 import Avatar from '@mui/material/Avatar';
-import './loginTab.module.css';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -13,11 +12,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import schemaEmail from '../validation/emailValidation';
 import schemaPass from '../validation/passValidation';
-import handleSubmit from '../reg/submitFunction';
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function LoginTab() {
   const [passwordVisibility, setPasswordVisibility] = useState('password');
   const [errors, setErrors] = useState({
     email: '',
@@ -59,7 +57,7 @@ export default function SignIn() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" style={{ width: '320px' }} onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box component="form" style={{ width: '320px' }} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required

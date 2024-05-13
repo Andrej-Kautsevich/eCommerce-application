@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import schemaPass from '../validation/passValidation';
 import schemaEmail from '../validation/emailValidation';
 import schemaName from '../validation/nameValidation';
-import handleSubmit from './submitFunction';
+// import handleSubmit from './SubmitFunction';
 import schemaBirthDate from '../validation/validationBirthDate';
 import schemaCity from '../validation/cityValidation';
 import schemaStreet from '../validation/streetValidation';
@@ -26,7 +26,7 @@ import schemaPostalCode from '../validation/postalCodeValidation';
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function Registration() {
   const [errors, setErrors] = useState({
     firstName: '',
     lastName: '',
@@ -80,7 +80,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
