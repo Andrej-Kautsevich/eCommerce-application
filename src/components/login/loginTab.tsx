@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import './style.css';
+import './loginTab.module.css';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
