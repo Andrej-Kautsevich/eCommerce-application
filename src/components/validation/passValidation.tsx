@@ -11,7 +11,7 @@ const schemaPass = yup.object().shape({
     .matches(/[0-9]/, 'password requires a number')
     .matches(
       /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{5,})$/,
-      'password must not contain leading or trailing whitespace',
+      'only latin letters are supported or you used leading or trailing whitespace',
     ),
 });
 export default schemaPass;
