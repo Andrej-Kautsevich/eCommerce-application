@@ -12,10 +12,15 @@ import Container from '@mui/material/Container';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
+import MenuItem from '@mui/material/MenuItem';
 import schemaPass from '../validation/passValidation';
 import schema from '../validation/emailValidation';
 import schemaName from '../validation/nameValidation';
 import handleSubmit from './submitFunction';
+import schemaBirthDate from '../validation/validationBirthDate';
+import schemaCity from '../validation/cityValidation';
+import schemaStreet from '../validation/streetValidation';
+import schemaPostalCode from '../validation/postalCodeValidation';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -24,10 +29,10 @@ export default function SignUp() {
   // state for error messages
   const [firstNameCon, firstNameSet] = useState('');
   const [lastNameCon, lastNameSet] = useState('');
-  // const [dateCon, dateSet] = useState('');
-  // const [cityCon, citySet] = useState('');
-  // const [streetCon, streetSet] = useState('');
-  // const [postalCon, postalSet] = useState('');
+  const [dateCon, dateSet] = useState('');
+  const [cityCon, citySet] = useState('');
+  const [streetCon, streetSet] = useState('');
+  const [postalCon, postalSet] = useState('');
   const [emailCon, emailSet] = useState('');
   const [passCon, passSet] = useState('');
 
@@ -73,6 +78,50 @@ export default function SignUp() {
       .then(() => lastNameSet(''))
       .catch((error: Error) => {
         lastNameSet(error.message);
+      });
+  }
+  function validationBirthDate(data: string) {
+    const formData = {
+      birthDate: data,
+    };
+    schemaBirthDate
+      .validate(formData)
+      .then(() => dateSet(''))
+      .catch((error: Error) => {
+        dateSet(error.message);
+      });
+  }
+  function validationCity(data: string) {
+    const formData = {
+      city: data,
+    };
+    schemaCity
+      .validate(formData)
+      .then(() => citySet(''))
+      .catch((error: Error) => {
+        citySet(error.message);
+      });
+  }
+  function validationStreet(data: string) {
+    const formData = {
+      street: data,
+    };
+    schemaStreet
+      .validate(formData)
+      .then(() => streetSet(''))
+      .catch((error: Error) => {
+        streetSet(error.message);
+      });
+  }
+  function validationPostalCode(data: string) {
+    const formData = {
+      postalCode: data,
+    };
+    schemaPostalCode
+      .validate(formData)
+      .then(() => postalSet(''))
+      .catch((error: Error) => {
+        postalSet(error.message);
       });
   }
 
@@ -134,10 +183,10 @@ export default function SignUp() {
                   helperText="Please type your bithday"
                   name="Birthday"
                   autoComplete="email"
-                  // onChange={(e) => console.log(e.target.value)}
+                  onChange={(e) => validationBirthDate(e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  Hello this is error message
+                  {dateCon}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -149,19 +198,47 @@ export default function SignUp() {
                   fullWidth
                   id="contry"
                   label="Country"
-                  name="Contry"
-                />
+                >
+                  <MenuItem key="Belarus" value="Belarus">
+                    Belarus
+                  </MenuItem>
+                  <MenuItem key="Poland" value="Poland">
+                    Poland
+                  </MenuItem>
+                  <MenuItem key="Ukraine" value="Ukraine">
+                    Ukraine
+                  </MenuItem>
+                  <MenuItem key="United States" value="United States">
+                    United States
+                  </MenuItem>
+                </TextField>
               </Grid>
               <Grid item xs={12}>
-                <TextField type="text" required fullWidth id="city" label="City" name="City" />
+                <TextField
+                  type="text"
+                  required
+                  fullWidth
+                  id="city"
+                  label="City"
+                  name="City"
+                  onChange={(e) => validationCity(e.target.value)}
+                />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  Hello this is error message
+                  {cityCon}
                 </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField type="text" required fullWidth id="street" name="Street" label="Street" />
+                <TextField
+                  type="text"
+                  required
+                  fullWidth
+                  id="street"
+                  name="Street"
+                  label="Street"
+                  onChange={(e) => validationStreet(e.target.value)}
+                />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  Hello this is error message
+                  {streetCon}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -173,9 +250,10 @@ export default function SignUp() {
                   name="PostalCode"
                   label="Postal code"
                   autoComplete="email"
+                  onChange={(e) => validationPostalCode(e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  Hello this is error message
+                  {postalCon}
                 </p>
               </Grid>
               <Grid item xs={12}>
