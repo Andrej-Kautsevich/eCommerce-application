@@ -1,5 +1,11 @@
+import Header from '../components/Header';
+
 const BasketPage = () => {
-  return <div>Basket Page</div>;
+  return (
+    <div className="top-panel">
+      <Header />
+    </div>
+  );
 };
 
 export default BasketPage;

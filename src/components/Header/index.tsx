@@ -8,16 +8,16 @@ const Header = () => {
   const basketButton = useBasketButton();
 
   return (
-    <AppBar position="static" sx={{ width: '100vw', pr: 8, pl: 8 }}>
+    <AppBar position="static" sx={{ width: '100vw', pr: 8, pl: 8 }} color="secondary">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
           <Link to="/">eCommerce-Application </Link>
         </Typography>
 
         <Buttons />
 
         <IconButton color="inherit" onClick={() => basketButton()}>
-          <ShoppingBasket />
+          <ShoppingBasket color="primary" />
         </IconButton>
       </Toolbar>
     </AppBar>

@@ -12,17 +12,17 @@ const Buttons = () => {
 
   return !isAuth ? (
     <Box>
-      <Button color="inherit" onClick={() => navigate(Routes.LOGIN)}>
+      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(Routes.LOGIN)}>
         Login
       </Button>
 
-      <Button color="inherit" onClick={() => navigate(Routes.REGISTRATION)}>
+      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(Routes.REGISTRATION)}>
         Register
       </Button>
     </Box>
   ) : (
     <Box>
-      <Button color="inherit" onClick={() => logout()}>
+      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => logout()}>
         Logout
       </Button>
     </Box>
