@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext, { AuthContextType } from './context';
+import Routes from '../shared/types/enum';
 
 const useBasketButton = () => {
   const navigate = useNavigate();
@@ -8,9 +9,9 @@ const useBasketButton = () => {
 
   const basketButton = () => {
     if (isAuth) {
-      navigate('/basket');
+      navigate(Routes.BASKET);
     } else {
-      navigate('/login');
+      navigate(Routes.LOGIN);
     }
   };
 

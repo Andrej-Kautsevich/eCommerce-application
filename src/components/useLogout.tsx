@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext, { AuthContextType } from './context';
+import Routes from '../shared/types/enum';
 
 const useLogout = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const useLogout = () => {
 
   const logout = () => {
     setIsAuth(false);
-    navigate('/');
+    navigate(Routes.MAIN);
   };
 
   return logout;
