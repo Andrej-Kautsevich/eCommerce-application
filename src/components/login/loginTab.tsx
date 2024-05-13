@@ -11,37 +11,28 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
-import schema from '../validation/emailValidation';
+import schemaEmail from '../validation/emailValidation';
 import schemaPass from '../validation/passValidation';
 import handleSubmit from '../reg/submitFunction';
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const [passwordError, setPasswordError] = useState('');
   const [passwordVisibility, setPasswordVisibility] = useState('password');
-  const [emailError, setEmailError] = useState('');
-  function validationEmail(data: string) {
-    const formData = {
-      email: data,
-    };
-    schema
-      .validate(formData)
-      .then(() => setEmailError(''))
-      .catch((error: Error) => {
-        setEmailError(error.message);
-      });
-  }
-  function validationPass(data: string) {
-    const formData = {
-      password: data,
-    };
-    schemaPass
-      .validate(formData)
-      .then(() => setPasswordError(''))
-      .catch((error: Error) => {
-        setPasswordError(error.message);
-      });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+  });
+  const schemas = {
+    email: schemaEmail,
+    password: schemaPass,
+  };
+  type SchemaKeys = 'email' | 'password';
+  function validateField(name: SchemaKeys, value: string) {
+    schemas[name]
+      .validate(value)
+      .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
+      .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
   }
 
   return (
@@ -78,13 +69,13 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                onChange={(e) => validationEmail(e.target.value)}
+                onChange={(e) => validateField('email', e.target.value)}
               />
               <h4
                 style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
                 className="error-message-displaying"
               >
-                {emailError}
+                {errors.email}
               </h4>
               <TextField
                 margin="normal"
@@ -95,13 +86,13 @@ export default function SignIn() {
                 type={passwordVisibility}
                 id="password"
                 autoComplete="current-password"
-                onChange={(e) => validationPass(e.target.value)}
+                onChange={(e) => validateField('password', e.target.value)}
               />
               <h4
                 style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
                 className="error-message-displaying"
               >
-                {passwordError}
+                {errors.password}
               </h4>
               <FormControlLabel
                 control={

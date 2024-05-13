@@ -2,8 +2,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -17,7 +15,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import schemaPass from '../validation/passValidation';
-import schema from '../validation/emailValidation';
+import schemaEmail from '../validation/emailValidation';
 import schemaName from '../validation/nameValidation';
 import handleSubmit from './submitFunction';
 import schemaBirthDate from '../validation/validationBirthDate';
@@ -29,108 +27,39 @@ import schemaPostalCode from '../validation/postalCodeValidation';
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    city: '',
+    street: '',
+    postalCode: '',
+    email: '',
+    password: '',
+  });
   // state for error messages
-  const [firstNameCon, firstNameSet] = useState('');
-  const [lastNameCon, lastNameSet] = useState('');
-  const [dateCon, dateSet] = useState('');
-  const [cityCon, citySet] = useState('');
-  const [streetCon, streetSet] = useState('');
-  const [postalCon, postalSet] = useState('');
-  const [emailCon, emailSet] = useState('');
-  const [passCon, passSet] = useState('');
   const [age, setAge] = useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
 
-  function validationPass(data: string) {
-    const formData = {
-      password: data,
-    };
-    schemaPass
-      .validate(formData)
-      .then(() => passSet(''))
-      .catch((error: Error) => {
-        passSet(error.message);
-      });
-  }
-  function validationEmail(data: string) {
-    const formData = {
-      email: data,
-    };
-    schema
-      .validate(formData)
-      .then(() => emailSet(''))
-      .catch((error: Error) => {
-        emailSet(error.message);
-      });
-  }
-  function validationFirstName(data: string) {
-    const formData = {
-      FirstName: data,
-    };
-    schemaName
-      .validate(formData)
-      .then(() => firstNameSet(''))
-      .catch((error: Error) => {
-        firstNameSet(error.message);
-      });
-  }
-  function validationLastName(data: string) {
-    const formData = {
-      FirstName: data,
-    };
-    schemaName
-      .validate(formData)
-      .then(() => lastNameSet(''))
-      .catch((error: Error) => {
-        lastNameSet(error.message);
-      });
-  }
-  function validationBirthDate(data: string) {
-    const formData = {
-      birthDate: data,
-    };
-    schemaBirthDate
-      .validate(formData)
-      .then(() => dateSet(''))
-      .catch((error: Error) => {
-        dateSet(error.message);
-      });
-  }
-  function validationCity(data: string) {
-    const formData = {
-      city: data,
-    };
-    schemaCity
-      .validate(formData)
-      .then(() => citySet(''))
-      .catch((error: Error) => {
-        citySet(error.message);
-      });
-  }
-  function validationStreet(data: string) {
-    const formData = {
-      street: data,
-    };
-    schemaStreet
-      .validate(formData)
-      .then(() => streetSet(''))
-      .catch((error: Error) => {
-        streetSet(error.message);
-      });
-  }
-  function validationPostalCode(data: string) {
-    const formData = {
-      postalCode: data,
-    };
-    schemaPostalCode
-      .validate(formData)
-      .then(() => postalSet(''))
-      .catch((error: Error) => {
-        postalSet(error.message);
-      });
+  const schemas = {
+    firstName: schemaName,
+    lastName: schemaName,
+    birthDate: schemaBirthDate,
+    city: schemaCity,
+    street: schemaStreet,
+    postalCode: schemaPostalCode,
+    email: schemaEmail,
+    password: schemaPass,
+  };
+  type SchemaKeys = 'firstName' | 'lastName' | 'birthDate' | 'city' | 'street' | 'postalCode' | 'email' | 'password';
+  function validateField(name: SchemaKeys, value: string) {
+    schemas[name]
+      .validate(value)
+      .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
+      .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
   }
 
   return (
@@ -162,10 +91,12 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange={(e) => validationFirstName(e.target.value)}
+                  onChange={(e) => {
+                    validateField('firstName', e.target.value);
+                  }}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {firstNameCon}
+                  {errors.firstName}
                 </p>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -176,10 +107,10 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  onChange={(e) => validationLastName(e.target.value)}
+                  onChange={(e) => validateField('lastName', e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {lastNameCon}
+                  {errors.lastName}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -191,10 +122,10 @@ export default function SignUp() {
                   helperText="Please type your bithday"
                   name="Birthday"
                   autoComplete="email"
-                  onChange={(e) => validationBirthDate(e.target.value)}
+                  onChange={(e) => validateField('birthDate', e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {dateCon}
+                  {errors.birthDate}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -225,10 +156,10 @@ export default function SignUp() {
                   id="city"
                   label="City"
                   name="City"
-                  onChange={(e) => validationCity(e.target.value)}
+                  onChange={(e) => validateField('city', e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {cityCon}
+                  {errors.city}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -239,10 +170,10 @@ export default function SignUp() {
                   id="street"
                   name="Street"
                   label="Street"
-                  onChange={(e) => validationStreet(e.target.value)}
+                  onChange={(e) => validateField('street', e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {streetCon}
+                  {errors.street}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -254,10 +185,10 @@ export default function SignUp() {
                   name="PostalCode"
                   label="Postal code"
                   autoComplete="email"
-                  onChange={(e) => validationPostalCode(e.target.value)}
+                  onChange={(e) => validateField('postalCode', e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {postalCon}
+                  {errors.postalCode}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -265,13 +196,13 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
-                  onChange={(e) => validationEmail(e.target.value)}
+                  onChange={(e) => validateField('email', e.target.value)}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {emailCon}
+                  {errors.email}
                 </p>
               </Grid>
               <Grid item xs={12}>
@@ -283,17 +214,11 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  onChange={(e) => validationPass(e.target.value)}
+                  onChange={(e) => validateField('password', e.target.value)}
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {passCon}
+                  {errors.password}
                 </p>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
               </Grid>
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
