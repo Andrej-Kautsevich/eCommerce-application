@@ -1,5 +1,7 @@
+import LoginTab from '../components/Login/login';
+
 const LoginPage = () => {
-  return <div>Login Page</div>;
+  return <LoginTab />;
 };
 
 export default LoginPage;
