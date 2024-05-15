@@ -4,6 +4,7 @@ import { ClientBuilder } from '@commercetools/sdk-client-v2';
 import {
   anonymousAuthMiddlewareOptions,
   getPasswordAuthMiddlewareOptions,
+  getRefreshAuthMiddlewareOptions,
   httpMiddlewareOptions,
   middlewareOptions,
 } from './middlewareOptions';
@@ -15,6 +16,7 @@ type ApiRootContextType = {
   apiRoot: ByProjectKeyRequestBuilder | undefined;
   setPasswordFlow: (user: CustomerSignin) => void;
   setAnonymousFlow: () => void;
+  setTokenFlow: (token: string) => void;
   setApiRoot: React.Dispatch<React.SetStateAction<ByProjectKeyRequestBuilder | undefined>>;
 };
 
@@ -37,6 +39,7 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
   const setAnonymousFlow = useCallback(() => {
     const clientBuilder = defaultClientBuilder.withAnonymousSessionFlow(anonymousAuthMiddlewareOptions);
     setApiRoot(getApiRoot(clientBuilder));
+    console.log('anonFlow');
   }, [defaultClientBuilder, getApiRoot]);
 
   const setPasswordFlow = useCallback(
@@ -44,12 +47,24 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
       const passwordAuthMiddlewareOptions = getPasswordAuthMiddlewareOptions(user);
       const clientBuilder = defaultClientBuilder.withPasswordFlow(passwordAuthMiddlewareOptions);
       setApiRoot(getApiRoot(clientBuilder));
+      console.log('passwordFlow');
     },
     [getApiRoot, defaultClientBuilder],
   );
+
+  const setTokenFlow = useCallback(
+    (refreshToken: string) => {
+      const refreshAuthMiddlewareOptions = getRefreshAuthMiddlewareOptions(refreshToken);
+      const clientBuilder = defaultClientBuilder.withRefreshTokenFlow(refreshAuthMiddlewareOptions);
+      setApiRoot(getApiRoot(clientBuilder));
+      console.log('tokenFlow');
+    },
+    [getApiRoot, defaultClientBuilder],
+  );
+
   const value = useMemo(
-    () => ({ apiRoot, setApiRoot, setAnonymousFlow, setPasswordFlow }),
-    [apiRoot, setAnonymousFlow, setPasswordFlow],
+    () => ({ apiRoot, setApiRoot, setAnonymousFlow, setPasswordFlow, setTokenFlow }),
+    [apiRoot, setAnonymousFlow, setPasswordFlow, setTokenFlow],
   );
 
   return <ApiClientContext.Provider value={value}>{children}</ApiClientContext.Provider>;

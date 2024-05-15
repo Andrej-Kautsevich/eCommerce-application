@@ -3,6 +3,7 @@ import {
   AnonymousAuthMiddlewareOptions,
   HttpMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
+  RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
 import tokenCache from '../shared/utils/tokenCache';
 
@@ -31,6 +32,21 @@ export const anonymousAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
   scopes: middlewareOptions.scopes,
   tokenCache,
   fetch,
+};
+
+export const getRefreshAuthMiddlewareOptions = (refreshToken: string): RefreshAuthMiddlewareOptions => {
+  const refreshAuthMiddlewareOptions: RefreshAuthMiddlewareOptions = {
+    host: middlewareOptions.hostAuth,
+    projectKey: middlewareOptions.projectKey,
+    credentials: {
+      clientId: middlewareOptions.clientId,
+      clientSecret: middlewareOptions.clientSecret,
+    },
+    refreshToken,
+    tokenCache,
+    fetch,
+  };
+  return refreshAuthMiddlewareOptions;
 };
 
 export const getPasswordAuthMiddlewareOptions = (user: CustomerSignin): PasswordAuthMiddlewareOptions => {
