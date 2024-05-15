@@ -17,14 +17,22 @@ const authSlice = createSlice({
   name: 'customerAuth',
   initialState,
   reducers: {
+    loginFetch: (state) => {
+      state.loading = true;
+    },
     loginSuccess: (state) => {
       state.loading = false;
       state.isLoggedIn = true;
       state.isAnonymous = false;
     },
+    loginError: (state) => {
+      state.loading = false;
+      state.isLoggedIn = false;
+      state.isAnonymous = true;
+    },
   },
 });
 
-export const { loginSuccess } = authSlice.actions;
+export const { loginFetch, loginSuccess, loginError } = authSlice.actions;
 
 export default authSlice.reducer;
