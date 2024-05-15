@@ -5,14 +5,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 interface CustomerAuthState {
   loading: boolean;
   isLoggedIn: boolean;
-  isAnonymous: boolean;
   loginError: string | undefined;
 }
 
 const initialState: CustomerAuthState = {
   loading: false,
   isLoggedIn: false,
-  isAnonymous: true,
   loginError: undefined,
 };
 
@@ -27,12 +25,10 @@ const authSlice = createSlice({
     loginSuccess: (state) => {
       state.loading = false;
       state.isLoggedIn = true;
-      state.isAnonymous = false;
     },
     loginError: (state, action: PayloadAction<AuthErrorResponse>) => {
       state.loading = false;
       state.isLoggedIn = false;
-      state.isAnonymous = true;
       state.loginError = action.payload.message;
     },
     logout: (state) => {
