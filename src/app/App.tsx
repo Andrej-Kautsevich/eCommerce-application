@@ -3,20 +3,13 @@ import './App.css';
 import { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import AppRoutes from '../components/AppRoutes';
 import AuthContext from '../components/context';
 import tokenCache from '../shared/utils/tokenCache';
 import { RootState } from '../shared/store';
 import { useApiClient } from '../api/hooks';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#735CFF',
-    },
-  },
-});
+import theme from '../components/theme';
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
