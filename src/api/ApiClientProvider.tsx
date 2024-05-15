@@ -36,28 +36,34 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
     });
   }, []);
 
-  const setAnonymousFlow = useCallback(() => {
+  const setAnonymousFlow = useCallback(async () => {
     const clientBuilder = defaultClientBuilder.withAnonymousSessionFlow(anonymousAuthMiddlewareOptions);
-    setApiRoot(getApiRoot(clientBuilder));
-    console.log('anonFlow');
+    const newApiRoot = getApiRoot(clientBuilder);
+    setApiRoot(newApiRoot);
+    // need to get token immediately
+    await newApiRoot.me().carts().get().execute();
   }, [defaultClientBuilder, getApiRoot]);
 
   const setPasswordFlow = useCallback(
-    (user: CustomerSignin) => {
+    async (user: CustomerSignin) => {
       const passwordAuthMiddlewareOptions = getPasswordAuthMiddlewareOptions(user);
       const clientBuilder = defaultClientBuilder.withPasswordFlow(passwordAuthMiddlewareOptions);
-      setApiRoot(getApiRoot(clientBuilder));
-      console.log('passwordFlow');
+      const newApiRoot = getApiRoot(clientBuilder);
+      setApiRoot(newApiRoot);
+      // need to get token immediately
+      await newApiRoot.me().carts().get().execute();
     },
     [getApiRoot, defaultClientBuilder],
   );
 
   const setTokenFlow = useCallback(
-    (refreshToken: string) => {
+    async (refreshToken: string) => {
       const refreshAuthMiddlewareOptions = getRefreshAuthMiddlewareOptions(refreshToken);
       const clientBuilder = defaultClientBuilder.withRefreshTokenFlow(refreshAuthMiddlewareOptions);
-      setApiRoot(getApiRoot(clientBuilder));
-      console.log('tokenFlow');
+      const newApiRoot = getApiRoot(clientBuilder);
+      setApiRoot(newApiRoot);
+      // need to get token immediately
+      await newApiRoot.me().carts().get().execute();
     },
     [getApiRoot, defaultClientBuilder],
   );
