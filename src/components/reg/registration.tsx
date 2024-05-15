@@ -8,7 +8,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -22,9 +21,9 @@ import schemaBirthDate from '../validation/validationBirthDate';
 import schemaCity from '../validation/cityValidation';
 import schemaStreet from '../validation/streetValidation';
 import schemaPostalCode from '../validation/postalCodeValidation';
+import Header from '../Header';
 
 // TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 
 export default function Registration() {
   const [errors, setErrors] = useState({
@@ -63,7 +62,8 @@ export default function Registration() {
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <div className="top-panel">
+      <Header />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -74,7 +74,7 @@ export default function Registration() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -119,7 +119,7 @@ export default function Registration() {
                   required
                   fullWidth
                   id="date"
-                  helperText="Please type your bithday"
+                  helperText="Please type your birthday"
                   name="Birthday"
                   autoComplete="email"
                   onChange={(e) => validateField('birthDate', e.target.value)}
@@ -227,6 +227,6 @@ export default function Registration() {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
+    </div>
   );
 }

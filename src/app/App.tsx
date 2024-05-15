@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
 import AppRoutes from '../components/AppRoutes';
 import AuthContext from '../components/context';
+import theme from '../components/theme';
 
 const theme = createTheme({
   palette: {
