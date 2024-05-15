@@ -2,18 +2,10 @@ import './reset.css';
 import './App.css';
 import { useState, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import AppRoutes from '../components/AppRoutes';
 import AuthContext from '../components/context';
 import theme from '../components/theme';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#735CFF',
-    },
-  },
-});
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
