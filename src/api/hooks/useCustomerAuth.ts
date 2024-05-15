@@ -2,6 +2,7 @@ import { MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
 import useApiClient from '../useApiClient';
 import { loginError, loginFetch, loginSuccess } from '../../store/auth/authSlice';
 import useAppDispatch from '../../store/hooks';
+import tokenCache from '../../shared/utils/tokenCache';
 
 const useCustomerAuth = () => {
   // const auth = useSelector((state: RootState) => state.auth);
@@ -13,7 +14,6 @@ const useCustomerAuth = () => {
       throw new Error('ApiRoot is not defined');
     }
     dispatch(loginFetch());
-    // return apiRoot.me().login().post({ body: user }).execute();
     try {
       await apiRoot
         .me()
@@ -23,7 +23,7 @@ const useCustomerAuth = () => {
         .then((response) => {
           if (response.statusCode === 200) {
             dispatch(loginSuccess());
-            // TODO remove token
+            tokenCache.remove();
             setPasswordFlow(user);
           }
         })

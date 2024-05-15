@@ -1,6 +1,10 @@
 import { TokenStore, type TokenCache } from '@commercetools/sdk-client-v2';
 
-const tokenCache: TokenCache = {
+type TokenCacheStore = TokenCache & {
+  remove: () => void;
+};
+
+const tokenCache: TokenCacheStore = {
   get: () => {
     const string = localStorage.getItem('token-cache');
     if (string) {
@@ -12,6 +16,9 @@ const tokenCache: TokenCache = {
   set: (cache: TokenStore) => {
     const string = JSON.stringify(cache);
     localStorage.setItem('token-cache', string);
+  },
+  remove: () => {
+    localStorage.removeItem('token-cache');
   },
 };
 

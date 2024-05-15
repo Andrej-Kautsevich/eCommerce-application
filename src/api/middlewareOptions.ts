@@ -4,6 +4,7 @@ import {
   HttpMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
+import tokenCache from '../shared/utils/tokenCache';
 
 export const middlewareOptions = {
   projectKey: import.meta.env.VITE_CTP_PROJECT_KEY,
@@ -28,7 +29,7 @@ export const anonymousAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     clientSecret: middlewareOptions.clientSecret,
   },
   scopes: middlewareOptions.scopes,
-  // tokenCache,
+  tokenCache,
   fetch,
 };
 
@@ -45,7 +46,7 @@ export const getPasswordAuthMiddlewareOptions = (user: CustomerSignin): Password
       },
     },
     scopes: middlewareOptions.scopes,
-    // tokenCache,
+    tokenCache,
     fetch,
   };
   return passwordAuthMiddlewareOptions;

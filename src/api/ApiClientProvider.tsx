@@ -7,7 +7,6 @@ import {
   httpMiddlewareOptions,
   middlewareOptions,
 } from './middlewareOptions';
-// import tokenCache from '../shared/utils/tokenCache';
 
 // Create a context for the API client
 export const ApiClientContext = createContext<ApiRootContextType | undefined>(undefined);
