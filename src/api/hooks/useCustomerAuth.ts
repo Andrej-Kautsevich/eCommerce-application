@@ -1,4 +1,4 @@
-import { MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
+import { AuthErrorResponse, ClientResponse, MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
 import useApiClient from '../useApiClient';
 import { loginError, loginFetch, loginSuccess, logout } from '../../store/auth/authSlice';
 import useAppDispatch from '../../store/hooks';
@@ -27,8 +27,9 @@ const useCustomerAuth = () => {
             setPasswordFlow(user);
           }
         })
-        // TODO return error message
-        .catch(() => dispatch(loginError()));
+        .catch((error: ClientResponse<AuthErrorResponse>) => {
+          dispatch(loginError(error.body));
+        });
     } catch (error) {
       // console.log(error);
     }
