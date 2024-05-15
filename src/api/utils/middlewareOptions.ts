@@ -5,7 +5,7 @@ import {
   PasswordAuthMiddlewareOptions,
   RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
-import tokenCache from '../shared/utils/tokenCache';
+import tokenCache from '../../shared/utils/tokenCache';
 
 export const middlewareOptions = {
   projectKey: import.meta.env.VITE_CTP_PROJECT_KEY,

@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useCallback, useMemo, useState } from 'react';
+import { ReactNode, createContext, useCallback, useMemo, useState } from 'react';
 import { ByProjectKeyRequestBuilder, CustomerSignin, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ClientBuilder } from '@commercetools/sdk-client-v2';
 import {
@@ -7,7 +7,7 @@ import {
   getRefreshAuthMiddlewareOptions,
   httpMiddlewareOptions,
   middlewareOptions,
-} from './middlewareOptions';
+} from './utils/middlewareOptions';
 
 // Create a context for the API client
 export const ApiClientContext = createContext<ApiRootContextType | undefined>(undefined);

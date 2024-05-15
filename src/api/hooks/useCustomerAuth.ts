@@ -1,11 +1,10 @@
 import { AuthErrorResponse, ClientResponse, MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
-import useApiClient from '../useApiClient';
-import { loginError, loginFetch, loginSuccess, logout } from '../../store/auth/authSlice';
-import useAppDispatch from '../../store/hooks';
+import useApiClient from './useApiClient';
+import { loginError, loginFetch, loginSuccess, logout } from '../../shared/store/auth/authSlice';
+import useAppDispatch from '../../shared/store/hooks';
 import tokenCache from '../../shared/utils/tokenCache';
 
 const useCustomerAuth = () => {
-  // const auth = useSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
   const { apiRoot, setAnonymousFlow, setPasswordFlow } = useApiClient();
 
@@ -31,7 +30,7 @@ const useCustomerAuth = () => {
           dispatch(loginError(error.body));
         });
     } catch (error) {
-      // console.log(error);
+      // dispatch(loginError(error))
     }
   };
 
