@@ -30,9 +30,12 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.isAnonymous = true;
     },
+    logout: (state) => {
+      state.isLoggedIn = false;
+    },
   },
 });
 
-export const { loginFetch, loginSuccess, loginError } = authSlice.actions;
+export const { loginFetch, loginSuccess, loginError, logout } = authSlice.actions;
 
 export default authSlice.reducer;

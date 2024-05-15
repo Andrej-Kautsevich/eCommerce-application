@@ -1,6 +1,6 @@
 import { MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
 import useApiClient from '../useApiClient';
-import { loginError, loginFetch, loginSuccess } from '../../store/auth/authSlice';
+import { loginError, loginFetch, loginSuccess, logout } from '../../store/auth/authSlice';
 import useAppDispatch from '../../store/hooks';
 import tokenCache from '../../shared/utils/tokenCache';
 
@@ -46,6 +46,8 @@ const useCustomerAuth = () => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
+    dispatch(logout());
+    tokenCache.remove();
     setAnonymousFlow();
   };
 
