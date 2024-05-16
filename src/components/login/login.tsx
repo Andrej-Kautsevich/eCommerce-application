@@ -9,27 +9,51 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from 'react';
+import { DevTool } from '@hookform/devtools';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import schemaEmail from '../validation/emailValidation';
 import schemaPass from '../validation/passValidation';
 import Header from '../Header';
 
 export default function LoginTab() {
   const [passwordVisibility, setPasswordVisibility] = useState('password');
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-  });
-  const schemas = {
+  // const [errors, setErrors] = useState({
+  //   email: '',
+  //   password: '',
+  // });
+  // const schemas = {
+  //   email: schemaEmail,
+  //   password: schemaPass,
+  // };
+  // type SchemaKeys = 'email' | 'password';
+  // function validateField(name: SchemaKeys, value: string) {
+  //   schemas[name]
+  //     .validate(value)
+  //     .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
+  //     .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
+  // }
+
+  const schema = yup.object().shape({
     email: schemaEmail,
     password: schemaPass,
+  });
+
+  type LoginForm = {
+    email: string;
+    password: string;
   };
-  type SchemaKeys = 'email' | 'password';
-  function validateField(name: SchemaKeys, value: string) {
-    schemas[name]
-      .validate(value)
-      .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
-      .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
-  }
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
+  const onSubmit: SubmitHandler<LoginForm> = (data, event) => {
+    event?.preventDefault();
+    console.log(data);
+  };
 
   return (
     <div className="top-panel">
@@ -53,41 +77,56 @@ export default function LoginTab() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" style={{ width: '320px' }} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
+          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} style={{ width: '320px' }} noValidate sx={{ mt: 1 }}>
+            <Controller
               name="email"
-              autoComplete="email"
-              autoFocus
-              onChange={(e) => validateField('email', e.target.value)}
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...field}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                />
+              )}
             />
-            <h4
-              style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
-              className="error-message-displaying"
-            >
-              {errors.email}
-            </h4>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
+            {errors.email && (
+              <h4 style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}>
+                {errors.email.message}
+              </h4>
+            )}
+            <Controller
               name="password"
-              label="Password"
-              type={passwordVisibility}
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => validateField('password', e.target.value)}
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...field}
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type={passwordVisibility}
+                  id="password"
+                  autoComplete="current-password"
+                />
+              )}
             />
-            <h4
-              style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
-              className="error-message-displaying"
-            >
-              {errors.password}
-            </h4>
+            {errors.password && (
+              <h4 style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}>
+                {errors.password.message}
+              </h4>
+            )}
             <FormControlLabel
               control={
                 <Checkbox
@@ -107,6 +146,7 @@ export default function LoginTab() {
             <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
+            {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>
       </Container>
