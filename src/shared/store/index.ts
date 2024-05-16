@@ -5,17 +5,23 @@ import persistStore from 'redux-persist/es/persistStore';
 import logger from 'redux-logger';
 import authSlice from './auth/authSlice';
 
-const rootReducer = combineReducers({
-  auth: authSlice,
-});
-
-const persistConfig = {
-  key: 'root',
+const authPersistConfig = {
+  key: 'auth',
   storage,
-  whitelist: ['auth'],
+  whitelist: ['isLoggedIn'],
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const rootPersistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['auth'],
+};
+
+const rootReducer = combineReducers({
+  auth: persistReducer(authPersistConfig, authSlice),
+});
+
+const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
 let middlewares: Middleware[] = [];
 
