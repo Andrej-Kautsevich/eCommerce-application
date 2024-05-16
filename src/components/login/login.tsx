@@ -4,14 +4,18 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PasswordElement, TextFieldElement } from 'react-hook-form-mui';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { MyCustomerSignin } from '@commercetools/platform-sdk';
 import * as yup from 'yup';
 import schemaEmail from '../validation/emailValidation';
 import schemaPass from '../validation/passValidation';
 import Header from '../Header';
+import { useCustomerAuth } from '../../api/hooks';
+import Routes from '../../shared/types/enum';
 
 export default function LoginTab() {
   const schema = yup.object().shape({
@@ -24,10 +28,13 @@ export default function LoginTab() {
     password: string;
   };
 
+  const navigate = useNavigate();
+  const { customerLogin } = useCustomerAuth();
+
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
-  const onSubmit: SubmitHandler<LoginForm> = (data, event) => {
-    event?.preventDefault();
-    console.log(data);
+  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+    const customer: MyCustomerSignin = data;
+    await customerLogin(customer).then(() => navigate(Routes.MAIN));
   };
 
   return (
@@ -48,7 +55,6 @@ export default function LoginTab() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
           <Box component="form" onSubmit={handleSubmit(onSubmit)} style={{ width: '320px' }} noValidate sx={{ mt: 1 }}>
             <TextFieldElement
               margin="normal"
