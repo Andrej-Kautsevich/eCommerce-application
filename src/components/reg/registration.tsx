@@ -22,6 +22,7 @@ import schemaCity from '../validation/cityValidation';
 import schemaStreet from '../validation/streetValidation';
 import schemaPostalCode from '../validation/postalCodeValidation';
 import Header from '../Header';
+import CheckBox from './checkBox';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -187,6 +188,7 @@ export default function Registration() {
                   autoComplete="email"
                   onChange={(e) => validateField('postalCode', e.target.value)}
                 />
+                <CheckBox />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
                   {errors.postalCode}
                 </p>
