@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { Alert, AlertTitle, Collapse } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -16,6 +18,7 @@ import schemaPass from '../validation/passValidation';
 import Header from '../Header';
 import { useCustomerAuth } from '../../api/hooks';
 import Routes from '../../shared/types/enum';
+import { useAppSelector } from '../../shared/store/hooks';
 
 export default function LoginTab() {
   const schema = yup.object().shape({
@@ -28,13 +31,19 @@ export default function LoginTab() {
     password: string;
   };
 
+  const [showAlert, setShowAlert] = useState(true); // Close error alert
   const navigate = useNavigate();
   const { customerLogin } = useCustomerAuth();
+  const { loginError } = useAppSelector((state) => state.auth);
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+    setShowAlert(true); // reset alert
     const customer: MyCustomerSignin = data;
-    await customerLogin(customer).then(() => navigate(Routes.MAIN));
+    const loginSuccessful = await customerLogin(customer);
+    if (loginSuccessful) {
+      navigate(Routes.MAIN);
+    }
   };
 
   return (
@@ -83,6 +92,19 @@ export default function LoginTab() {
             {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>
+        {loginError && (
+          <Collapse in={showAlert}>
+            <Alert
+              severity="error"
+              onClose={() => {
+                setShowAlert(false);
+              }}
+            >
+              <AlertTitle>Error</AlertTitle>
+              {loginError}
+            </Alert>
+          </Collapse>
+        )}
       </Container>
     </div>
   );
