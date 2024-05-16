@@ -1,13 +1,13 @@
-import React, { ReactNode, createContext, useCallback, useMemo, useState } from 'react';
+import { ReactNode, createContext, useCallback, useMemo, useState } from 'react';
 import { ByProjectKeyRequestBuilder, CustomerSignin, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 import { ClientBuilder } from '@commercetools/sdk-client-v2';
 import {
   anonymousAuthMiddlewareOptions,
   getPasswordAuthMiddlewareOptions,
+  getRefreshAuthMiddlewareOptions,
   httpMiddlewareOptions,
   middlewareOptions,
-} from './middlewareOptions';
-// import tokenCache from '../shared/utils/tokenCache';
+} from './utils/middlewareOptions';
 
 // Create a context for the API client
 export const ApiClientContext = createContext<ApiRootContextType | undefined>(undefined);
@@ -16,6 +16,7 @@ type ApiRootContextType = {
   apiRoot: ByProjectKeyRequestBuilder | undefined;
   setPasswordFlow: (user: CustomerSignin) => void;
   setAnonymousFlow: () => void;
+  setTokenFlow: (token: string) => void;
   setApiRoot: React.Dispatch<React.SetStateAction<ByProjectKeyRequestBuilder | undefined>>;
 };
 
@@ -35,22 +36,41 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
     });
   }, []);
 
-  const setAnonymousFlow = useCallback(() => {
+  const setAnonymousFlow = useCallback(async () => {
     const clientBuilder = defaultClientBuilder.withAnonymousSessionFlow(anonymousAuthMiddlewareOptions);
-    setApiRoot(getApiRoot(clientBuilder));
+    const newApiRoot = getApiRoot(clientBuilder);
+    setApiRoot(newApiRoot);
+    // need to get token immediately
+    await newApiRoot.me().carts().get().execute();
   }, [defaultClientBuilder, getApiRoot]);
 
   const setPasswordFlow = useCallback(
-    (user: CustomerSignin) => {
+    async (user: CustomerSignin) => {
       const passwordAuthMiddlewareOptions = getPasswordAuthMiddlewareOptions(user);
       const clientBuilder = defaultClientBuilder.withPasswordFlow(passwordAuthMiddlewareOptions);
-      setApiRoot(getApiRoot(clientBuilder));
+      const newApiRoot = getApiRoot(clientBuilder);
+      setApiRoot(newApiRoot);
+      // need to get token immediately
+      await newApiRoot.me().carts().get().execute();
     },
     [getApiRoot, defaultClientBuilder],
   );
+
+  const setTokenFlow = useCallback(
+    async (refreshToken: string) => {
+      const refreshAuthMiddlewareOptions = getRefreshAuthMiddlewareOptions(refreshToken);
+      const clientBuilder = defaultClientBuilder.withRefreshTokenFlow(refreshAuthMiddlewareOptions);
+      const newApiRoot = getApiRoot(clientBuilder);
+      setApiRoot(newApiRoot);
+      // need to get token immediately
+      await newApiRoot.me().carts().get().execute();
+    },
+    [getApiRoot, defaultClientBuilder],
+  );
+
   const value = useMemo(
-    () => ({ apiRoot, setApiRoot, setAnonymousFlow, setPasswordFlow }),
-    [apiRoot, setAnonymousFlow, setPasswordFlow],
+    () => ({ apiRoot, setApiRoot, setAnonymousFlow, setPasswordFlow, setTokenFlow }),
+    [apiRoot, setAnonymousFlow, setPasswordFlow, setTokenFlow],
   );
 
   return <ApiClientContext.Provider value={value}>{children}</ApiClientContext.Provider>;
