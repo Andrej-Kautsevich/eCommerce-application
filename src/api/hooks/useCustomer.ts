@@ -1,5 +1,5 @@
 import { MyCustomerChangePassword, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
-import useApiClient from '../useApiClient';
+import useApiClient from './useApiClient';
 
 const useCustomer = () => {
   const { apiRoot } = useApiClient();
