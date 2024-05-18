@@ -222,7 +222,7 @@ export default function Registration() {
                   type="text"
                   required
                   fullWidth
-                  id="city"
+                  id="city_billing"
                   label="City"
                   name="City"
                   onChange={(e) => validateField('city', e.target.value)}
@@ -236,7 +236,7 @@ export default function Registration() {
                   type="text"
                   required
                   fullWidth
-                  id="street"
+                  id="street_billing"
                   name="Street"
                   label="Street"
                   onChange={(e) => validateField('street', e.target.value)}
@@ -250,7 +250,7 @@ export default function Registration() {
                   type="text"
                   required
                   fullWidth
-                  id="postal"
+                  id="postal_billing"
                   name="PostalCode"
                   label="Postal code"
                   autoComplete="email"
