@@ -1,44 +1,55 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { Alert, AlertTitle, Collapse } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { DevTool } from '@hookform/devtools';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { PasswordElement, TextFieldElement } from 'react-hook-form-mui';
+import { MyCustomerSignin } from '@commercetools/platform-sdk';
+import * as yup from 'yup';
 import schemaEmail from '../validation/emailValidation';
 import schemaPass from '../validation/passValidation';
 import Header from '../Header';
+import { useCustomerAuth } from '../../api/hooks';
+import Routes from '../../shared/types/enum';
+import { useAppSelector } from '../../shared/store/hooks';
 
 export default function LoginTab() {
-  const [passwordVisibility, setPasswordVisibility] = useState('password');
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-  });
-  const schemas = {
+  const schema = yup.object().shape({
     email: schemaEmail,
     password: schemaPass,
+  });
+
+  type LoginForm = {
+    email: string;
+    password: string;
   };
-  type SchemaKeys = 'email' | 'password';
-  function validateField(name: SchemaKeys, value: string) {
-    schemas[name]
-      .validate(value)
-      .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
-      .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
-  }
+
+  const [showAlert, setShowAlert] = useState(true); // Close error alert
+  const navigate = useNavigate();
+  const { customerLogin } = useCustomerAuth();
+  const { loginError } = useAppSelector((state) => state.auth);
+
+  const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
+  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+    setShowAlert(true); // reset alert
+    const customer: MyCustomerSignin = data;
+    const loginSuccessful = await customerLogin(customer);
+    if (loginSuccessful) {
+      navigate(Routes.MAIN);
+    }
+  };
 
   return (
     <div className="top-panel">
-      {/* <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Create Account
-        </Button> */}
       <Header />
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -53,8 +64,8 @@ export default function LoginTab() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" style={{ width: '320px' }} noValidate sx={{ mt: 1 }}>
-            <TextField
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} style={{ width: '320px' }} noValidate sx={{ mt: 1 }}>
+            <TextFieldElement
               margin="normal"
               required
               fullWidth
@@ -63,52 +74,37 @@ export default function LoginTab() {
               name="email"
               autoComplete="email"
               autoFocus
-              onChange={(e) => validateField('email', e.target.value)}
+              control={control}
             />
-            <h4
-              style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
-              className="error-message-displaying"
-            >
-              {errors.email}
-            </h4>
-            <TextField
+            <PasswordElement
               margin="normal"
               required
               fullWidth
               name="password"
               label="Password"
-              type={passwordVisibility}
               id="password"
               autoComplete="current-password"
-              onChange={(e) => validateField('password', e.target.value)}
-            />
-            <h4
-              style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '15px', color: 'red' }}
-              className="error-message-displaying"
-            >
-              {errors.password}
-            </h4>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onClick={() => {
-                    if (passwordVisibility === 'password') {
-                      setPasswordVisibility('text');
-                    } else {
-                      setPasswordVisibility('password');
-                    }
-                  }}
-                  value="remember"
-                  color="primary"
-                />
-              }
-              label="Show Password"
+              control={control}
             />
             <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
+            {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>
+        {loginError && (
+          <Collapse in={showAlert}>
+            <Alert
+              severity="error"
+              onClose={() => {
+                setShowAlert(false);
+              }}
+            >
+              <AlertTitle>Error</AlertTitle>
+              {loginError}
+            </Alert>
+          </Collapse>
+        )}
       </Container>
     </div>
   );
