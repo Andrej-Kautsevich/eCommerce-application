@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useState } from 'react';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,11 +25,11 @@ import schemaStreet from '../validation/streetValidation';
 import schemaPostalCode from '../validation/postalCodeValidation';
 import Header from '../Header';
 import CheckBox from './checkBoxDefault';
-import CheckBoxUseBoth from './checkBoxUseBoth';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function Registration() {
+  const [showBilling, setBilling] = useState(true);
   const [errors, setErrors] = useState({
     firstName: '',
     lastName: '',
@@ -61,6 +63,11 @@ export default function Registration() {
       .validate(value)
       .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
       .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
+  }
+  function isHideBilling() {
+    if (showBilling) setBilling(false);
+    else setBilling(true);
+    return showBilling;
   }
 
   return (
@@ -191,75 +198,85 @@ export default function Registration() {
                   onChange={(e) => validateField('postalCode', e.target.value)}
                 />
                 <CheckBox />
-                <CheckBoxUseBoth />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.postalCode}
-                </p>
-              </Grid>
-              <Grid item xs={12}>
-                <h4>Billing address</h4>
-                <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Country</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={age}
-                      label="Country"
-                      onChange={handleChange}
-                    >
-                      <MenuItem value={1}>Belarus</MenuItem>
-                      <MenuItem value={2}>Latvia</MenuItem>
-                      <MenuItem value={3}>Poland</MenuItem>
-                      <MenuItem value={4}>Germany</MenuItem>
-                      <MenuItem value={5}>Belgium</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  required
-                  fullWidth
-                  id="city_billing"
-                  label="City"
-                  name="City"
-                  onChange={(e) => validateField('city', e.target.value)}
-                />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.city}
-                </p>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  required
-                  fullWidth
-                  id="street_billing"
-                  name="Street"
-                  label="Street"
-                  onChange={(e) => validateField('street', e.target.value)}
-                />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.street}
-                </p>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  required
-                  fullWidth
-                  id="postal_billing"
-                  name="PostalCode"
-                  label="Postal code"
-                  autoComplete="email"
-                  onChange={(e) => validateField('postalCode', e.target.value)}
+                <FormControlLabel
+                  control={<Checkbox />}
+                  onChange={() => {
+                    isHideBilling();
+                  }}
+                  label="Use the same address for both"
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
                   {errors.postalCode}
                 </p>
               </Grid>
+              {showBilling && (
+                <>
+                  <Grid item xs={12}>
+                    <h4>Billing address</h4>
+                    <Box sx={{ minWidth: 120 }}>
+                      <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Country</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={age}
+                          label="Country"
+                          onChange={handleChange}
+                        >
+                          <MenuItem value={1}>Belarus</MenuItem>
+                          <MenuItem value={2}>Latvia</MenuItem>
+                          <MenuItem value={3}>Poland</MenuItem>
+                          <MenuItem value={4}>Germany</MenuItem>
+                          <MenuItem value={5}>Belgium</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="text"
+                      required
+                      fullWidth
+                      id="city_billing"
+                      label="City"
+                      name="City"
+                      onChange={(e) => validateField('city', e.target.value)}
+                    />
+                    <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                      {errors.city}
+                    </p>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="text"
+                      required
+                      fullWidth
+                      id="street_billing"
+                      name="Street"
+                      label="Street"
+                      onChange={(e) => validateField('street', e.target.value)}
+                    />
+                    <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                      {errors.street}
+                    </p>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      type="text"
+                      required
+                      fullWidth
+                      id="postal_billing"
+                      name="PostalCode"
+                      label="Postal code"
+                      autoComplete="email"
+                      onChange={(e) => validateField('postalCode', e.target.value)}
+                    />
+                    <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
+                      {errors.postalCode}
+                    </p>
+                  </Grid>
+                </>
+              )}
               <Grid item xs={12}>
                 <h4>Email & Password</h4>
                 <TextField
