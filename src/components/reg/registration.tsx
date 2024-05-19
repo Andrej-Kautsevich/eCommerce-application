@@ -198,7 +198,7 @@ export default function Registration() {
                   onChange={() => {
                     setBilling(!showBilling);
                   }}
-                  label="Use the same address for both"
+                  label="My billing address is not the same as my shipping address."
                 />
                 <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
                   {errors.postalCode}
