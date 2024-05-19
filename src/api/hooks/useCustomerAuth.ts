@@ -1,7 +1,7 @@
 import { AuthErrorResponse, ClientResponse, MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
 import useApiClient from './useApiClient';
 import { loginError, loginFetch, loginSuccess, logout } from '../../shared/store/auth/authSlice';
-import useAppDispatch from '../../shared/store/hooks';
+import { useAppDispatch } from '../../shared/store/hooks';
 import tokenCache from '../../shared/utils/tokenCache';
 
 const useCustomerAuth = () => {
@@ -13,25 +13,23 @@ const useCustomerAuth = () => {
       throw new Error('ApiRoot is not defined');
     }
     dispatch(loginFetch());
-    try {
-      await apiRoot
-        .me()
-        .login()
-        .post({ body: user })
-        .execute()
-        .then((response) => {
-          if (response.statusCode === 200) {
-            dispatch(loginSuccess());
-            tokenCache.remove();
-            setPasswordFlow(user);
-          }
-        })
-        .catch((error: ClientResponse<AuthErrorResponse>) => {
-          dispatch(loginError(error.body));
-        });
-    } catch (error) {
-      // dispatch(loginError(error))
-    }
+    return apiRoot
+      .me()
+      .login()
+      .post({ body: user })
+      .execute()
+      .then((response) => {
+        if (response.statusCode === 200) {
+          dispatch(loginSuccess());
+          tokenCache.remove();
+          setPasswordFlow(user);
+        }
+        return true;
+      })
+      .catch((error: ClientResponse<AuthErrorResponse>) => {
+        dispatch(loginError(error.body));
+        return false;
+      });
   };
 
   const customerSignUp = (user: MyCustomerDraft) => {
