@@ -11,10 +11,17 @@ const commonRoutes: RouteProps[] = [
   { path: RoutePaths.ERROR404, Component: Error404Page },
 ];
 
-export const privateRoutes: RouteProps[] = [...commonRoutes, { path: RoutePaths.BASKET, Component: BasketPage }];
+// Routes available to AUTHORIZED users add here
+const onlyPrivateRoutes: RouteProps[] = [{ path: RoutePaths.BASKET, Component: BasketPage }];
 
-export const publicRoutes: RouteProps[] = [
-  ...commonRoutes,
+// Routes available to UNAUTHORIZED users add here
+const onlyPublicRoutes: RouteProps[] = [
   { path: RoutePaths.LOGIN, Component: LoginPage },
   { path: RoutePaths.REGISTRATION, Component: RegistrationPage },
 ];
+
+const extractPaths = (routes: RouteProps[]): string[] => routes.map((route) => route.path as string);
+export const onlyPrivatePaths = extractPaths(onlyPrivateRoutes);
+export const onlyPublicPaths = extractPaths(onlyPublicRoutes);
+export const privateRoutes: RouteProps[] = [...commonRoutes, ...onlyPrivateRoutes];
+export const publicRoutes: RouteProps[] = [...commonRoutes, ...onlyPublicRoutes];

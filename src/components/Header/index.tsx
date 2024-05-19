@@ -1,8 +1,8 @@
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import Buttons from './Buttons';
-import useBasketButton from '../useBasketButton';
+import LoginLogoutButtons from './LoginLogoutButtons';
+import useBasketButton from './useBasketButton';
 
 const Header = () => {
   const basketButton = useBasketButton();
@@ -14,7 +14,7 @@ const Header = () => {
           <Link to="/">eCommerce-Application </Link>
         </Typography>
 
-        <Buttons />
+        <LoginLogoutButtons />
 
         <IconButton color="inherit" onClick={() => basketButton()}>
           <ShoppingBasket color="primary" />
