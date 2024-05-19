@@ -196,7 +196,7 @@ export default function Registration() {
                 <FormControlLabel
                   control={<Checkbox />}
                   onChange={() => {
-                    isHideBilling();
+                    setBilling(!showBilling);
                   }}
                   label="Use the same address for both"
                 />
