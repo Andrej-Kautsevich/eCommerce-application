@@ -17,19 +17,19 @@ import schemaEmail from '../validation/emailValidation';
 import schemaPass from '../validation/passValidation';
 import Header from '../Header';
 import { useCustomerAuth } from '../../api/hooks';
-import Routes from '../../shared/types/enum';
+import { RoutePaths } from '../../shared/types/enum';
 import { useAppSelector } from '../../shared/store/hooks';
+
+type LoginForm = {
+  email: string;
+  password: string;
+};
 
 export default function LoginTab() {
   const schema = yup.object().shape({
     email: schemaEmail,
     password: schemaPass,
   });
-
-  type LoginForm = {
-    email: string;
-    password: string;
-  };
 
   const [showAlert, setShowAlert] = useState(true); // Close error alert
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ export default function LoginTab() {
     const customer: MyCustomerSignin = data;
     const loginSuccessful = await customerLogin(customer);
     if (loginSuccessful) {
-      navigate(Routes.MAIN);
+      navigate(RoutePaths.MAIN);
     }
   };
 

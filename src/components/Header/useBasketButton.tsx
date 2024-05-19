@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Routes from '../../shared/types/enum';
+import { RoutePaths } from '../../shared/types/enum';
 import { RootState } from '../../shared/store';
 
 const useBasketButton = () => {
@@ -9,9 +9,9 @@ const useBasketButton = () => {
 
   const basketButton = () => {
     if (isAuthCustomer) {
-      navigate(Routes.BASKET);
+      navigate(RoutePaths.BASKET);
     } else {
-      navigate(Routes.LOGIN);
+      navigate(RoutePaths.LOGIN);
     }
   };
 

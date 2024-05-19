@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AppRoutes from '../components/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { RootState } from '../shared/store';
@@ -28,11 +30,13 @@ const App = () => {
   }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 };
 
