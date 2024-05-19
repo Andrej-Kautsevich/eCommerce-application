@@ -11,7 +11,7 @@ const Header = () => {
     <AppBar position="static" sx={{ width: '100vw', pr: 8, pl: 8 }} color="secondary">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
-          <Link to="/">eCommerce-Application </Link>
+          <Link to="/">Volcano Watch</Link>
         </Typography>
 
         <Buttons />

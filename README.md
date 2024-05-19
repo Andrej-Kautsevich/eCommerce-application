@@ -3,6 +3,7 @@
 This project was implemented as part of a team 👥 task course from RS School. Each group consisted of 3 students, each of whom worked on his part of the task.
 
 Together with the team, we created a small online store for the sale of watches based on eCommerceTools
+> Live demo [_here_](https://volcano-watch.netlify.app/).
 
 ### What's eCommerceTools?
 
@@ -73,3 +74,7 @@ In the project directory, you can run:
 - `npm run test:ui`: Opens the Vitest user interface for running and inspecting tests.
 
 - `npm run test:watch`: Runs your tests in watch mode using Vitest. It re-runs the tests as you make changes to your code.
+
+- `deploy:preview`: This will compile your TypeScript files, build the application using Vite, and then deploy it. The Netlify CLI will share with you a preview URL to inspect. When you are ready to go into production, run `deploy`. Note: you will need to [install](https://cli.netlify.com/) `Netlify CLI` globally.
+
+- `deploy`: Deploy the site into production.
