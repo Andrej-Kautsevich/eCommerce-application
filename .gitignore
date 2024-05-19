@@ -28,3 +28,6 @@ dist
 
 # Local Netlify folder
 .netlify
+
+# Vitest coverage folder
+coverage
