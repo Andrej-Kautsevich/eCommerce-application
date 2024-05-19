@@ -29,7 +29,7 @@ import CheckBox from './checkBoxDefault';
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function Registration() {
-  const [showBilling, setBilling] = useState(true);
+  const [showBilling, setBilling] = useState(false);
   const [errors, setErrors] = useState({
     firstName: '',
     lastName: '',
