@@ -14,7 +14,9 @@
     "prepare": "husky",
     "test": "vitest --run",
     "test:ui": "vitest --ui",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "deploy:preview": "tsc && vite build && ntl deploy",
+    "deploy": "tsc && vite build && ntl deploy --prod"
   },
   "dependencies": {
     "@commercetools/platform-sdk": "^7.8.0",
