@@ -145,10 +145,8 @@ export default function Registration() {
                       onChange={handleChange}
                     >
                       <MenuItem value={1}>Belarus</MenuItem>
-                      <MenuItem value={2}>Latvia</MenuItem>
-                      <MenuItem value={3}>Poland</MenuItem>
-                      <MenuItem value={4}>Germany</MenuItem>
-                      <MenuItem value={5}>Belgium</MenuItem>
+                      <MenuItem value={2}>Kazakhstan</MenuItem>
+                      <MenuItem value={3}>Ukraine</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -219,10 +217,8 @@ export default function Registration() {
                           onChange={handleChange}
                         >
                           <MenuItem value={1}>Belarus</MenuItem>
-                          <MenuItem value={2}>Latvia</MenuItem>
-                          <MenuItem value={3}>Poland</MenuItem>
-                          <MenuItem value={4}>Germany</MenuItem>
-                          <MenuItem value={5}>Belgium</MenuItem>
+                          <MenuItem value={2}>Kazakhstan</MenuItem>
+                          <MenuItem value={3}>Ukraine</MenuItem>
                         </Select>
                       </FormControl>
                     </Box>
