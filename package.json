@@ -15,6 +15,7 @@
     "test": "vitest --run",
     "test:ui": "vitest --ui",
     "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
     "deploy:preview": "tsc && vite build && ntl deploy",
     "deploy": "tsc && vite build && ntl deploy --prod"
   },
@@ -51,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
