@@ -12,18 +12,32 @@ import { useApiClient } from '../api/hooks';
 import theme from '../components/theme';
 
 const App = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  interface AuthState {
+    isLoggedIn: boolean;
+  }
 
+  // get Auth status from local storage
+  const getAuthStateFromLocalStorage = (): AuthState => {
+    const storedState = localStorage.getItem('persist:auth');
+    if (storedState) {
+      return JSON.parse(storedState) as AuthState;
+    }
+    return { isLoggedIn: false };
+  };
+
+  const authStateFromLocalStorage = getAuthStateFromLocalStorage();
+  const initialIsAuth = authStateFromLocalStorage.isLoggedIn;
+
+  const [isAuth, setIsAuth] = useState<boolean>(initialIsAuth);
+  const isAuthCustomer = useSelector((state: RootState) => state.auth.isLoggedIn);
   const authContextValue = useMemo(
     () => ({
       isAuth,
       setIsAuth,
     }),
-    [isAuth, setIsAuth],
+    [isAuth],
   );
 
-  // get Auth status from local storage
-  const isAuthCustomer = useSelector((state: RootState) => state.auth.isLoggedIn);
   const { apiRoot, setAnonymousFlow, setTokenFlow } = useApiClient();
   useEffect(() => {
     if (!apiRoot) {
