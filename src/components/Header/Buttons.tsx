@@ -3,7 +3,7 @@ import { Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AuthContext, { AuthContextType } from '../context';
 import useLogout from '../useLogout';
-import Routes from '../../shared/types/enum';
+import RoutePaths from '../../shared/types/enum';
 
 const Buttons = () => {
   const { isAuth } = useContext(AuthContext) as AuthContextType;
@@ -12,11 +12,11 @@ const Buttons = () => {
 
   return !isAuth ? (
     <Box>
-      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(Routes.LOGIN)}>
+      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.LOGIN)}>
         Login
       </Button>
 
-      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(Routes.REGISTRATION)}>
+      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.REGISTRATION)}>
         Register
       </Button>
     </Box>

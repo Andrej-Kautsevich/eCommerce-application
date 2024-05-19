@@ -10,33 +10,23 @@ import tokenCache from '../shared/utils/tokenCache';
 import { RootState } from '../shared/store';
 import { useApiClient } from '../api/hooks';
 import theme from '../components/theme';
+// import { AuthState } from '../shared/types/interface';
 
 const App = () => {
-  interface AuthState {
-    isLoggedIn: boolean;
-  }
-
   // get Auth status from local storage
-  const getAuthStateFromLocalStorage = (): AuthState => {
-    const storedState = localStorage.getItem('persist:auth');
-    if (storedState) {
-      return JSON.parse(storedState) as AuthState;
-    }
-    return { isLoggedIn: false };
-  };
+  // const getAuthStateFromLocalStorage = (): AuthState => {
+  //   const storedState = localStorage.getItem('persist:auth');
+  //   if (storedState) {
+  //     return JSON.parse(storedState) as AuthState;
+  //   }
+  //   return { isLoggedIn: false };
+  // };
 
-  const authStateFromLocalStorage = getAuthStateFromLocalStorage();
-  const initialIsAuth = authStateFromLocalStorage.isLoggedIn;
+  // const authStateFromLocalStorage = getAuthStateFromLocalStorage();
+  // const initialIsAuth = authStateFromLocalStorage.isLoggedIn;
 
-  const [isAuth, setIsAuth] = useState<boolean>(initialIsAuth);
   const isAuthCustomer = useSelector((state: RootState) => state.auth.isLoggedIn);
-  const authContextValue = useMemo(
-    () => ({
-      isAuth,
-      setIsAuth,
-    }),
-    [isAuth],
-  );
+  const [isAuth, setIsAuth] = useState<boolean>(isAuthCustomer);
 
   const { apiRoot, setAnonymousFlow, setTokenFlow } = useApiClient();
   useEffect(() => {
@@ -51,6 +41,14 @@ const App = () => {
       }
     }
   }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer]);
+
+  const authContextValue = useMemo(
+    () => ({
+      isAuth,
+      setIsAuth,
+    }),
+    [isAuth],
+  );
 
   return (
     <ThemeProvider theme={theme}>
