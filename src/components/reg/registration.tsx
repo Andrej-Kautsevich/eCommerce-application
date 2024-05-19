@@ -64,11 +64,6 @@ export default function Registration() {
       .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
       .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
   }
-  function isHideBilling() {
-    if (showBilling) setBilling(false);
-    else setBilling(true);
-    return showBilling;
-  }
 
   return (
     <div className="top-panel">
