@@ -83,7 +83,7 @@ export default function LoginTab() {
               name="password"
               label="Password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               control={control}
             />
             <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
