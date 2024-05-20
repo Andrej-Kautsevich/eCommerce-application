@@ -32,6 +32,14 @@ const LoginLogoutButtons = () => {
       >
         Logout
       </Button>
+
+      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.LOGIN)}>
+        Login
+      </Button>
+
+      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.REGISTRATION)}>
+        Register
+      </Button>
     </Box>
   );
 };
