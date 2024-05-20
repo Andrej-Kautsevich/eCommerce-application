@@ -6,55 +6,90 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
-import { useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DevTool } from '@hookform/devtools';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
-import { CheckboxElement, PasswordElement, TextFieldElement } from 'react-hook-form-mui';
+import { CheckboxElement, PasswordElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
+import { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk';
 import schemaPass from '../validation/passValidation';
 import schemaEmail from '../validation/emailValidation';
 import schemaName from '../validation/nameValidation';
-import handleSignUpSubmit from './handleSignUpSubmit';
 import schemaBirthDate from '../validation/validationBirthDate';
 import schemaCity from '../validation/cityValidation';
 import schemaStreet from '../validation/streetValidation';
 import schemaPostalCode from '../validation/postalCodeValidation';
 import Header from '../Header';
 import { RegistrationForm } from './types';
-// import { StoreCountries } from '../../shared/types/enum';
+import { useCustomerAuth } from '../../api/hooks';
+import { RoutePaths, StoreCountries } from '../../shared/types/enum';
 
 export default function Registration() {
   const [showBilling, setBilling] = useState(false);
-  const schema = yup.object().shape({
+  let schema = yup.object().shape({
     firstName: schemaName,
     lastName: schemaName,
-    birthDate: schemaBirthDate,
+    dateOfBirth: schemaBirthDate,
     shippingAddress: yup.object().shape({
-      // country: StoreCountries,
+      country: yup.string().oneOf(Object.values(StoreCountries)).required(),
       city: schemaCity,
       street: schemaStreet,
       postalCode: schemaPostalCode,
     }),
     defaultAddress: yup.boolean().default(false),
-    billingAddress: yup
-      .object()
-      .shape({
-        // country: StoreCountries,
-        city: schemaCity,
-        street: schemaStreet,
-        postalCode: schemaPostalCode,
-      })
-      .notRequired(),
     email: schemaEmail,
     password: schemaPass,
   });
 
-  // const countryOptions = Object.entries(StoreCountries).map(([id, label]) => ({ id, label }));
+  if (showBilling) {
+    schema = schema.shape({
+      billingAddress: yup
+        .object()
+        .shape({
+          country: yup.string().oneOf(Object.values(StoreCountries)).required(),
+          city: schemaCity,
+          street: schemaStreet,
+          postalCode: schemaPostalCode,
+        })
+        .notRequired(),
+    });
+  }
+
+  const navigate = useNavigate();
+  const { customerSignUp } = useCustomerAuth();
+  const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
+    const addresses: BaseAddress[] = [data.shippingAddress];
+    // let defaultBillingAddress;
+    // let defaultShippingAddress;
+    // if (data.billingAddress) {
+    //   addresses.push(data.billingAddress);
+    //   defaultBillingAddress = 1;
+    // }
+    // if (data.defaultAddress) {
+    //   defaultShippingAddress = 0;
+    // }
+
+    const customer: MyCustomerDraft = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      dateOfBirth: data.dateOfBirth.toISOString().slice(0, 10),
+      email: data.email,
+      password: data.password,
+      addresses,
+    };
+
+    const signUpResult = await customerSignUp(customer);
+    if (signUpResult) {
+      navigate(RoutePaths.MAIN);
+    }
+  };
+
+  const countryOptions = Object.entries(StoreCountries).map(([label, id]) => ({ id, label }));
 
   const { control, handleSubmit } = useForm<RegistrationForm>({ mode: 'onChange', resolver: yupResolver(schema) });
 
@@ -77,7 +112,7 @@ export default function Registration() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" onSubmit={handleSubmit(handleSignUpSubmit)} noValidate sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextFieldElement
@@ -107,22 +142,22 @@ export default function Registration() {
                   inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
                   required
                   helperText="You must be at least 18 years old to visit site"
-                  name="birthDate"
+                  name="dateOfBirth"
                   control={control}
                 />
               </Grid>
               <Grid item xs={12}>
                 <h4>Shipping address</h4>
-                {/*                 <Box sx={{ minWidth: 120 }}>
+                <Box sx={{ minWidth: 120 }}>
                   <SelectElement
                     fullWidth
-                    name="Country"
+                    name="shippingAddress.country"
                     label="Country"
                     required
                     options={countryOptions}
                     control={control}
                   />
-                </Box> */}
+                </Box>
               </Grid>
               <Grid item xs={12}>
                 <TextFieldElement
@@ -175,14 +210,14 @@ export default function Registration() {
                   <Grid item xs={12}>
                     <h4>Billing address</h4>
                     <Box sx={{ minWidth: 120 }}>
-                      {/* <SelectElement
+                      <SelectElement
                         fullWidth
-                        name="CountryBilling"
+                        name="billingAddress.country"
                         label="Country"
                         required
                         options={countryOptions}
                         control={control}
-                      /> */}
+                      />
                     </Box>
                   </Grid>
                   <Grid item xs={12}>

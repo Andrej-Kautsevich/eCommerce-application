@@ -1,7 +1,9 @@
+import { StoreCountries } from '../../../shared/types/enum';
+
 export type RegistrationForm = {
   firstName: string;
   lastName: string;
-  birthDate: Date;
+  dateOfBirth: Date;
   shippingAddress: Address;
   defaultAddress: boolean;
   billingAddress?: Address | null;
@@ -10,7 +12,7 @@ export type RegistrationForm = {
 };
 
 type Address = {
-  // country: StoreCountries;
+  country: StoreCountries;
   city: string;
   street: string;
   postalCode: string;

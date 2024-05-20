@@ -7,7 +7,7 @@ export enum RoutePaths {
 }
 
 export enum StoreCountries {
-  BELARUS = 'Belarus',
-  KAZAKHSTAN = 'Kazakhstan',
-  UKRAINE = 'Ukraine',
+  BELARUS = 'BY',
+  KAZAKHSTAN = 'KZ',
+  UKRAINE = 'UA',
 }
