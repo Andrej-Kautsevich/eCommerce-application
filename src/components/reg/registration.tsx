@@ -277,7 +277,9 @@ export default function Registration() {
                 </>
               )}
               <Grid item xs={12}>
-                <h4>Email & Password</h4>
+                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                  Email & Password
+                </Typography>
                 <TextFieldElement
                   required
                   fullWidth
