@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { privateRoutes, publicRoutes, onlyPrivatePaths, onlyPublicPaths } from './router';
-import RoutePaths from '../shared/types/enum';
+import { RoutePaths } from '../shared/types/enum';
 import { RootState } from '../shared/store';
 
 const AppRoutes = () => {

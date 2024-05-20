@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
 import Error404 from '../shared/assets/icons/404.svg';
-import Routes from '../shared/types/enum';
+import { RoutePaths } from '../shared/types/enum';
 
 const Error404Page = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const Error404Page = () => {
         Oops, Something Went Wrong
       </Typography>
       <img src={Error404} alt="Error 404" />;
-      <Button variant="contained" onClick={() => navigate(Routes.MAIN)}>
+      <Button variant="contained" onClick={() => navigate(RoutePaths.MAIN)}>
         Return to Homepage
       </Button>
     </div>

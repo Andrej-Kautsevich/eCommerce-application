@@ -37,7 +37,24 @@ const useCustomerAuth = () => {
       throw new Error('ApiRoot is not defined');
     }
 
-    return apiRoot.me().signup().post({ body: user }).execute();
+    dispatch(loginFetch());
+    return apiRoot
+      .me()
+      .signup()
+      .post({ body: user })
+      .execute()
+      .then((response) => {
+        if (response.statusCode === 201) {
+          dispatch(loginSuccess());
+          tokenCache.remove();
+          setPasswordFlow(user);
+        }
+        return true;
+      })
+      .catch((signupError: ClientResponse<AuthErrorResponse>) => {
+        dispatch(loginError(signupError.body));
+        return false;
+      }); // TODO add error handle
   };
 
   const customerLogOut = () => {

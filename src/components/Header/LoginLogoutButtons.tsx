@@ -1,7 +1,7 @@
 import { Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import RoutePaths from '../../shared/types/enum';
+import { RoutePaths } from '../../shared/types/enum';
 import useCustomerAuth from '../../api/hooks/useCustomerAuth';
 import { RootState } from '../../shared/store';
 
