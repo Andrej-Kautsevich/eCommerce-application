@@ -150,7 +150,9 @@ export default function Registration() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <h4>Shipping address</h4>
+                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                  Shipping address
+                </Typography>
                 <Box sx={{ minWidth: 120 }}>
                   <SelectElement
                     fullWidth
@@ -215,7 +217,9 @@ export default function Registration() {
               {showBilling && (
                 <>
                   <Grid item xs={12}>
-                    <h4>Billing address</h4>
+                    <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                      Billing address
+                    </Typography>
                     <Box sx={{ minWidth: 120 }}>
                       <SelectElement
                         fullWidth
