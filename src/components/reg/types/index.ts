@@ -5,8 +5,9 @@ export type RegistrationForm = {
   lastName: string;
   dateOfBirth: Date;
   shippingAddress: Address;
-  defaultAddress: boolean;
+  defaultShippingAddress: boolean;
   billingAddress?: Address | null;
+  defaultBillingAddress?: boolean;
   email: string;
   password: string;
 };
