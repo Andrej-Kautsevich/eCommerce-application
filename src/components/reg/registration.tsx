@@ -41,7 +41,7 @@ export default function Registration() {
       street: schemaStreet,
       postalCode: schemaPostalCode,
     }),
-    defaultAddress: yup.boolean().default(false),
+    defaultShippingAddress: yup.boolean().default(false),
     email: schemaEmail,
     password: schemaPass,
   });
@@ -57,6 +57,7 @@ export default function Registration() {
           postalCode: schemaPostalCode,
         })
         .notRequired(),
+      defaultBillingAddress: yup.boolean().default(false),
     });
   }
 
@@ -64,15 +65,15 @@ export default function Registration() {
   const { customerSignUp } = useCustomerAuth();
   const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
     const addresses: BaseAddress[] = [data.shippingAddress];
-    // let defaultBillingAddress;
-    // let defaultShippingAddress;
-    // if (data.billingAddress) {
-    //   addresses.push(data.billingAddress);
-    //   defaultBillingAddress = 1;
-    // }
-    // if (data.defaultAddress) {
-    //   defaultShippingAddress = 0;
-    // }
+    let defaultBillingAddress;
+    let defaultShippingAddress;
+    if (data.defaultShippingAddress) {
+      defaultShippingAddress = 0;
+    }
+    if (data.billingAddress) {
+      addresses.push(data.billingAddress);
+      if (data.defaultBillingAddress) defaultBillingAddress = 1;
+    }
 
     const customer: MyCustomerDraft = {
       firstName: data.firstName,
@@ -81,6 +82,8 @@ export default function Registration() {
       email: data.email,
       password: data.password,
       addresses,
+      defaultBillingAddress,
+      defaultShippingAddress,
     };
 
     const signUpResult = await customerSignUp(customer);
@@ -147,7 +150,9 @@ export default function Registration() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <h4>Shipping address</h4>
+                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                  Shipping address
+                </Typography>
                 <Box sx={{ minWidth: 120 }}>
                   <SelectElement
                     fullWidth
@@ -196,7 +201,11 @@ export default function Registration() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <CheckboxElement label="Set as default address" name="defaultAddress" control={control} />
+                <CheckboxElement
+                  label="Set as default shipping address"
+                  name="defaultShippingAddress"
+                  control={control}
+                />
                 <FormControlLabel
                   control={<Checkbox />}
                   onChange={() => {
@@ -208,7 +217,9 @@ export default function Registration() {
               {showBilling && (
                 <>
                   <Grid item xs={12}>
-                    <h4>Billing address</h4>
+                    <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                      Billing address
+                    </Typography>
                     <Box sx={{ minWidth: 120 }}>
                       <SelectElement
                         fullWidth
@@ -256,10 +267,19 @@ export default function Registration() {
                       control={control}
                     />
                   </Grid>
+                  <Grid item xs={12}>
+                    <CheckboxElement
+                      label="Set as default billing address"
+                      name="defaultBillingAddress"
+                      control={control}
+                    />
+                  </Grid>
                 </>
               )}
               <Grid item xs={12}>
-                <h4>Email & Password</h4>
+                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                  Email & Password
+                </Typography>
                 <TextFieldElement
                   required
                   fullWidth
