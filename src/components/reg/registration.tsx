@@ -48,7 +48,7 @@ export default function Registration() {
 
   let schema = yup.object().shape({
     firstName: schemaName,
-    lastName: schemaName,
+    lastName: schemaName.required('Last name is required'),
     dateOfBirth: schemaBirthDate,
     shippingAddress: yup.object().shape({
       country: yup.string().oneOf(Object.values(StoreCountries)).required('Country is required'),
