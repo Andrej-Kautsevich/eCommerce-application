@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import { Box, Alert, AlertTitle, Slide } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -31,6 +31,7 @@ import { RoutePaths, StoreCountries } from '../../shared/types/enum';
 import schemaPostalCodeBelarus from '../validation/postalCodeOfCountriesVal/belarusPostalShema';
 import schemaPostalCodeKazakhstan from '../validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
 import schemaPostalCodeUkraine from '../validation/postalCodeOfCountriesVal/ukrainePostalShema';
+import { useAppSelector } from '../../shared/store/hooks';
 
 export default function Registration() {
   const [showBilling, setBilling] = useState(false);
@@ -74,9 +75,11 @@ export default function Registration() {
       defaultBillingAddress: yup.boolean().default(false),
     });
   }
+  const [showAlert, setShowAlert] = useState(true); // Close error alert
   const navigate = useNavigate();
   const { customerSignUp } = useCustomerAuth();
   const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
+    setShowAlert(true); // reset alert
     const addresses: BaseAddress[] = [data.shippingAddress];
     let defaultBillingAddress;
     let defaultShippingAddress;
@@ -106,8 +109,8 @@ export default function Registration() {
   };
 
   const countryOptions = Object.entries(StoreCountries).map(([label, id]) => ({ id, label }));
-
   const { control, handleSubmit } = useForm<RegistrationForm>({ mode: 'onChange', resolver: yupResolver(schema) });
+  const { loginError } = useAppSelector((state) => state.auth);
 
   return (
     <div className="top-panel">
@@ -327,6 +330,21 @@ export default function Registration() {
             </Button>
             {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
+        </Box>
+        <Box height="116px">
+          {loginError && (
+            <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
+              <Alert
+                severity="error"
+                onClose={() => {
+                  setShowAlert(false);
+                }}
+              >
+                <AlertTitle>Error</AlertTitle>
+                {loginError}
+              </Alert>
+            </Slide>
+          )}
         </Box>
       </Container>
     </div>
