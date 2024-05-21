@@ -84,10 +84,13 @@ export default function Registration() {
     let defaultShippingAddress;
     if (data.defaultShippingAddress) {
       defaultShippingAddress = 0;
+      if (!showBilling) defaultBillingAddress = 0; // If the billing address is not specified, set the default billing address as the shipping address.
     }
-    if (data.billingAddress) {
+    if (showBilling && data.billingAddress) {
       addresses.push(data.billingAddress);
-      if (data.defaultBillingAddress) defaultBillingAddress = 1;
+      if (data.defaultBillingAddress) {
+        defaultBillingAddress = 1;
+      }
     }
 
     const customer: MyCustomerDraft = {
