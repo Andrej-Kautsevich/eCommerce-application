@@ -14,10 +14,11 @@ const MainPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowAlert(false);
+      dispatch(setSubmitSuccess({ status: false }));
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
