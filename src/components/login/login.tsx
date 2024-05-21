@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Alert, AlertTitle, Slide, Grid } from '@mui/material';
+import { Alert, AlertTitle, Slide } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
@@ -98,19 +98,17 @@ export default function LoginTab() {
         </Box>
         <Box height="116px">
           {showAlert && (
-            <Grid item xs={12}>
-              <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
-                <Alert
-                  severity="error"
-                  onClose={() => {
-                    setShowAlert(false);
-                  }}
-                >
-                  <AlertTitle>Error</AlertTitle>
-                  {loginError}
-                </Alert>
-              </Slide>
-            </Grid>
+            <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
+              <Alert
+                severity="error"
+                onClose={() => {
+                  setShowAlert(false);
+                }}
+              >
+                <AlertTitle>Error</AlertTitle>
+                {loginError}
+              </Alert>
+            </Slide>
           )}
         </Box>
       </Container>
