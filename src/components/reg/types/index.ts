@@ -15,6 +15,6 @@ export type RegistrationForm = {
 type Address = {
   country: StoreCountries;
   city: string;
-  street: string;
+  streetName: string;
   postalCode: string;
 };

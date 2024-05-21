@@ -53,7 +53,7 @@ export default function Registration() {
     shippingAddress: yup.object().shape({
       country: yup.string().oneOf(Object.values(StoreCountries)).required(),
       city: schemaCity,
-      street: schemaStreet,
+      streetName: schemaStreet,
       postalCode: checkValueForCountry(countryFieldValue),
     }),
     defaultShippingAddress: yup.boolean().default(false),
@@ -68,7 +68,7 @@ export default function Registration() {
         .shape({
           country: yup.string().oneOf(Object.values(StoreCountries)).required(),
           city: schemaCity,
-          street: schemaStreet,
+          streetName: schemaStreet,
           postalCode: checkValueForCountry(countryFieldValueBilling),
         })
         .notRequired(),
@@ -202,7 +202,7 @@ export default function Registration() {
                   required
                   fullWidth
                   id="street"
-                  name="shippingAddress.street"
+                  name="shippingAddress.streetName"
                   label="Street"
                   autoComplete="shipping address-line1"
                   control={control}
@@ -272,7 +272,7 @@ export default function Registration() {
                       required
                       fullWidth
                       id="streetBilling"
-                      name="billingAddress.street"
+                      name="billingAddress.streetName"
                       label="Street"
                       autoComplete="billing address-line1"
                       control={control}
