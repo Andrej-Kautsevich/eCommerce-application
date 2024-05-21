@@ -31,18 +31,19 @@ export default function LoginTab() {
     password: schemaPass,
   });
 
-  const [showAlert, setShowAlert] = useState(true); // Close error alert
+  const [showAlert, setShowAlert] = useState(false); // Close error alert
   const navigate = useNavigate();
   const { customerLogin } = useCustomerAuth();
   const { loginError } = useAppSelector((state) => state.auth);
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-    setShowAlert(true); // reset alert
     const customer: MyCustomerSignin = data;
     const loginSuccessful = await customerLogin(customer);
     if (loginSuccessful) {
       navigate(RoutePaths.MAIN);
+    } else {
+      setShowAlert(true);
     }
   };
 
@@ -93,7 +94,7 @@ export default function LoginTab() {
           </Box>
         </Box>
         <Box height="116px">
-          {loginError && (
+          {showAlert && (
             <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
               <Alert
                 severity="error"
