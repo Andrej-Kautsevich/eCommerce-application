@@ -51,7 +51,7 @@ export default function Registration() {
     lastName: schemaName,
     dateOfBirth: schemaBirthDate,
     shippingAddress: yup.object().shape({
-      country: yup.string().oneOf(Object.values(StoreCountries)).required(),
+      country: yup.string().oneOf(Object.values(StoreCountries)).required('Country is required'),
       city: schemaCity,
       street: schemaStreet,
       postalCode: checkValueForCountry(countryFieldValue),
