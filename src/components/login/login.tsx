@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Alert, AlertTitle, Collapse } from '@mui/material';
+import { Alert, AlertTitle, Slide } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
@@ -92,19 +92,21 @@ export default function LoginTab() {
             {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>
-        {loginError && (
-          <Collapse in={showAlert}>
-            <Alert
-              severity="error"
-              onClose={() => {
-                setShowAlert(false);
-              }}
-            >
-              <AlertTitle>Error</AlertTitle>
-              {loginError}
-            </Alert>
-          </Collapse>
-        )}
+        <Box height="116px">
+          {loginError && (
+            <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
+              <Alert
+                severity="error"
+                onClose={() => {
+                  setShowAlert(false);
+                }}
+              >
+                <AlertTitle>Error</AlertTitle>
+                {loginError}
+              </Alert>
+            </Slide>
+          )}
+        </Box>
       </Container>
     </div>
   );
