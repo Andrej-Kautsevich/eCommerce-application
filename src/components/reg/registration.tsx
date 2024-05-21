@@ -61,11 +61,10 @@ export default function Registration() {
       defaultBillingAddress: yup.boolean().default(false),
     });
   }
-  const [showAlert, setShowAlert] = useState(true); // Close error alert
+  const [showAlert, setShowAlert] = useState(false); // Close error alert
   const navigate = useNavigate();
   const { customerSignUp } = useCustomerAuth();
   const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
-    setShowAlert(true); // reset alert
     const addresses: BaseAddress[] = [data.shippingAddress];
     let defaultBillingAddress;
     let defaultShippingAddress;
@@ -91,6 +90,8 @@ export default function Registration() {
     const signUpResult = await customerSignUp(customer);
     if (signUpResult) {
       navigate(RoutePaths.MAIN);
+    } else {
+      setShowAlert(true);
     }
   };
 
@@ -312,7 +313,7 @@ export default function Registration() {
           </Box>
         </Box>
         <Box height="116px">
-          {loginError && (
+          {showAlert && (
             <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
               <Alert
                 severity="error"
