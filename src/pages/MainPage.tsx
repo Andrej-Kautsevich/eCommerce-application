@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, AlertTitle, Box, Slide, Typography } from '@mui/material';
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
@@ -8,6 +8,16 @@ const MainPage = () => {
   const { submitSuccess } = useAppSelector((state) => state.auth);
   const [showAlert, setShowAlert] = useState(true); // Close error alert
   const dispatch = useAppDispatch();
+
+  // Automatically close the alert after 2 seconds
+  // TODO add animation on close icon
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div>
