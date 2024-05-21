@@ -31,13 +31,15 @@ import { RoutePaths, StoreCountries } from '../../shared/types/enum';
 import schemaPostalCodeBelarus from '../validation/postalCodeOfCountriesVal/belarusPostalShema';
 import schemaPostalCodeKazakhstan from '../validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
 import schemaPostalCodeUkraine from '../validation/postalCodeOfCountriesVal/ukrainePostalShema';
-import { useAppSelector } from '../../shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
 
 export default function Registration() {
   const [showBilling, setBilling] = useState(false);
   // state for getting value from country and set logit validation
   const [countryFieldValue, setCountryFieldValue] = useState('');
   const [countryFieldValueBilling, setCountryFieldValueBilling] = useState('');
+  const dispatch = useAppDispatch();
 
   const checkValueForCountry = (nameOfState: string) => {
     if (nameOfState === 'KZ') return schemaPostalCodeKazakhstan;
@@ -104,6 +106,7 @@ export default function Registration() {
     const signUpResult = await customerSignUp(customer);
     if (signUpResult) {
       navigate(RoutePaths.MAIN);
+      dispatch(setSubmitSuccess({ status: true, message: `Welcome, ${customer.firstName}!` }));
     } else {
       setShowAlert(true);
     }
