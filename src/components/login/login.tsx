@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Alert, AlertTitle, Slide } from '@mui/material';
+import { Alert, AlertTitle, Slide, Grid } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
@@ -18,7 +18,8 @@ import schemaPass from '../validation/passValidation';
 import Header from '../Header';
 import { useCustomerAuth } from '../../api/hooks';
 import { RoutePaths } from '../../shared/types/enum';
-import { useAppSelector } from '../../shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
 
 type LoginForm = {
   email: string;
@@ -33,15 +34,17 @@ export default function LoginTab() {
 
   const [showAlert, setShowAlert] = useState(false); // Close error alert
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { customerLogin } = useCustomerAuth();
   const { loginError } = useAppSelector((state) => state.auth);
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     const customer: MyCustomerSignin = data;
-    const loginSuccessful = await customerLogin(customer);
-    if (loginSuccessful) {
+    const response = await customerLogin(customer);
+    if (response) {
       navigate(RoutePaths.MAIN);
+      dispatch(setSubmitSuccess({ status: true, message: `Welcome back, ${response.body.customer.firstName}` }));
     } else {
       setShowAlert(true);
     }
@@ -95,17 +98,19 @@ export default function LoginTab() {
         </Box>
         <Box height="116px">
           {showAlert && (
-            <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
-              <Alert
-                severity="error"
-                onClose={() => {
-                  setShowAlert(false);
-                }}
-              >
-                <AlertTitle>Error</AlertTitle>
-                {loginError}
-              </Alert>
-            </Slide>
+            <Grid item xs={12}>
+              <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
+                <Alert
+                  severity="error"
+                  onClose={() => {
+                    setShowAlert(false);
+                  }}
+                >
+                  <AlertTitle>Error</AlertTitle>
+                  {loginError}
+                </Alert>
+              </Slide>
+            </Grid>
           )}
         </Box>
       </Container>
