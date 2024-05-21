@@ -28,9 +28,23 @@ import Header from '../Header';
 import { RegistrationForm } from './types';
 import { useCustomerAuth } from '../../api/hooks';
 import { RoutePaths, StoreCountries } from '../../shared/types/enum';
+import schemaPostalCodeBelarus from '../validation/postalCodeOfCountriesVal/belarusPostalShema';
+import schemaPostalCodeKazakhstan from '../validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
+import schemaPostalCodeUkraine from '../validation/postalCodeOfCountriesVal/ukrainePostalShema';
 
 export default function Registration() {
   const [showBilling, setBilling] = useState(false);
+  // state for getting value from country and set logit validation
+  const [countryFieldValue, setCountryFieldValue] = useState('');
+  const [countryFieldValueBilling, setCountryFieldValueBilling] = useState('');
+
+  const checkValueForCountry = (nameOfState: string) => {
+    if (nameOfState === 'KZ') return schemaPostalCodeKazakhstan;
+    if (nameOfState === 'UA') return schemaPostalCodeUkraine;
+    if (nameOfState === 'BY') return schemaPostalCodeBelarus;
+    return schemaPostalCode;
+  };
+
   let schema = yup.object().shape({
     firstName: schemaName,
     lastName: schemaName,
@@ -39,7 +53,7 @@ export default function Registration() {
       country: yup.string().oneOf(Object.values(StoreCountries)).required(),
       city: schemaCity,
       street: schemaStreet,
-      postalCode: schemaPostalCode,
+      postalCode: checkValueForCountry(countryFieldValue),
     }),
     defaultShippingAddress: yup.boolean().default(false),
     email: schemaEmail,
@@ -54,13 +68,12 @@ export default function Registration() {
           country: yup.string().oneOf(Object.values(StoreCountries)).required(),
           city: schemaCity,
           street: schemaStreet,
-          postalCode: schemaPostalCode,
+          postalCode: checkValueForCountry(countryFieldValueBilling),
         })
         .notRequired(),
       defaultBillingAddress: yup.boolean().default(false),
     });
   }
-
   const navigate = useNavigate();
   const { customerSignUp } = useCustomerAuth();
   const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
@@ -161,6 +174,9 @@ export default function Registration() {
                     required
                     options={countryOptions}
                     control={control}
+                    onChange={(e: string) => {
+                      setCountryFieldValue(e);
+                    }}
                   />
                 </Box>
               </Grid>
@@ -228,6 +244,9 @@ export default function Registration() {
                         required
                         options={countryOptions}
                         control={control}
+                        onChange={(e: string) => {
+                          setCountryFieldValueBilling(e);
+                        }}
                       />
                     </Box>
                   </Grid>
