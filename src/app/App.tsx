@@ -1,3 +1,4 @@
+import '../shared/ui/reset.css';
 import './App.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -30,8 +31,8 @@ const App = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+      <CssBaseline />
       <ThemeProvider theme={theme}>
-        <CssBaseline />
         <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>
