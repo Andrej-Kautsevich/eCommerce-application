@@ -1,10 +1,10 @@
 import { RouteProps } from 'react-router-dom';
-import MainPage from '../pages/MainPage';
-import LoginPage from '../pages/LoginPage';
-import RegistrationPage from '../pages/RegistrationPage';
-import Error404Page from '../pages/Error404Page';
-import BasketPage from '../pages/BasketPage';
-import { RoutePaths } from '../shared/types/enum';
+import MainPage from '../../pages/MainPage';
+import LoginPage from '../../pages/LoginPage';
+import RegistrationPage from '../../pages/RegistrationPage';
+import Error404Page from '../../pages/Error404Page';
+import BasketPage from '../../pages/BasketPage';
+import { RoutePaths } from '../types/enum';
 
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },

@@ -31,3 +31,6 @@ dist
 
 # Vitest coverage folder
 coverage
+
+# Ignore vscode settings
+.vscode

@@ -1,4 +1,4 @@
-import LoginTab from '../components/login/login';
+import LoginTab from '../components/login';
 
 const LoginPage = () => {
   return <LoginTab />;

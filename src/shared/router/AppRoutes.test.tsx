@@ -2,8 +2,8 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { expect, it } from 'vitest';
 import AppRoutes from './AppRoutes';
-import { RoutePaths } from '../shared/types/enum';
-import customRender from '../test/test-render';
+import { RoutePaths } from '../types/enum';
+import customRender from '../../test/test-render';
 
 it('handle routing between pages', async () => {
   customRender(

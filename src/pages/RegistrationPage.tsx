@@ -1,4 +1,4 @@
-import Registration from '../components/reg/registration';
+import Registration from '../components/Registration';
 
 const RegistrationPage = () => {
   return <Registration />;

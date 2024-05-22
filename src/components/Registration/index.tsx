@@ -1,6 +1,5 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import { Box, Alert, AlertTitle, Slide } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -17,20 +16,20 @@ import * as yup from 'yup';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { CheckboxElement, PasswordElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
 import { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk';
-import schemaPass from '../validation/passValidation';
-import schemaEmail from '../validation/emailValidation';
-import schemaName from '../validation/nameValidation';
-import schemaBirthDate from '../validation/validationBirthDate';
-import schemaCity from '../validation/cityValidation';
-import schemaStreet from '../validation/streetValidation';
-import schemaPostalCode from '../validation/postalCodeValidation';
+import schemaPass from '../../shared/validation/passValidation';
+import schemaEmail from '../../shared/validation/emailValidation';
+import schemaName from '../../shared/validation/nameValidation';
+import schemaBirthDate from '../../shared/validation/validationBirthDate';
+import schemaCity from '../../shared/validation/cityValidation';
+import schemaStreet from '../../shared/validation/streetValidation';
+import schemaPostalCode from '../../shared/validation/postalCodeValidation';
 import Header from '../Header';
 import { RegistrationForm } from './types';
 import { useCustomerAuth } from '../../api/hooks';
 import { RoutePaths, StoreCountries } from '../../shared/types/enum';
-import schemaPostalCodeBelarus from '../validation/postalCodeOfCountriesVal/belarusPostalShema';
-import schemaPostalCodeKazakhstan from '../validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
-import schemaPostalCodeUkraine from '../validation/postalCodeOfCountriesVal/ukrainePostalShema';
+import schemaPostalCodeBelarus from '../../shared/validation/postalCodeOfCountriesVal/belarusPostalShema';
+import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
+import schemaPostalCodeUkraine from '../../shared/validation/postalCodeOfCountriesVal/ukrainePostalShema';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
 
@@ -123,7 +122,6 @@ export default function Registration() {
     <div className="top-panel">
       <Header />
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
