@@ -1,16 +1,15 @@
-import './reset.css';
 import './App.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AppRoutes from '../components/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { RootState } from '../shared/store';
 import { useApiClient } from '../api/hooks';
-import theme from '../components/theme';
+import theme from '../shared/ui/theme';
 
 const App = () => {
   const isAuthCustomer = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -32,6 +31,7 @@ const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <BrowserRouter>
           <AppRoutes />
         </BrowserRouter>
