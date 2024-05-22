@@ -93,7 +93,7 @@ export default function LoginTab() {
               Sign In
             </Button>
             <Typography>
-              Don’t have an,
+              Don’t have an account,
               <Box
                 component={Link}
                 to={RoutePaths.REGISTRATION}
