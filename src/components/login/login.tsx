@@ -93,6 +93,9 @@ export default function LoginTab() {
             <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
+            <Button variant="contained" fullWidth sx={{ mb: 2 }} onClick={() => navigate(RoutePaths.REGISTRATION)}>
+              register
+            </Button>
             {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>

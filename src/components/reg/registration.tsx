@@ -335,6 +335,9 @@ export default function Registration() {
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
+            <Button variant="contained" fullWidth sx={{ mb: 2 }} onClick={() => navigate(RoutePaths.LOGIN)}>
+              Login
+            </Button>
             {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>
