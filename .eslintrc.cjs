@@ -12,7 +12,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'commitlint.config.js'],
+  ignorePatterns: ['dist', 'coverage', '.eslintrc.cjs', 'vite.config.ts', 'commitlint.config.js'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,

@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authSlice),
 });
 
-const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+export const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
 let middlewares: Middleware[] = [];
 
