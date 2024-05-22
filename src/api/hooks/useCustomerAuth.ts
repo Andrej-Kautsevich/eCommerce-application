@@ -24,11 +24,11 @@ const useCustomerAuth = () => {
           tokenCache.remove();
           setPasswordFlow(user);
         }
-        return true;
+        return response;
       })
       .catch((error: ClientResponse<AuthErrorResponse>) => {
         dispatch(loginError(error.body));
-        return false;
+        return undefined;
       });
   };
 
