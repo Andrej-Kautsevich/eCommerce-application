@@ -1,24 +1,22 @@
-import { useEffect, useState } from 'react';
-import { Alert, AlertTitle, Box, Slide, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Alert, AlertTitle, Box, Slide, Snackbar, Typography } from '@mui/material';
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
 import { setSubmitSuccess } from '../shared/store/auth/authSlice';
 
 const MainPage = () => {
   const { submitSuccess } = useAppSelector((state) => state.auth);
-  const [showAlert, setShowAlert] = useState(true); // Close error alert
+  const [openSnackBar, setOpenSnackBar] = useState(true); // Close error alert
   const dispatch = useAppDispatch();
 
-  // Automatically close the alert after 2 seconds
-  // TODO add animation on close icon
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowAlert(false);
-      dispatch(setSubmitSuccess({ status: false }));
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [dispatch]);
+  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    event?.preventDefault();
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackBar(false);
+    dispatch(setSubmitSuccess({ status: false }));
+  };
 
   return (
     <div>
@@ -29,18 +27,13 @@ const MainPage = () => {
         </Typography>
 
         {submitSuccess.status && (
-          <Slide in={showAlert} mountOnEnter unmountOnExit direction="right">
-            <Alert
-              sx={{ position: 'absolute', zIndex: 'tooltip', left: '10%', bottom: '10%' }}
-              severity="success"
-              onClose={() => {
-                setShowAlert(false);
-                dispatch(setSubmitSuccess({ status: false }));
-              }}
-            >
-              <AlertTitle>Success!</AlertTitle>
-              {submitSuccess.message}
-            </Alert>
+          <Slide in={openSnackBar} direction="right">
+            <Snackbar open={openSnackBar} autoHideDuration={2000} onClose={handleSnackBarClose}>
+              <Alert sx={{ width: '100%' }} severity="success" onClose={handleSnackBarClose}>
+                <AlertTitle>Success!</AlertTitle>
+                {submitSuccess.message}
+              </Alert>
+            </Snackbar>
           </Slide>
         )}
       </Box>
