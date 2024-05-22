@@ -2,7 +2,8 @@ import * as yup from 'yup';
 
 const schemaPostalCode = yup
   .string()
-  .required()
-  .matches(/^(?:[A-Z0-9]+([- ]?[A-Z0-9]+)*)?$/, 'invalid postal code');
+  .trim()
+  .required('Postal code is required')
+  .matches(/^(?:[A-Z0-9]+([- ]?[A-Z0-9]+)*)?$/, 'please select your country');
 
 export default schemaPostalCode;

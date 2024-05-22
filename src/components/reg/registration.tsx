@@ -1,65 +1,123 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+import { Box, Alert, AlertTitle, Slide } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { DevTool } from '@hookform/devtools';
 import { useState } from 'react';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
+import { CheckboxElement, PasswordElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
+import { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk';
 import schemaPass from '../validation/passValidation';
 import schemaEmail from '../validation/emailValidation';
 import schemaName from '../validation/nameValidation';
-// import handleSubmit from './SubmitFunction';
 import schemaBirthDate from '../validation/validationBirthDate';
 import schemaCity from '../validation/cityValidation';
 import schemaStreet from '../validation/streetValidation';
 import schemaPostalCode from '../validation/postalCodeValidation';
 import Header from '../Header';
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import { RegistrationForm } from './types';
+import { useCustomerAuth } from '../../api/hooks';
+import { RoutePaths, StoreCountries } from '../../shared/types/enum';
+import schemaPostalCodeBelarus from '../validation/postalCodeOfCountriesVal/belarusPostalShema';
+import schemaPostalCodeKazakhstan from '../validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
+import schemaPostalCodeUkraine from '../validation/postalCodeOfCountriesVal/ukrainePostalShema';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
 
 export default function Registration() {
-  const [errors, setErrors] = useState({
-    firstName: '',
-    lastName: '',
-    birthDate: '',
-    city: '',
-    street: '',
-    postalCode: '',
-    email: '',
-    password: '',
-  });
-  // state for error messages
-  const [age, setAge] = useState('');
+  const [showBilling, setBilling] = useState(false);
+  // state for getting value from country and set logit validation
+  const [countryFieldValue, setCountryFieldValue] = useState('');
+  const [countryFieldValueBilling, setCountryFieldValueBilling] = useState('');
+  const dispatch = useAppDispatch();
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
+  const checkValueForCountry = (nameOfState: string) => {
+    if (nameOfState === 'KZ') return schemaPostalCodeKazakhstan;
+    if (nameOfState === 'UA') return schemaPostalCodeUkraine;
+    if (nameOfState === 'BY') return schemaPostalCodeBelarus;
+    return schemaPostalCode;
   };
 
-  const schemas = {
+  let schema = yup.object().shape({
     firstName: schemaName,
-    lastName: schemaName,
-    birthDate: schemaBirthDate,
-    city: schemaCity,
-    street: schemaStreet,
-    postalCode: schemaPostalCode,
+    lastName: schemaName.required('Last name is required'),
+    dateOfBirth: schemaBirthDate,
+    shippingAddress: yup.object().shape({
+      country: yup.string().oneOf(Object.values(StoreCountries)).required('Country is required'),
+      city: schemaCity,
+      streetName: schemaStreet,
+      postalCode: checkValueForCountry(countryFieldValue),
+    }),
+    defaultShippingAddress: yup.boolean().default(false),
     email: schemaEmail,
     password: schemaPass,
-  };
-  type SchemaKeys = 'firstName' | 'lastName' | 'birthDate' | 'city' | 'street' | 'postalCode' | 'email' | 'password';
-  function validateField(name: SchemaKeys, value: string) {
-    schemas[name]
-      .validate(value)
-      .then(() => setErrors((prev) => ({ ...prev, [name]: '' })))
-      .catch((error: Error) => setErrors((prev) => ({ ...prev, [name]: error.message })));
+  });
+
+  if (showBilling) {
+    schema = schema.shape({
+      billingAddress: yup
+        .object()
+        .shape({
+          country: yup.string().oneOf(Object.values(StoreCountries)).required(),
+          city: schemaCity,
+          streetName: schemaStreet,
+          postalCode: checkValueForCountry(countryFieldValueBilling),
+        })
+        .notRequired(),
+      defaultBillingAddress: yup.boolean().default(false),
+    });
   }
+  const [showAlert, setShowAlert] = useState(false); // Close error alert
+  const navigate = useNavigate();
+  const { customerSignUp } = useCustomerAuth();
+  const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
+    const addresses: BaseAddress[] = [data.shippingAddress];
+    let defaultBillingAddress;
+    let defaultShippingAddress;
+    if (data.defaultShippingAddress) {
+      defaultShippingAddress = 0;
+      if (!showBilling) defaultBillingAddress = 0; // If the billing address is not specified, set the default billing address as the shipping address.
+    }
+    if (showBilling && data.billingAddress) {
+      addresses.push(data.billingAddress);
+      if (data.defaultBillingAddress) {
+        defaultBillingAddress = 1;
+      }
+    }
+
+    const customer: MyCustomerDraft = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      dateOfBirth: data.dateOfBirth.toISOString().slice(0, 10),
+      email: data.email,
+      password: data.password,
+      addresses,
+      defaultBillingAddress,
+      defaultShippingAddress,
+    };
+
+    const signUpResult = await customerSignUp(customer);
+    if (signUpResult) {
+      navigate(RoutePaths.MAIN);
+      dispatch(setSubmitSuccess({ status: true, message: `Welcome, ${customer.firstName}!` }));
+    } else {
+      setShowAlert(true);
+    }
+  };
+
+  const countryOptions = Object.entries(StoreCountries).map(([label, id]) => ({ id, label }));
+  const { control, handleSubmit } = useForm<RegistrationForm>({ mode: 'onChange', resolver: yupResolver(schema) });
+  const { loginError } = useAppSelector((state) => state.auth);
 
   return (
     <div className="top-panel">
@@ -80,133 +138,189 @@ export default function Registration() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
+                <TextFieldElement
                   name="firstName"
                   required
                   fullWidth
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange={(e) => {
-                    validateField('firstName', e.target.value);
-                  }}
+                  autoComplete="given-name"
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.firstName}
-                </p>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                <TextFieldElement
                   required
                   fullWidth
                   id="lastName"
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  onChange={(e) => validateField('lastName', e.target.value)}
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.lastName}
-                </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  type="date"
+                <DatePickerElement
+                  inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
                   required
-                  fullWidth
-                  id="date"
-                  helperText="Please type your birthday"
-                  name="Birthday"
-                  autoComplete="email"
-                  onChange={(e) => validateField('birthDate', e.target.value)}
+                  helperText="You must be at least 18 years old to visit site"
+                  name="dateOfBirth"
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.birthDate}
-                </p>
               </Grid>
               <Grid item xs={12}>
+                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                  Shipping address
+                </Typography>
                 <Box sx={{ minWidth: 120 }}>
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Country</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={age}
-                      label="Country"
-                      onChange={handleChange}
-                    >
-                      <MenuItem value={1}>Belarus</MenuItem>
-                      <MenuItem value={2}>Latvia</MenuItem>
-                      <MenuItem value={3}>Poland</MenuItem>
-                      <MenuItem value={4}>Germany</MenuItem>
-                      <MenuItem value={5}>Belgium</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <SelectElement
+                    fullWidth
+                    name="shippingAddress.country"
+                    label="Country"
+                    required
+                    options={countryOptions}
+                    control={control}
+                    onChange={(e: string) => {
+                      setCountryFieldValue(e);
+                    }}
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextFieldElement
                   type="text"
                   required
                   fullWidth
                   id="city"
                   label="City"
-                  name="City"
-                  onChange={(e) => validateField('city', e.target.value)}
+                  name="shippingAddress.city"
+                  autoComplete="shipping address-level1"
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.city}
-                </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextFieldElement
                   type="text"
                   required
                   fullWidth
                   id="street"
-                  name="Street"
+                  name="shippingAddress.streetName"
                   label="Street"
-                  onChange={(e) => validateField('street', e.target.value)}
+                  autoComplete="shipping address-line1"
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.street}
-                </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextFieldElement
                   type="text"
                   required
                   fullWidth
                   id="postal"
-                  name="PostalCode"
+                  name="shippingAddress.postalCode"
                   label="Postal code"
-                  autoComplete="email"
-                  onChange={(e) => validateField('postalCode', e.target.value)}
+                  autoComplete="shipping postal-code"
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.postalCode}
-                </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <CheckboxElement
+                  label="Set as default shipping address"
+                  name="defaultShippingAddress"
+                  control={control}
+                />
+                <FormControlLabel
+                  control={<Checkbox />}
+                  onChange={() => {
+                    setBilling(!showBilling);
+                  }}
+                  label="My billing address is not the same as my shipping address."
+                />
+              </Grid>
+              {showBilling && (
+                <>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                      Billing address
+                    </Typography>
+                    <Box sx={{ minWidth: 120 }}>
+                      <SelectElement
+                        fullWidth
+                        name="billingAddress.country"
+                        label="Country"
+                        required
+                        options={countryOptions}
+                        control={control}
+                        onChange={(e: string) => {
+                          setCountryFieldValueBilling(e);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextFieldElement
+                      type="text"
+                      required
+                      fullWidth
+                      id="cityBilling"
+                      label="City"
+                      name="billingAddress.city"
+                      autoComplete="billing address-level1"
+                      control={control}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextFieldElement
+                      type="text"
+                      required
+                      fullWidth
+                      id="streetBilling"
+                      name="billingAddress.streetName"
+                      label="Street"
+                      autoComplete="billing address-line1"
+                      control={control}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextFieldElement
+                      type="text"
+                      required
+                      fullWidth
+                      id="postal"
+                      name="billingAddress.postalCode"
+                      label="Postal code"
+                      autoComplete="billing postal-code"
+                      control={control}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CheckboxElement
+                      label="Set as default billing address"
+                      name="defaultBillingAddress"
+                      control={control}
+                    />
+                  </Grid>
+                </>
+              )}
+              <Grid item xs={12}>
+                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                  Email & Password
+                </Typography>
+                <TextFieldElement
                   required
                   fullWidth
                   id="email"
-                  onChange={(e) => validateField('email', e.target.value)}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.email}
-                </p>
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <PasswordElement
                   required
                   fullWidth
                   name="password"
@@ -214,17 +328,40 @@ export default function Registration() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  onChange={(e) => validateField('password', e.target.value)}
+                  control={control}
                 />
-                <p style={{ fontSize: '11px', color: 'red' }} className="error-message">
-                  {errors.password}
-                </p>
               </Grid>
             </Grid>
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
+            <Typography>
+              If you have an account,
+              <Box
+                component={Link}
+                to={RoutePaths.LOGIN}
+                sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
+              >
+                Login
+              </Box>
+            </Typography>
+            {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
+        </Box>
+        <Box height="116px">
+          {showAlert && (
+            <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
+              <Alert
+                severity="error"
+                onClose={() => {
+                  setShowAlert(false);
+                }}
+              >
+                <AlertTitle>Error</AlertTitle>
+                {loginError}
+              </Alert>
+            </Slide>
+          )}
         </Box>
       </Container>
     </div>

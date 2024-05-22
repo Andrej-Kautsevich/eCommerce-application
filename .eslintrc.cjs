@@ -21,7 +21,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react-refresh', '@typescript-eslint', 'prettier'],
+  plugins: ['react-refresh', '@typescript-eslint', 'prettier', 'import'],
   rules: {
     'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
@@ -44,5 +44,10 @@ module.exports = {
       },
     ],
     'prettier/prettier': 'error',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };

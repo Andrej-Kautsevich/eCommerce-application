@@ -6,12 +6,19 @@ interface CustomerAuthState {
   loading: boolean;
   isLoggedIn: boolean;
   loginError: string | undefined;
+  submitSuccess: SubmitSuccess;
 }
+
+type SubmitSuccess = {
+  status: boolean;
+  message?: string;
+};
 
 const initialState: CustomerAuthState = {
   loading: false,
   isLoggedIn: false,
   loginError: undefined,
+  submitSuccess: { status: false },
 };
 
 const authSlice = createSlice({
@@ -34,9 +41,13 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
     },
+    setSubmitSuccess: (state, action: PayloadAction<SubmitSuccess>) => {
+      state.submitSuccess.status = action.payload.status;
+      state.submitSuccess.message = action.payload.message;
+    },
   },
 });
 
-export const { loginFetch, loginSuccess, loginError, logout } = authSlice.actions;
+export const { loginFetch, loginSuccess, loginError, logout, setSubmitSuccess } = authSlice.actions;
 
 export default authSlice.reducer;

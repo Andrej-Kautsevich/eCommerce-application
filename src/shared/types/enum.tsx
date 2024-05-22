@@ -1,4 +1,4 @@
-enum Routes {
+export enum RoutePaths {
   MAIN = '/',
   LOGIN = '/login',
   REGISTRATION = '/registration',
@@ -6,4 +6,8 @@ enum Routes {
   BASKET = '/basket',
 }
 
-export default Routes;
+export enum StoreCountries {
+  BELARUS = 'BY',
+  KAZAKHSTAN = 'KZ',
+  UKRAINE = 'UA',
+}

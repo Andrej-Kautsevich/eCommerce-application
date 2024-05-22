@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 const schemaPass = yup
   .string()
-  .required()
+  .required('Password is required')
   .min(8, 'password must be 8 characters long')
   .matches(/[0-9]/, 'password requires a number')
   .matches(/[a-z]/, 'password requires a lowercase letter')

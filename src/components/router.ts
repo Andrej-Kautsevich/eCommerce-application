@@ -4,15 +4,24 @@ import LoginPage from '../pages/LoginPage';
 import RegistrationPage from '../pages/RegistrationPage';
 import Error404Page from '../pages/Error404Page';
 import BasketPage from '../pages/BasketPage';
-import Routes from '../shared/types/enum';
+import { RoutePaths } from '../shared/types/enum';
 
 const commonRoutes: RouteProps[] = [
-  { path: Routes.MAIN, Component: MainPage },
-  { path: Routes.LOGIN, Component: LoginPage },
-  { path: Routes.REGISTRATION, Component: RegistrationPage },
-  { path: Routes.ERROR404, Component: Error404Page },
+  { path: RoutePaths.MAIN, Component: MainPage },
+  { path: RoutePaths.ERROR404, Component: Error404Page },
 ];
 
-export const privateRoutes: RouteProps[] = [...commonRoutes, { path: Routes.BASKET, Component: BasketPage }];
+// Routes available to AUTHORIZED users add here
+const onlyPrivateRoutes: RouteProps[] = [{ path: RoutePaths.BASKET, Component: BasketPage }];
 
-export const publicRoutes: RouteProps[] = [...commonRoutes, { path: Routes.BASKET, Component: LoginPage }];
+// Routes available to UNAUTHORIZED users add here
+const onlyPublicRoutes: RouteProps[] = [
+  { path: RoutePaths.LOGIN, Component: LoginPage },
+  { path: RoutePaths.REGISTRATION, Component: RegistrationPage },
+];
+
+const extractPaths = (routes: RouteProps[]): string[] => routes.map((route) => route.path as string);
+export const onlyPrivatePaths = extractPaths(onlyPrivateRoutes);
+export const onlyPublicPaths = extractPaths(onlyPublicRoutes);
+export const privateRoutes: RouteProps[] = [...commonRoutes, ...onlyPrivateRoutes];
+export const publicRoutes: RouteProps[] = [...commonRoutes, ...onlyPublicRoutes];
