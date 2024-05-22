@@ -1,8 +1,8 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { privateRoutes, publicRoutes, onlyPrivatePaths, onlyPublicPaths } from './router';
-import { RoutePaths } from '../shared/types/enum';
-import { RootState } from '../shared/store';
+import { RoutePaths } from '../types/enum';
+import { RootState } from '../store';
 
 const AppRoutes = () => {
   const isAuthCustomer: boolean = useSelector((state: RootState) => state.auth.isLoggedIn);
