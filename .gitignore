@@ -25,3 +25,12 @@ jspm_packages/
 
 # build / generate output
 dist
+
+# Local Netlify folder
+.netlify
+
+# Vitest coverage folder
+coverage
+
+# Ignore vscode settings
+.vscode

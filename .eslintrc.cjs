@@ -12,7 +12,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'commitlint.config.js'],
+  ignorePatterns: ['dist', 'coverage', '.eslintrc.cjs', 'vite.config.ts', 'commitlint.config.js'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
@@ -21,7 +21,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react-refresh', '@typescript-eslint', 'prettier'],
+  plugins: ['react-refresh', '@typescript-eslint', 'prettier', 'import'],
   rules: {
     'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
@@ -35,6 +35,19 @@ module.exports = {
         html: true,
       },
     ],
+    '@typescript-eslint/no-misused-promises': [
+      2,
+      {
+        checksVoidReturn: {
+          attributes: false,
+        },
+      },
+    ],
     'prettier/prettier': 'error',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };
