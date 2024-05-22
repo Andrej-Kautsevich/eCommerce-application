@@ -1,6 +1,8 @@
 import { RenderOptions, RenderResult, render } from '@testing-library/react';
 import { FC, ReactNode } from 'react';
 import { Provider } from 'react-redux';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import store from '../shared/store';
 import ApiClientProvider from '../api/ApiClientProvider';
 
@@ -11,9 +13,11 @@ interface WrapperProps {
 const customRender = (ui: React.ReactElement, { ...renderOptions }: RenderOptions = {}): RenderResult => {
   const Wrapper: FC<WrapperProps> = ({ children }) => {
     return (
-      <Provider store={store}>
-        <ApiClientProvider>{children}</ApiClientProvider>
-      </Provider>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
+        <Provider store={store}>
+          <ApiClientProvider>{children}</ApiClientProvider>
+        </Provider>
+      </LocalizationProvider>
     );
   };
 
