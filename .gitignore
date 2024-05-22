@@ -28,3 +28,7 @@ dist
 
 # Local Netlify folder
 .netlify
+
+# Ignore vscode settings
+
+.vscode
