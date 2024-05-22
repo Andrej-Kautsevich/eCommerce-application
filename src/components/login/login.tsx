@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Alert, AlertTitle, Slide } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -25,7 +25,6 @@ type LoginForm = {
   email: string;
   password: string;
 };
-
 export default function LoginTab() {
   const schema = yup.object().shape({
     email: schemaEmail,
@@ -93,9 +92,16 @@ export default function LoginTab() {
             <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
-            <Button variant="contained" fullWidth sx={{ mb: 2 }} onClick={() => navigate(RoutePaths.REGISTRATION)}>
-              register
-            </Button>
+            <Typography>
+              Don’t have an,
+              <Box
+                component={Link}
+                to={RoutePaths.REGISTRATION}
+                sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
+              >
+                create one
+              </Box>
+            </Typography>
             {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>

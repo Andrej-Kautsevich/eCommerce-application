@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DevTool } from '@hookform/devtools';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { CheckboxElement, PasswordElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
@@ -335,9 +335,16 @@ export default function Registration() {
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
-            <Button variant="contained" fullWidth sx={{ mb: 2 }} onClick={() => navigate(RoutePaths.LOGIN)}>
-              Login
-            </Button>
+            <Typography>
+              If you have an account,
+              <Box
+                component={Link}
+                to={RoutePaths.LOGIN}
+                sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
+              >
+                Login
+              </Box>
+            </Typography>
             {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
           </Box>
         </Box>
