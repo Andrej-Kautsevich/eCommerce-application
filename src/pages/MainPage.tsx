@@ -3,6 +3,7 @@ import { Alert, AlertTitle, Box, Slide, Snackbar, Typography } from '@mui/materi
 import Header from '../components/Header';
 import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
 import { setSubmitSuccess } from '../shared/store/auth/authSlice';
+import CatalogPage from './CatalogPage';
 
 const MainPage = () => {
   const { submitSuccess } = useAppSelector((state) => state.auth);
@@ -21,6 +22,7 @@ const MainPage = () => {
   return (
     <div>
       <Header />
+      <CatalogPage />
       <Box width="100vw" className="main-wrapper">
         <Typography gutterBottom variant="h2" component="h1" fontFamily="Orbitron" width="50vw" sx={{ pt: 15, pl: 8 }}>
           Find your dream watch
