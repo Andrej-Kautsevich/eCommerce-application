@@ -1,6 +1,9 @@
 import { Link, styled } from '@mui/material';
 
-const HeaderLink = styled(Link)(({ theme }) => ({
+const HeaderLink = styled(Link, {
+  name: 'HeaderLink',
+  slot: 'Root',
+})(({ theme }) => ({
   color: theme.palette.text.secondary,
   position: 'relative',
   cursor: 'pointer',

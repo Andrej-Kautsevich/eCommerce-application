@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import LoginLogoutButtons from './LoginLogoutButtons';
 import useBasketButton from './useBasketButton';
 import HeaderLink from '../../shared/ui/HeaderLink';
+import { RoutePaths } from '../../shared/types/enum';
 
 const Header = () => {
   const basketButton = useBasketButton();
@@ -12,12 +13,11 @@ const Header = () => {
     <AppBar position="static" sx={{ width: '100vw', pr: 8, pl: 8 }} color="secondary">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
-          <RouterLink to="/">Volcano Watch</RouterLink>
+          <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">
+            Volcano Watch
+          </Link>
         </Typography>
         <HeaderLink underline="none">Watches</HeaderLink>
-        <Link component={RouterLink} to="/">
-          Watches
-        </Link>
 
         <LoginLogoutButtons />
 
