@@ -22,7 +22,7 @@ const Header = () => {
         </Typography>
 
         {/* Mobile view */}
-        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+        <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
           <IconButton
             onClick={handleDrawerToggle}
             size="large"
@@ -43,7 +43,7 @@ const Header = () => {
         </Box>
 
         {/* Desktop view */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
           <LoginLogoutButtons />
         </Box>
 
