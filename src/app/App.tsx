@@ -1,5 +1,4 @@
-import '../shared/ui/reset.css';
-import './App.css';
+import '../shared/ui/main.scss';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
