@@ -17,11 +17,9 @@ const Header = () => {
             Volcano Watch
           </Link>
         </Typography>
-        <HeaderLink linkVariant="active" underline="none" href="/">
+        {/* TODO add link to catalog page */}
+        <HeaderLink component={RouterLink} linkVariant="active" underline="none">
           Watches
-        </HeaderLink>
-        <HeaderLink underline="none" sx={{ ml: 1 }}>
-          Accessories
         </HeaderLink>
 
         <LoginLogoutButtons />
