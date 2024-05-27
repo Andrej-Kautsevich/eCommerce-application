@@ -13,13 +13,15 @@ const commonRoutes: RouteProps[] = [
 ];
 
 // Routes available to AUTHORIZED users add here
-const onlyPrivateRoutes: RouteProps[] = [{ path: RoutePaths.BASKET, Component: BasketPage }];
+const onlyPrivateRoutes: RouteProps[] = [
+  { path: RoutePaths.BASKET, Component: BasketPage },
+  { path: RoutePaths.PROFILE, Component: UserProfilePage },
+];
 
 // Routes available to UNAUTHORIZED users add here
 const onlyPublicRoutes: RouteProps[] = [
   { path: RoutePaths.LOGIN, Component: LoginPage },
   { path: RoutePaths.REGISTRATION, Component: RegistrationPage },
-  { path: RoutePaths.PROFILE, Component: UserProfilePage },
 ];
 
 const extractPaths = (routes: RouteProps[]): string[] => routes.map((route) => route.path as string);
