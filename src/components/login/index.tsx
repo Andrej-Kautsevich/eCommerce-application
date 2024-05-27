@@ -15,7 +15,6 @@ import { MyCustomerSignin } from '@commercetools/platform-sdk';
 import * as yup from 'yup';
 import schemaEmail from '../../shared/validation/emailValidation';
 import schemaPass from '../../shared/validation/passValidation';
-import Header from '../Header';
 import { useCustomerAuth } from '../../api/hooks';
 import { RoutePaths } from '../../shared/types/enum';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
@@ -50,77 +49,73 @@ export default function LoginTab() {
   };
 
   return (
-    <div className="top-panel">
-      <Header />
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} style={{ width: '320px' }} noValidate sx={{ mt: 1 }}>
-            <TextFieldElement
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              control={control}
-            />
-            <PasswordElement
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              id="password"
-              autoComplete="new-password"
-              control={control}
-            />
-            <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-              Sign In
-            </Button>
-            <Typography>
-              Don’t have an account,
-              <Box
-                component={Link}
-                to={RoutePaths.REGISTRATION}
-                sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
-              >
-                create one
-              </Box>
-            </Typography>
-            {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
+    <Container
+      maxWidth="sm"
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign in
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+        <TextFieldElement
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          control={control}
+        />
+        <PasswordElement
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          id="password"
+          autoComplete="new-password"
+          control={control}
+        />
+        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
+          Sign In
+        </Button>
+        <Typography>
+          Don’t have an account,
+          <Box
+            component={Link}
+            to={RoutePaths.REGISTRATION}
+            sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
+          >
+            create one
           </Box>
-        </Box>
-        <Box height="116px">
-          {showAlert && (
-            <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
-              <Alert
-                severity="error"
-                onClose={() => {
-                  setShowAlert(false);
-                }}
-              >
-                <AlertTitle>Error</AlertTitle>
-                {loginError}
-              </Alert>
-            </Slide>
-          )}
-        </Box>
-      </Container>
-    </div>
+        </Typography>
+        {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
+      </Box>
+      <Box height="116px">
+        {showAlert && (
+          <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
+            <Alert
+              severity="error"
+              onClose={() => {
+                setShowAlert(false);
+              }}
+            >
+              <AlertTitle>Error</AlertTitle>
+              {loginError}
+            </Alert>
+          </Slide>
+        )}
+      </Box>
+    </Container>
   );
 }
