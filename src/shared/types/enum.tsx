@@ -4,6 +4,7 @@ export enum RoutePaths {
   REGISTRATION = '/registration',
   ERROR404 = '*',
   BASKET = '/basket',
+  PROFILE = '/profile',
 }
 
 export enum StoreCountries {
