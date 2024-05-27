@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, MenuItem, Box, Drawer } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, MenuItem, Box, Drawer, Link } from '@mui/material';
 import { ShoppingBasket } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import LoginLogoutButtons from './LoginLogoutButtons';
 import useBasketButton from './useBasketButton';
+import HeaderLink from '../../shared/ui/HeaderLink';
+import { RoutePaths } from '../../shared/types/enum';
 
 const Header = () => {
   const basketButton = useBasketButton();
@@ -18,9 +20,14 @@ const Header = () => {
     <AppBar position="static" sx={{ boxShadow: 0 }} color="secondary">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
-          <Link to="/">Volcano Watch</Link>
+          <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">
+            Volcano Watch
+          </Link>
         </Typography>
-
+        {/* TODO add link to catalog page */}
+        <HeaderLink component={RouterLink} linkVariant="active" underline="none">
+          Watches
+        </HeaderLink>
         {/* Mobile view */}
         <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
           <IconButton
