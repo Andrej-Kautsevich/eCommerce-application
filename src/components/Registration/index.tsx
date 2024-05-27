@@ -23,7 +23,6 @@ import schemaBirthDate from '../../shared/validation/validationBirthDate';
 import schemaCity from '../../shared/validation/cityValidation';
 import schemaStreet from '../../shared/validation/streetValidation';
 import schemaPostalCode from '../../shared/validation/postalCodeValidation';
-import Header from '../Header';
 import { RegistrationForm } from './types';
 import { useCustomerAuth } from '../../api/hooks';
 import { RoutePaths, StoreCountries } from '../../shared/types/enum';
@@ -119,249 +118,246 @@ export default function Registration() {
   const { loginError } = useAppSelector((state) => state.auth);
 
   return (
-    <div className="top-panel">
-      <Header />
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextFieldElement
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  autoComplete="given-name"
-                  control={control}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextFieldElement
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  control={control}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <DatePickerElement
-                  inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
-                  required
-                  helperText="You must be at least 18 years old to visit site"
-                  name="dateOfBirth"
-                  control={control}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-                  Shipping address
-                </Typography>
-                <Box sx={{ minWidth: 120 }}>
-                  <SelectElement
-                    fullWidth
-                    name="shippingAddress.country"
-                    label="Country"
-                    required
-                    options={countryOptions}
-                    control={control}
-                    onChange={(e: string) => {
-                      setCountryFieldValue(e);
-                    }}
-                  />
-                </Box>
-              </Grid>
-              <Grid item xs={12}>
-                <TextFieldElement
-                  type="text"
-                  required
-                  fullWidth
-                  id="city"
-                  label="City"
-                  name="shippingAddress.city"
-                  autoComplete="shipping address-level1"
-                  control={control}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextFieldElement
-                  type="text"
-                  required
-                  fullWidth
-                  id="street"
-                  name="shippingAddress.streetName"
-                  label="Street"
-                  autoComplete="shipping address-line1"
-                  control={control}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextFieldElement
-                  type="text"
-                  required
-                  fullWidth
-                  id="postal"
-                  name="shippingAddress.postalCode"
-                  label="Postal code"
-                  autoComplete="shipping postal-code"
-                  control={control}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <CheckboxElement
-                  label="Set as default shipping address"
-                  name="defaultShippingAddress"
-                  control={control}
-                />
-                <FormControlLabel
-                  control={<Checkbox />}
-                  onChange={() => {
-                    setBilling(!showBilling);
-                  }}
-                  label="My billing address is not the same as my shipping address."
-                />
-              </Grid>
-              {showBilling && (
-                <>
-                  <Grid item xs={12}>
-                    <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-                      Billing address
-                    </Typography>
-                    <Box sx={{ minWidth: 120 }}>
-                      <SelectElement
-                        fullWidth
-                        name="billingAddress.country"
-                        label="Country"
-                        required
-                        options={countryOptions}
-                        control={control}
-                        onChange={(e: string) => {
-                          setCountryFieldValueBilling(e);
-                        }}
-                      />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextFieldElement
-                      type="text"
-                      required
-                      fullWidth
-                      id="cityBilling"
-                      label="City"
-                      name="billingAddress.city"
-                      autoComplete="billing address-level1"
-                      control={control}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextFieldElement
-                      type="text"
-                      required
-                      fullWidth
-                      id="streetBilling"
-                      name="billingAddress.streetName"
-                      label="Street"
-                      autoComplete="billing address-line1"
-                      control={control}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextFieldElement
-                      type="text"
-                      required
-                      fullWidth
-                      id="postal"
-                      name="billingAddress.postalCode"
-                      label="Postal code"
-                      autoComplete="billing postal-code"
-                      control={control}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CheckboxElement
-                      label="Set as default billing address"
-                      name="defaultBillingAddress"
-                      control={control}
-                    />
-                  </Grid>
-                </>
-              )}
-              <Grid item xs={12}>
-                <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-                  Email & Password
-                </Typography>
-                <TextFieldElement
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  control={control}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <PasswordElement
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  control={control}
-                />
-              </Grid>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextFieldElement
+                name="firstName"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                autoFocus
+                autoComplete="given-name"
+                control={control}
+              />
             </Grid>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Sign Up
-            </Button>
-            <Typography>
-              If you have an account,
-              <Box
-                component={Link}
-                to={RoutePaths.LOGIN}
-                sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
-              >
-                Login
+            <Grid item xs={12} sm={6}>
+              <TextFieldElement
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+                control={control}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <DatePickerElement
+                inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
+                required
+                helperText="You must be at least 18 years old to visit site"
+                name="dateOfBirth"
+                control={control}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                Shipping address
+              </Typography>
+              <Box sx={{ minWidth: 120 }}>
+                <SelectElement
+                  fullWidth
+                  name="shippingAddress.country"
+                  label="Country"
+                  required
+                  options={countryOptions}
+                  control={control}
+                  onChange={(e: string) => {
+                    setCountryFieldValue(e);
+                  }}
+                />
               </Box>
-            </Typography>
-            {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
-          </Box>
-        </Box>
-        <Box height="116px">
-          {showAlert && (
-            <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
-              <Alert
-                severity="error"
-                onClose={() => {
-                  setShowAlert(false);
+            </Grid>
+            <Grid item xs={12}>
+              <TextFieldElement
+                type="text"
+                required
+                fullWidth
+                id="city"
+                label="City"
+                name="shippingAddress.city"
+                autoComplete="shipping address-level1"
+                control={control}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextFieldElement
+                type="text"
+                required
+                fullWidth
+                id="street"
+                name="shippingAddress.streetName"
+                label="Street"
+                autoComplete="shipping address-line1"
+                control={control}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextFieldElement
+                type="text"
+                required
+                fullWidth
+                id="postal"
+                name="shippingAddress.postalCode"
+                label="Postal code"
+                autoComplete="shipping postal-code"
+                control={control}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CheckboxElement
+                label="Set as default shipping address"
+                name="defaultShippingAddress"
+                control={control}
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                onChange={() => {
+                  setBilling(!showBilling);
                 }}
-              >
-                <AlertTitle>Error</AlertTitle>
-                {loginError}
-              </Alert>
-            </Slide>
-          )}
+                label="My billing address is not the same as my shipping address."
+              />
+            </Grid>
+            {showBilling && (
+              <>
+                <Grid item xs={12}>
+                  <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                    Billing address
+                  </Typography>
+                  <Box sx={{ minWidth: 120 }}>
+                    <SelectElement
+                      fullWidth
+                      name="billingAddress.country"
+                      label="Country"
+                      required
+                      options={countryOptions}
+                      control={control}
+                      onChange={(e: string) => {
+                        setCountryFieldValueBilling(e);
+                      }}
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextFieldElement
+                    type="text"
+                    required
+                    fullWidth
+                    id="cityBilling"
+                    label="City"
+                    name="billingAddress.city"
+                    autoComplete="billing address-level1"
+                    control={control}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextFieldElement
+                    type="text"
+                    required
+                    fullWidth
+                    id="streetBilling"
+                    name="billingAddress.streetName"
+                    label="Street"
+                    autoComplete="billing address-line1"
+                    control={control}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextFieldElement
+                    type="text"
+                    required
+                    fullWidth
+                    id="postal"
+                    name="billingAddress.postalCode"
+                    label="Postal code"
+                    autoComplete="billing postal-code"
+                    control={control}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <CheckboxElement
+                    label="Set as default billing address"
+                    name="defaultBillingAddress"
+                    control={control}
+                  />
+                </Grid>
+              </>
+            )}
+            <Grid item xs={12}>
+              <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                Email & Password
+              </Typography>
+              <TextFieldElement
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                control={control}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <PasswordElement
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                control={control}
+              />
+            </Grid>
+          </Grid>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Sign Up
+          </Button>
+          <Typography>
+            If you have an account,
+            <Box
+              component={Link}
+              to={RoutePaths.LOGIN}
+              sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
+            >
+              Login
+            </Box>
+          </Typography>
+          {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
         </Box>
-      </Container>
-    </div>
+      </Box>
+      <Box height="116px">
+        {showAlert && (
+          <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
+            <Alert
+              severity="error"
+              onClose={() => {
+                setShowAlert(false);
+              }}
+            >
+              <AlertTitle>Error</AlertTitle>
+              {loginError}
+            </Alert>
+          </Slide>
+        )}
+      </Box>
+    </Container>
   );
 }
