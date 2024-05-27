@@ -14,7 +14,7 @@ it('renders without crashing ', () => {
 it('applies correct styles when linkVariant is active', () => {
   customRender(
     <ThemeProvider theme={theme}>
-      <HeaderLink linkVariant="active">Active link</HeaderLink>
+      <HeaderLink state="active">Active link</HeaderLink>
     </ThemeProvider>,
   );
 

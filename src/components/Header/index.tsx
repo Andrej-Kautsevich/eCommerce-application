@@ -24,10 +24,6 @@ const Header = () => {
             Volcano Watch
           </Link>
         </Typography>
-        {/* TODO add link to catalog page */}
-        <HeaderLink component={RouterLink} linkVariant="active" underline="none">
-          Watches
-        </HeaderLink>
         {/* Mobile view */}
         <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
           <IconButton
@@ -41,7 +37,13 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
           <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }}>
-            <Box sx={{ minWidth: '60dvw', p: 2, flexDirection: 'column' }}>
+            <Box sx={{ minWidth: '60dvw', p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <MenuItem>
+                {/* TODO add link to catalog page */}
+                <HeaderLink component={RouterLink} state="active" underline="none">
+                  Watches
+                </HeaderLink>
+              </MenuItem>
               <MenuItem>
                 <LoginLogoutButtons />
               </MenuItem>
@@ -50,7 +52,11 @@ const Header = () => {
         </Box>
 
         {/* Desktop view */}
-        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
+          {/* TODO add link to catalog page */}
+          <HeaderLink component={RouterLink} state="active" underline="none">
+            Watches
+          </HeaderLink>
           <LoginLogoutButtons />
         </Box>
 

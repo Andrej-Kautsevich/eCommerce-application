@@ -1,13 +1,13 @@
 import { Link, LinkProps, styled } from '@mui/material';
 
 interface HeaderLinkProps extends LinkProps {
-  linkVariant?: 'active';
+  state?: 'active';
 }
 
 const HeaderLink = styled(Link, {
   name: 'HeaderLink',
   slot: 'Root',
-})<HeaderLinkProps>(({ theme, linkVariant }) => ({
+})<HeaderLinkProps>(({ theme, state }) => ({
   color: theme.palette.text.secondary,
   position: 'relative',
   cursor: 'pointer',
@@ -23,12 +23,12 @@ const HeaderLink = styled(Link, {
     transform: 'scaleX(0)',
     transformOrigin: 'left',
     transition: 'transform 0.5s ease-out',
-    ...(linkVariant === 'active' && { transform: 'scaleX(1)' }),
+    ...(state === 'active' && { transform: 'scaleX(1)' }),
   },
   '&:hover:before, &.Mui-focusVisible:before': {
     transform: 'scaleX(1)',
   },
-  ...(linkVariant === 'active' && {
+  ...(state === 'active' && {
     color: theme.palette.text.primary,
     fontWeight: 'bold',
     cursor: 'auto',
