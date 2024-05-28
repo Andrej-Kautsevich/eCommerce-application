@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Alert, AlertTitle, Slide, Snackbar, Typography, Button } from '@mui/material';
+import { Alert, AlertTitle, Button, Slide, Snackbar, Typography } from '@mui/material';
+import { ProductKey } from '../shared/types/type';
+import useProductPageBtn from './ProductPage/productPageBtn';
 import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
 import { setSubmitSuccess } from '../shared/store/auth/authSlice';
 import MainLayout from '../shared/ui/MainLayout';
-import { ProductKey } from '../shared/types/type';
-import useProductPageBtn from './ProductPage/productPageBtn';
 
 const MainPage = () => {
   const { submitSuccess } = useAppSelector((state) => state.auth);
