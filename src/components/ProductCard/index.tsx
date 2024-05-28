@@ -10,7 +10,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const { masterVariant, name } = product;
   return (
     <Card>
-      <CardMedia component="img" image={masterVariant.images?.at(0)?.url} />
+      <CardMedia component="img" image={masterVariant.images?.at(0)?.url} alt={name.en} />
       <CardContent>
         <Typography variant="body2">{name.en}</Typography>
       </CardContent>

@@ -12,7 +12,7 @@ const CatalogPage = () => {
 
   const getProductsHandle = async () => {
     const response = await getProducts().then((res) => res.results);
-    setProducts([...products, ...response]);
+    setProducts([...response]);
   };
 
   return (

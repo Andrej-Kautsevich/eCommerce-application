@@ -5,10 +5,13 @@ import RegistrationPage from '../../pages/RegistrationPage';
 import Error404Page from '../../pages/Error404Page';
 import BasketPage from '../../pages/BasketPage';
 import { RoutePaths } from '../types/enum';
+import CatalogPage from '../../pages/CatalogPage';
 
+// Routes available to ALL users add here
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
+  { path: RoutePaths.CATALOG, Component: CatalogPage },
 ];
 
 // Routes available to AUTHORIZED users add here
