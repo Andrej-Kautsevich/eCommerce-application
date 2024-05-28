@@ -5,6 +5,7 @@ import RegistrationPage from '../../pages/RegistrationPage';
 import Error404Page from '../../pages/Error404Page';
 import BasketPage from '../../pages/BasketPage';
 import { RoutePaths } from '../types/enum';
+import UserProfilePage from '../../pages/UserProfile';
 
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
@@ -12,7 +13,10 @@ const commonRoutes: RouteProps[] = [
 ];
 
 // Routes available to AUTHORIZED users add here
-const onlyPrivateRoutes: RouteProps[] = [{ path: RoutePaths.BASKET, Component: BasketPage }];
+const onlyPrivateRoutes: RouteProps[] = [
+  { path: RoutePaths.BASKET, Component: BasketPage },
+  { path: RoutePaths.PROFILE, Component: UserProfilePage },
+];
 
 // Routes available to UNAUTHORIZED users add here
 const onlyPublicRoutes: RouteProps[] = [
