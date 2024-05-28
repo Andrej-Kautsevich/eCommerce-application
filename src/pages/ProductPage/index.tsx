@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import Header from '../../components/Header';
@@ -8,7 +9,7 @@ import useProduct from '../../api/hooks/useProduct';
 const ProductPage = () => {
   const productKey = useLocation().pathname.slice(1);
   const { getProduct } = useProduct();
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
 
   useEffect(() => {
     const fetchProduct = async () => {
