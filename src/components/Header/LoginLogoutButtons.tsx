@@ -43,7 +43,8 @@ const LoginLogoutButtons = () => {
       </Button>
       <AccountCircleIcon
         fontSize="large"
-        sx={{ color: '#735CFF', cursor: 'pointer' }}
+        color="primary"
+        sx={{ cursor: 'pointer' }}
         onClick={() => navigate(RoutePaths.PROFILE)}
       />
     </Box>
