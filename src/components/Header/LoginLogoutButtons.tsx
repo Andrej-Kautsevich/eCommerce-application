@@ -1,4 +1,5 @@
 import { Button, Box } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RoutePaths } from '../../shared/types/enum';
@@ -40,6 +41,12 @@ const LoginLogoutButtons = () => {
       <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.REGISTRATION)}>
         Register
       </Button>
+      <AccountCircleIcon
+        fontSize="large"
+        color="primary"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => navigate(RoutePaths.PROFILE)}
+      />
     </Box>
   );
 };

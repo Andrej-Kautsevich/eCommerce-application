@@ -1,11 +1,7 @@
-import Header from '../components/Header';
+import MainLayout from '../shared/ui/MainLayout';
 
 const BasketPage = () => {
-  return (
-    <div className="top-panel">
-      <Header />
-    </div>
-  );
+  return <MainLayout>Basket Page</MainLayout>;
 };
 
 export default BasketPage;
