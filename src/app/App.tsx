@@ -28,6 +28,10 @@ const App = () => {
     }
   }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer]);
 
+  /* --- ↓ */
+
+  /* --- ↑ */
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
