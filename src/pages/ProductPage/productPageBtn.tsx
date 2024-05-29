@@ -4,7 +4,7 @@ const useProductPageBtn = () => {
   const navigate = useNavigate();
 
   async function productPageBtn(key: string) {
-    navigate(`/${key}`);
+    navigate(`/product/${key}`);
   }
 
   return productPageBtn;
