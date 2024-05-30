@@ -14,7 +14,18 @@ const useProduct = () => {
     [apiRoot],
   );
 
-  return { getProduct };
+  const getProducts = useCallback(() => {
+    if (!apiRoot) {
+      throw new Error('ApiRoot is not defined');
+    }
+    return apiRoot
+      .productProjections()
+      .get()
+      .execute()
+      .then((response) => response.body);
+  }, [apiRoot]);
+
+  return { getProduct, getProducts };
 };
 
 export default useProduct;

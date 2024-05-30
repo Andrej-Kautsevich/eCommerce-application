@@ -1,9 +1,9 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { useEffect, useState } from 'react';
-import useProducts from '../api/hooks/useProducts';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
+import useProduct from '../api/hooks/useProduct';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 4;
@@ -14,7 +14,7 @@ const GRID_SPACING_SM = 2;
 const GRID_SPACING_MD = 3;
 
 const CatalogPage = () => {
-  const { getProducts } = useProducts();
+  const { getProducts } = useProduct();
 
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
@@ -25,7 +25,7 @@ const CatalogPage = () => {
     };
     // eslint-disable-next-line no-console
     fetchProducts().catch((error) => console.error(error));
-  });
+  }, [getProducts]);
 
   return (
     <MainLayout>
