@@ -11,7 +11,7 @@ import UserProfilePage from '../../pages/UserProfile';
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
-  { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage }, // TODO move to "onlyPrivateRoutes"
+  { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
 ];
 
 // Routes available to AUTHORIZED users add here
