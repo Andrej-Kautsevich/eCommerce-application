@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { Box, Typography, ImageList, ImageListItem } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import MainLayout from '../../shared/ui/MainLayout';
+import Carousel from './Carousel';
 
 const ProductPage = () => {
   const partOfAddress = '/product/'.length;
@@ -48,21 +49,11 @@ const ProductPage = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid xs={12} container spacing={2} sx={{ mr: 12, ml: 12, mt: 0 }}>
+        <Grid container xs={12} spacing={2} sx={{ mr: 12, ml: 12, mt: 0 }}>
           <Grid xs={8}>
-            {product?.masterVariant.images ? (
-              <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-                {product.masterVariant.images.map((image) => (
-                  <ImageListItem key={image.url}>
-                    <img srcSet={image.url} alt={image.label} loading="lazy" />
-                  </ImageListItem>
-                ))}
-              </ImageList>
-            ) : (
-              <Typography component="p" fontFamily="Poppins" color="text.primary">
-                Something is wrong
-              </Typography>
-            )}
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Carousel product={product!} />
+            </div>
           </Grid>
           <Grid xs={4}>
             <Typography component="p" fontFamily="Poppins" color="text.primary">
