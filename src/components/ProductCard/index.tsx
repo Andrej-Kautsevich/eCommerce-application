@@ -1,9 +1,16 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
+import { ShoppingCartOutlined } from '@mui/icons-material';
 import { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import parseProduct from '../../shared/utils/parseProduct';
-import { productCardActionSx, productCardContentSx, productCardMediaSx, productCardSx } from './productCarsStyles';
+import {
+  HoverBox,
+  productCardActionSx,
+  productCardContentSx,
+  productCardMediaSx,
+  productCardSx,
+} from './productCarsStyles';
 import { RoutePaths } from '../../shared/types/enum';
 
 interface ProductCardProps {
@@ -16,6 +23,9 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   return (
     <Card sx={productCardSx}>
       <CardActionArea component={RouterLink} to={`${RoutePaths.PRODUCT}/${parsedProduct.id}`} sx={productCardActionSx}>
+        <HoverBox>
+          <ShoppingCartOutlined fontSize="large" sx={{ color: 'white' }} />
+        </HoverBox>
         <CardMedia
           component="img"
           image={parsedProduct.images.at(0)?.url}
