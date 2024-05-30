@@ -5,6 +5,7 @@ import RegistrationPage from '../../pages/RegistrationPage';
 import Error404Page from '../../pages/Error404Page';
 import BasketPage from '../../pages/BasketPage';
 import { RoutePaths } from '../types/enum';
+import ProductPage from '../../pages/ProductPage';
 import UserProfilePage from '../../pages/UserProfile';
 import CatalogPage from '../../pages/CatalogPage';
 
@@ -12,6 +13,7 @@ import CatalogPage from '../../pages/CatalogPage';
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
+  { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage }, // TODO move to "onlyPrivateRoutes"
   { path: RoutePaths.CATALOG, Component: CatalogPage },
 ];
 
