@@ -24,7 +24,10 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
     <Card sx={productCardSx}>
       <CardActionArea component={RouterLink} to={`${RoutePaths.PRODUCT}/${parsedProduct.id}`} sx={productCardActionSx}>
         <HoverBox>
-          <ShoppingCartOutlined fontSize="large" sx={{ color: 'white' }} />
+          <ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText', mb: 1 }} />
+          <Typography variant="body2" color="primary.contrastText">
+            Order Watch
+          </Typography>
         </HoverBox>
         <CardMedia
           component="img"
