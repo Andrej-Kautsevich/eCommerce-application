@@ -27,7 +27,7 @@ const parseProduct = (product: ProductProjection): ParsedProduct => {
   }
 
   if (product.masterVariant.prices) {
-    price = `${product.masterVariant.prices[0].value.centAmount / 100} $`;
+    price = `$${product.masterVariant.prices[0].value.centAmount / 100}`;
   }
 
   const parsedProduct: ParsedProduct = {

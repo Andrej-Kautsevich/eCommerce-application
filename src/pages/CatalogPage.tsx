@@ -20,9 +20,9 @@ const CatalogPage = () => {
       <Button variant="contained" onClick={getProductsHandle}>
         get products
       </Button>
-      <Grid container spacing={2}>
+      <Grid container spacing={{ xs: 1, sm: 2, md: 3 }}>
         {products.map((product) => (
-          <Grid xs={3} key={product.id}>
+          <Grid xs={6} sm={4} md={3} key={product.id}>
             <ProductCard product={product} />
           </Grid>
         ))}
