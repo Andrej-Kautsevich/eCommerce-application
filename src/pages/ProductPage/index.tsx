@@ -7,7 +7,8 @@ import Header from '../../components/Header';
 import useProduct from '../../api/hooks/useProduct';
 
 const ProductPage = () => {
-  const productKey = useLocation().pathname.slice(1);
+  const productKey = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
+
   const { getProduct } = useProduct();
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
 
@@ -23,12 +24,9 @@ const ProductPage = () => {
       }
     };
 
-    // TODO solve the problem with apiRoot
-    setTimeout(() => {
-      // TODO solve the problem with ESLINT
-      // eslint-disable-next-line no-console
-      fetchProduct().catch((error) => console.log(error));
-    }, 0);
+    // TODO solve the problem with ESLINT
+    // eslint-disable-next-line no-console
+    fetchProduct().catch((error) => console.log(error));
   }, [getProduct, productKey]);
 
   return (
