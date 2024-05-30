@@ -8,8 +8,7 @@ import MainLayout from '../../shared/ui/MainLayout';
 import Carousel from './Carousel';
 
 const ProductPage = () => {
-  const partOfAddress = '/product/'.length;
-  const productKey = useLocation().pathname.slice(partOfAddress);
+  const productKey = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
   const { getProduct } = useProduct();
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
 
@@ -25,12 +24,9 @@ const ProductPage = () => {
       }
     };
 
-    // TODO solve the problem with apiRoot
-    setTimeout(() => {
-      // TODO solve the problem with ESLINT
-      // eslint-disable-next-line no-console
-      fetchProduct().catch((error) => console.log(error));
-    }, 0);
+    // TODO solve the problem with ESLINT
+    // eslint-disable-next-line no-console
+    fetchProduct().catch((error) => console.log(error));
   }, [getProduct, productKey]);
 
   return (
