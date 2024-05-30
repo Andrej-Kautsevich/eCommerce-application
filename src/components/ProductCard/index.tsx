@@ -1,8 +1,10 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material';
 import { FC } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import parseProduct from '../../shared/utils/parseProduct';
-import { productCardContentSx, productCardMediaSx, productCardSx } from './productCarsStyles';
+import { productCardActionSx, productCardContentSx, productCardMediaSx, productCardSx } from './productCarsStyles';
+import { RoutePaths } from '../../shared/types/enum';
 
 interface ProductCardProps {
   product: ProductProjection;
@@ -13,21 +15,23 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Card sx={productCardSx}>
-      <CardMedia
-        component="img"
-        image={parsedProduct.images.at(0)?.url}
-        alt={parsedProduct.name}
-        sx={productCardMediaSx}
-      />
-      <CardContent sx={productCardContentSx}>
-        <Typography variant="body1" component="div" textAlign="center">
-          {parsedProduct.name}
-        </Typography>
-        <Typography variant="caption">{parsedProduct.description}</Typography>
-        <Typography variant="h5" component="div">
-          {parsedProduct.price}
-        </Typography>
-      </CardContent>
+      <CardActionArea component={RouterLink} to={`${RoutePaths.PRODUCT}/${parsedProduct.id}`} sx={productCardActionSx}>
+        <CardMedia
+          component="img"
+          image={parsedProduct.images.at(0)?.url}
+          alt={parsedProduct.name}
+          sx={productCardMediaSx}
+        />
+        <CardContent sx={productCardContentSx}>
+          <Typography variant="body1" component="div" textAlign="center">
+            {parsedProduct.name}
+          </Typography>
+          <Typography variant="caption">{parsedProduct.description}</Typography>
+          <Typography variant="h5" component="div">
+            {parsedProduct.price}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
     </Card>
   );
 };

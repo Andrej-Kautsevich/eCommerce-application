@@ -18,4 +18,14 @@ export const productCardContentSx: SxProps<Theme> = {
   alignContent: 'center',
   alignItems: 'center',
   justifyContent: 'center',
+  width: '100%',
+};
+
+export const productCardActionSx: SxProps<Theme> = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'flex-start',
+  alignContent: 'space-between',
+  height: '100%',
+  width: '100%',
 };
