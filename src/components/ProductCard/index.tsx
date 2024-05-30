@@ -20,7 +20,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         sx={productCardMediaSx}
       />
       <CardContent sx={productCardContentSx}>
-        <Typography variant="body1" component="div">
+        <Typography variant="body1" component="div" textAlign="center">
           {parsedProduct.name}
         </Typography>
         <Typography variant="caption">{parsedProduct.description}</Typography>
