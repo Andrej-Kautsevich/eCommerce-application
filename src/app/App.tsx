@@ -1,5 +1,5 @@
 import '../shared/ui/main.scss';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
@@ -14,6 +14,7 @@ import theme from '../shared/ui/theme';
 const App = () => {
   const isAuthCustomer = useSelector((state: RootState) => state.auth.isLoggedIn);
   const { apiRoot, setAnonymousFlow, setTokenFlow } = useApiClient();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!apiRoot) {
@@ -25,8 +26,14 @@ const App = () => {
       } else {
         setAnonymousFlow();
       }
+    } else {
+      setIsLoading(false);
     }
   }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // TODO add loading spinner
+  }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">

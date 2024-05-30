@@ -24,12 +24,9 @@ const ProductPage = () => {
       }
     };
 
-    // TODO solve the problem with apiRoot
-    setTimeout(() => {
-      // TODO solve the problem with ESLINT
-      // eslint-disable-next-line no-console
-      fetchProduct().catch((error) => console.log(error));
-    }, 0);
+    // TODO solve the problem with ESLINT
+    // eslint-disable-next-line no-console
+    fetchProduct().catch((error) => console.log(error));
   }, [getProduct, productKey]);
 
   return (
