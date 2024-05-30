@@ -1,13 +1,15 @@
-import { Link, LinkProps, styled } from '@mui/material';
+import { Link, LinkProps as MaterialLinkProps, styled } from '@mui/material';
+import { LinkProps as RouterLinkProps } from 'react-router-dom';
 
-interface HeaderLinkProps extends LinkProps {
-  state?: 'active';
-}
+type HeaderLinkProps = MaterialLinkProps &
+  RouterLinkProps & {
+    page?: 'active';
+  };
 
 const HeaderLink = styled(Link, {
   name: 'HeaderLink',
   slot: 'Root',
-})<HeaderLinkProps>(({ theme, state }) => ({
+})<HeaderLinkProps>(({ theme, page }) => ({
   color: theme.palette.text.secondary,
   position: 'relative',
   cursor: 'pointer',
@@ -23,12 +25,12 @@ const HeaderLink = styled(Link, {
     transform: 'scaleX(0)',
     transformOrigin: 'left',
     transition: 'transform 0.5s ease-out',
-    ...(state === 'active' && { transform: 'scaleX(1)' }),
+    ...(page === 'active' && { transform: 'scaleX(1)' }),
   },
   '&:hover:before, &.Mui-focusVisible:before': {
     transform: 'scaleX(1)',
   },
-  ...(state === 'active' && {
+  ...(page === 'active' && {
     color: theme.palette.text.primary,
     fontWeight: 'bold',
     cursor: 'auto',

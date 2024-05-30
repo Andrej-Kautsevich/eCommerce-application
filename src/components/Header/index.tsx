@@ -40,7 +40,7 @@ const Header = () => {
             <Box sx={{ minWidth: '60dvw', p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <MenuItem>
                 {/* TODO add link to catalog page */}
-                <HeaderLink component={RouterLink} state="active" underline="none">
+                <HeaderLink component={RouterLink} underline="none" to={RoutePaths.CATALOG}>
                   Watches
                 </HeaderLink>
               </MenuItem>
@@ -54,7 +54,7 @@ const Header = () => {
         {/* Desktop view */}
         <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
           {/* TODO add link to catalog page */}
-          <HeaderLink component={RouterLink} state="active" underline="none">
+          <HeaderLink component={RouterLink} underline="none" to={RoutePaths.CATALOG}>
             Watches
           </HeaderLink>
           <LoginLogoutButtons />

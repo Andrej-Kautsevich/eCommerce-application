@@ -6,15 +6,17 @@ import HeaderLink from '.';
 import theme from '../theme';
 
 it('renders without crashing ', () => {
-  const { container } = customRender(<HeaderLink />);
+  const { container } = customRender(<HeaderLink to="/" />);
 
   expect(container.firstChild).toBeInTheDocument();
 });
 
-it('applies correct styles when linkVariant is active', () => {
+it('applies correct styles at current page', () => {
   customRender(
     <ThemeProvider theme={theme}>
-      <HeaderLink state="active">Active link</HeaderLink>
+      <HeaderLink page="active" to="/">
+        Active link
+      </HeaderLink>
     </ThemeProvider>,
   );
 
