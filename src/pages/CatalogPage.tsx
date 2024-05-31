@@ -30,13 +30,17 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
-      <CatalogSideBar />
-      <Grid container spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
-        {products.map((product) => (
-          <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} key={product.id}>
-            <ProductCard product={product} />
-          </Grid>
-        ))}
+      <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
+        <Grid xs={3}>
+          <CatalogSideBar />
+        </Grid>
+        <Grid container xs={9} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
+          {products.map((product) => (
+            <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} key={product.id}>
+              <ProductCard product={product} />
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
     </MainLayout>
   );
