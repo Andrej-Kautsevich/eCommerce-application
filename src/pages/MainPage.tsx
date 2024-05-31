@@ -21,7 +21,11 @@ const MainPage = () => {
 
   /* --- for test ↓ --- */
   const productPageBtn = useProductPageBtn();
-  const productKey: ProductKey = { key: 'CASIO-MTP-1374D-1AVDF' };
+  const productKey: ProductKey = { key: 'xiaomi-amazfit-gts-3' };
+  // CASIO-MTP-1374D-1AVDF (5 photo)
+  // eutour-100795659 (1 photo)
+  // vais-vw-02 (4 photo)
+  // xiaomi-amazfit-gts-3 (8 photo)
   /* --- for test ↑ --- */
 
   return (

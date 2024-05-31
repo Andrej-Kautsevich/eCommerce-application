@@ -13,8 +13,8 @@ import CatalogPage from '../../pages/CatalogPage';
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
-  { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage }, // TODO move to "onlyPrivateRoutes"
   { path: RoutePaths.CATALOG, Component: CatalogPage },
+  { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
 ];
 
 // Routes available to AUTHORIZED users add here
