@@ -7,10 +7,13 @@ import BasketPage from '../../pages/BasketPage';
 import { RoutePaths } from '../types/enum';
 import ProductPage from '../../pages/ProductPage';
 import UserProfilePage from '../../pages/UserProfile';
+import CatalogPage from '../../pages/CatalogPage';
 
+// Routes available to ALL users add here
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
+  { path: RoutePaths.CATALOG, Component: CatalogPage },
   { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
 ];
 
