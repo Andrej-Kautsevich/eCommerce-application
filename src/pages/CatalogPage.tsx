@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct from '../api/hooks/useProduct';
+import CatalogSideBar from '../components/CatalogSideBar';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 4;
@@ -29,6 +30,7 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
+      <CatalogSideBar />
       <Grid container spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
         {products.map((product) => (
           <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} key={product.id}>
