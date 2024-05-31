@@ -5,7 +5,7 @@ import RegistrationPage from '../../pages/RegistrationPage';
 import Error404Page from '../../pages/Error404Page';
 import BasketPage from '../../pages/BasketPage';
 import { RoutePaths } from '../types/enum';
-import ProductPage from '../../pages/ProductPage';
+import ProductPage from '../../components/Product';
 import UserProfilePage from '../../pages/UserProfile';
 
 const commonRoutes: RouteProps[] = [
