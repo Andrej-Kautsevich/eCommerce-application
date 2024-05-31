@@ -9,7 +9,7 @@ interface CarouselProps {
 
 const Carousel = ({ product }: CarouselProps) => {
   const images = product?.masterVariant.images;
-  const [step, getStep] = useState(0);
+  const [step, setStep] = useState(0);
 
   if (images && images.length > 1) {
     return (
@@ -29,9 +29,9 @@ const Carousel = ({ product }: CarouselProps) => {
             sx={{ height: 30 }}
             onClick={() => {
               if (step > 0) {
-                getStep(step - 1);
+                setStep(step - 1);
               } else {
-                getStep(images.length - 1);
+                setStep(images.length - 1);
               }
             }}
           >
@@ -73,7 +73,7 @@ const Carousel = ({ product }: CarouselProps) => {
                       alignItems: 'center',
                     }}
                     onClick={() => {
-                      getStep(index);
+                      setStep(index);
                     }}
                   >
                     <img src={image.url} alt={image.label ?? 'Image'} loading="lazy" />
@@ -87,9 +87,9 @@ const Carousel = ({ product }: CarouselProps) => {
             sx={{ height: 30 }}
             onClick={() => {
               if (step < images.length - 1) {
-                getStep(step + 1);
+                setStep(step + 1);
               } else {
-                getStep(0);
+                setStep(0);
               }
             }}
           >
