@@ -4,19 +4,27 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
-import MainLayout from '../../shared/ui/MainLayout';
 import Carousel from './Carousel';
+import MainLayout from '../../shared/ui/MainLayout';
 
-const ProductPage = () => {
+const Product = () => {
   const productKey = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
   const { getProduct } = useProduct();
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
+  const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await getProduct(productKey);
         setProduct(response.body);
+        if (response.body.masterVariant.prices![0].value.centAmount) {
+          setPrice(response.body.masterVariant.prices![0].value.centAmount);
+        }
+        if (response.body.masterVariant.prices![0].discounted?.value.centAmount) {
+          setDiscount(response.body.masterVariant.prices![0].discounted?.value.centAmount);
+        }
       } catch (error) {
         // TODO solve the problem with ESLINT
         // eslint-disable-next-line no-console
@@ -52,12 +60,36 @@ const ProductPage = () => {
             </div>
           </Grid>
           <Grid xs={4}>
-            <Typography component="p" fontFamily="Poppins" color="text.primary">
+            <Typography component="p" fontFamily="Poppins" color="text.secondary">
               Description:
             </Typography>
-            <Typography component="p" fontFamily="Poppins" color="text.primary">
+            <Typography component="p" fontFamily="Poppins" color="text.primary" sx={{ mb: 3 }}>
               {product ? product.description?.en : 'Something is wrong'}
             </Typography>
+            <Typography component="p" fontFamily="Poppins" color="text.secondary">
+              Price:
+            </Typography>
+            <Typography
+              component="p"
+              fontFamily="Poppins"
+              color="text.primary"
+              sx={{
+                mb: 3,
+                textDecoration: discount > 0 ? 'line-through' : 'none',
+              }}
+            >
+              {product ? `$${(price / 100).toFixed(2)}` : 'Something is wrong'}
+            </Typography>
+            {discount > 0 && (
+              <Box>
+                <Typography component="p" fontFamily="Poppins" color="text.secondary">
+                  SALE PRICE:
+                </Typography>
+                <Typography component="p" fontFamily="Poppins" color="red" sx={{ mb: 3, fontSize: 36 }}>
+                  {product ? `$${(discount / 100).toFixed(2)}` : 'Something is wrong'}
+                </Typography>
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Grid>
@@ -65,4 +97,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default Product;
