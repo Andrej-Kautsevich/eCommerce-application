@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import useApiClient from './useApiClient';
 import { useAppDispatch } from '../../shared/store/hooks';
-import { fetchCategories } from '../../shared/store/auth/catalogSlice';
+import { fetchCategories } from '../../shared/store/auth/productsSlice';
 
 const useProduct = () => {
   const { apiRoot } = useApiClient();

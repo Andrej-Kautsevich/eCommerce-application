@@ -4,7 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import persistStore from 'redux-persist/es/persistStore';
 import logger from 'redux-logger';
 import authSlice from './auth/authSlice';
-import catagoriesSlice from './auth/catalogSlice';
+import productsSlice from './auth/productsSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -20,7 +20,7 @@ const rootPersistConfig = {
 
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authSlice),
-  categories: catagoriesSlice,
+  products: productsSlice,
 });
 
 export const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

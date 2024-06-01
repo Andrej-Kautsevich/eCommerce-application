@@ -3,14 +3,14 @@ import { Checkbox, Collapse, FormControlLabel, List, ListItemButton, ListItemTex
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import useProduct from '../../api/hooks/useProduct';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { setFilterParams } from '../../shared/store/auth/catalogSlice';
+import { setFilterParams } from '../../shared/store/auth/productsSlice';
 import { FilterCategories } from '../../shared/types/enum';
 
 const CatalogSideBar = () => {
   const { getCategories } = useProduct();
   const dispatch = useAppDispatch();
 
-  const { categories } = useAppSelector((state) => state.categories);
+  const { categories } = useAppSelector((state) => state.products);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   useEffect(() => {
@@ -38,8 +38,6 @@ const CatalogSideBar = () => {
       }
       return prevSelected.filter((id) => id !== categoryId);
     });
-
-    // dispatch(setFilterParams({ [FilterCategories.CATEGORIES]: selectedCategories }));
   };
 
   return (
