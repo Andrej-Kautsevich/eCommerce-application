@@ -1,22 +1,17 @@
-import { useEffect, useState } from 'react';
-import {
-  Button,
-  Checkbox,
-  Collapse,
-  FormControlLabel,
-  List,
-  ListItemButton,
-  ListItemText,
-  Toolbar,
-} from '@mui/material';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { Checkbox, Collapse, FormControlLabel, List, ListItemButton, ListItemText, Toolbar } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import useProduct from '../../api/hooks/useProduct';
-import { useAppSelector } from '../../shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setFilterParams } from '../../shared/store/auth/catalogSlice';
+import { FilterCategories } from '../../shared/types/enum';
 
 const CatalogSideBar = () => {
-  const { getCategories, getFilteredProducts } = useProduct();
+  const { getCategories } = useProduct();
+  const dispatch = useAppDispatch();
 
   const { categories } = useAppSelector((state) => state.categories);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -26,7 +21,8 @@ const CatalogSideBar = () => {
       // eslint-disable-next-line no-console
       fetchCategories().catch((error) => console.log(error));
     }
-  }, [categories, getCategories]);
+    dispatch(setFilterParams({ [FilterCategories.CATEGORIES]: selectedCategories }));
+  }, [categories, getCategories, dispatch, selectedCategories]);
 
   const [open, setOpen] = useState(true);
 
@@ -34,16 +30,20 @@ const CatalogSideBar = () => {
     setOpen(!open);
   };
 
-  const id = '7fae432e-2181-4cba-949b-23cef3ae6efb';
-  const id2 = 'e2df471f-11f3-4c23-834f-f60d2c4ff092';
+  const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>, categoryId: string) => {
+    const isChecked = event.target.checked;
+    setSelectedCategories((prevSelected) => {
+      if (isChecked) {
+        return [...prevSelected, categoryId];
+      }
+      return prevSelected.filter((id) => id !== categoryId);
+    });
 
-  const handleBtnClick = async () => {
-    await getFilteredProducts(id, id2);
+    // dispatch(setFilterParams({ [FilterCategories.CATEGORIES]: selectedCategories }));
   };
 
   return (
     <Toolbar>
-      <Button onClick={handleBtnClick}>Get by category</Button>
       <List sx={{ width: '100%' }}>
         <ListItemButton onClick={handleClick}>
           <ListItemText primary="Categories" />
@@ -52,7 +52,17 @@ const CatalogSideBar = () => {
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="ul">
             {categories.map((category) => (
-              <FormControlLabel key={category.id} label={category.name.en} control={<Checkbox />} />
+              <FormControlLabel
+                key={category.id}
+                label={category.name.en}
+                control={
+                  <Checkbox
+                    onChange={(e) => handleCategoryChange(e, category.id)}
+                    name={category.id}
+                    checked={selectedCategories.includes(category.id)} // Check if category is selected
+                  />
+                }
+              />
             ))}
           </List>
         </Collapse>

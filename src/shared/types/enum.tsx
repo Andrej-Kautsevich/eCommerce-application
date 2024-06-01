@@ -14,3 +14,7 @@ export enum StoreCountries {
   KAZAKHSTAN = 'KZ',
   UKRAINE = 'UA',
 }
+
+export enum FilterCategories {
+  CATEGORIES = 'categories.id',
+}
