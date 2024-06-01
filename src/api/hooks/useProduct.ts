@@ -36,7 +36,24 @@ const useProduct = () => {
     return dispatch(fetchCategories(response.body));
   }, [apiRoot, dispatch]);
 
-  return { getProduct, getProducts, getCategories };
+  const getFilteredProducts = useCallback(
+    async (...categoryIds: string[]) => {
+      if (!apiRoot) {
+        throw new Error('ApiRoot is not defined');
+      }
+
+      const categories = categoryIds.map((id) => `"${id}"`).join(',');
+
+      return apiRoot
+        .productProjections()
+        .search()
+        .get({ queryArgs: { filter: `categories.id:${categories}` } })
+        .execute();
+    },
+    [apiRoot],
+  );
+
+  return { getProduct, getProducts, getCategories, getFilteredProducts };
 };
 
 export default useProduct;
