@@ -15,7 +15,7 @@ const authPersistConfig = {
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['auth'],
+  blacklist: ['auth', 'products'],
 };
 
 const rootReducer = combineReducers({

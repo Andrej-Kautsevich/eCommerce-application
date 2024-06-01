@@ -5,15 +5,15 @@ import { FilterParams } from '../../types/type';
 
 interface CategoriesState {
   categories: Category[];
-  filterParams: FilterParams | null;
+  filterParams: FilterParams | undefined;
 }
 
 const initialState: CategoriesState = {
   categories: [],
-  filterParams: null,
+  filterParams: undefined,
 };
 
-const categoriesSlice = createSlice({
+const productsSlice = createSlice({
   name: 'categoriesSlice',
   initialState,
   reducers: {
@@ -26,6 +26,6 @@ const categoriesSlice = createSlice({
   },
 });
 
-export const { fetchCategories, setFilterParams } = categoriesSlice.actions;
+export const { fetchCategories, setFilterParams } = productsSlice.actions;
 
-export default categoriesSlice.reducer;
+export default productsSlice.reducer;

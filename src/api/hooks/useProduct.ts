@@ -3,6 +3,12 @@ import useApiClient from './useApiClient';
 import { useAppDispatch } from '../../shared/store/hooks';
 import { fetchCategories } from '../../shared/store/auth/productsSlice';
 
+export type FetchQueryArgs = {
+  limit?: number;
+  filter?: string | string[];
+  sort?: string[];
+};
+
 const useProduct = () => {
   const { apiRoot } = useApiClient();
   const dispatch = useAppDispatch();
@@ -17,17 +23,6 @@ const useProduct = () => {
     [apiRoot],
   );
 
-  const getProducts = useCallback(() => {
-    if (!apiRoot) {
-      throw new Error('ApiRoot is not defined');
-    }
-    return apiRoot
-      .productProjections()
-      .get()
-      .execute()
-      .then((response) => response.body);
-  }, [apiRoot]);
-
   const getCategories = useCallback(async () => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
@@ -36,24 +31,19 @@ const useProduct = () => {
     return dispatch(fetchCategories(response.body));
   }, [apiRoot, dispatch]);
 
-  const getFilteredProducts = useCallback(
-    async (...categoryIds: string[]) => {
+  const getProducts = useCallback(
+    async (queryArgs?: FetchQueryArgs) => {
       if (!apiRoot) {
         throw new Error('ApiRoot is not defined');
       }
+      if (queryArgs) return apiRoot.productProjections().search().get({ queryArgs }).execute();
 
-      const categories = categoryIds.map((id) => `"${id}"`).join(',');
-
-      return apiRoot
-        .productProjections()
-        .search()
-        .get({ queryArgs: { filter: `categories.id:${categories}` } })
-        .execute();
+      return apiRoot.productProjections().get().execute();
     },
     [apiRoot],
   );
 
-  return { getProduct, getProducts, getCategories, getFilteredProducts };
+  return { getProduct, getProducts, getCategories };
 };
 
 export default useProduct;

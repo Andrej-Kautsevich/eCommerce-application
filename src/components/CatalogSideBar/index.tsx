@@ -21,7 +21,13 @@ const CatalogSideBar = () => {
       // eslint-disable-next-line no-console
       fetchCategories().catch((error) => console.log(error));
     }
-    dispatch(setFilterParams({ [FilterCategories.CATEGORIES]: selectedCategories }));
+
+    const categoriesFilter = selectedCategories.map((id) => `"${id}"`).join(',');
+    if (!categoriesFilter) {
+      dispatch(setFilterParams({ [FilterCategories.CATEGORIES]: undefined }));
+    } else {
+      dispatch(setFilterParams({ [FilterCategories.CATEGORIES]: categoriesFilter }));
+    }
   }, [categories, getCategories, dispatch, selectedCategories]);
 
   const [open, setOpen] = useState(true);

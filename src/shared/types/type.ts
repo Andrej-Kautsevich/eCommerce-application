@@ -5,5 +5,5 @@ export type ProductKey = {
 };
 
 export type FilterParams = {
-  [FilterCategories.CATEGORIES]?: string[];
+  [FilterCategories.CATEGORIES]?: string;
 };
