@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
-import CatalogSideBar from '../components/CatalogSideBar';
+import { CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
 import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
 
@@ -41,15 +41,20 @@ const CatalogPage = () => {
   return (
     <MainLayout>
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
-        <Grid sm={12} md={3}>
+        <Grid xs={12} md={3}>
           <CatalogSideBar />
         </Grid>
-        <Grid container sm={12} md={9} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
-          {products.map((product) => (
-            <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} key={product.id}>
-              <ProductCard product={product} />
-            </Grid>
-          ))}
+        <Grid container sm={12} md={9} flexDirection="column">
+          <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} alignSelf="end">
+            <CatalogSortPanel />
+          </Grid>
+          <Grid container mt={1} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
+            {products.map((product) => (
+              <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} key={product.id}>
+                <ProductCard product={product} />
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
     </MainLayout>
