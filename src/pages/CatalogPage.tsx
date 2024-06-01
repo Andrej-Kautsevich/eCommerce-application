@@ -18,7 +18,7 @@ const GRID_SPACING_MD = 3;
 
 const CatalogPage = () => {
   const { getProducts } = useProduct();
-  const { filterParams } = useAppSelector((state) => state.products);
+  const { filterParams, sortParam } = useAppSelector((state) => state.products);
 
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
@@ -31,12 +31,14 @@ const CatalogPage = () => {
         if (filter) queryArgs.filter = filter;
       }
 
+      if (sortParam) queryArgs.sort = sortParam;
+
       const result = await getProducts(queryArgs).then((res) => res.body.results);
       setProducts([...result]);
     };
     // eslint-disable-next-line no-console
     fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams]);
+  }, [getProducts, filterParams, sortParam]);
 
   return (
     <MainLayout>

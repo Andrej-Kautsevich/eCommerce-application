@@ -6,11 +6,13 @@ import { FilterParams } from '../../types/type';
 interface CategoriesState {
   categories: Category[];
   filterParams: FilterParams | undefined;
+  sortParam: string | undefined;
 }
 
 const initialState: CategoriesState = {
   categories: [],
   filterParams: undefined,
+  sortParam: undefined,
 };
 
 const productsSlice = createSlice({
@@ -23,9 +25,12 @@ const productsSlice = createSlice({
     setFilterParams: (state, action: PayloadAction<FilterParams>) => {
       state.filterParams = action.payload;
     },
+    setSortParam: (state, action: PayloadAction<string>) => {
+      state.sortParam = action.payload;
+    },
   },
 });
 
-export const { fetchCategories, setFilterParams } = productsSlice.actions;
+export const { fetchCategories, setFilterParams, setSortParam } = productsSlice.actions;
 
 export default productsSlice.reducer;

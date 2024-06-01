@@ -6,7 +6,7 @@ import { fetchCategories } from '../../shared/store/auth/productsSlice';
 export type FetchQueryArgs = {
   limit?: number;
   filter?: string | string[];
-  sort?: string[];
+  sort?: string | string[];
 };
 
 const useProduct = () => {
