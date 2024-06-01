@@ -14,6 +14,7 @@ const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   { path: RoutePaths.CATALOG, Component: CatalogPage },
   { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
 ];
