@@ -4,8 +4,9 @@ export enum RoutePaths {
   REGISTRATION = '/registration',
   ERROR404 = '*',
   BASKET = '/basket',
-  PRODUCT = '/:key',
+  PRODUCT = '/product',
   PROFILE = '/profile',
+  CATALOG = '/catalog',
 }
 
 export enum StoreCountries {

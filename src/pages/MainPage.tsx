@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alert, AlertTitle, Button, Slide, Snackbar, Typography } from '@mui/material';
 import { ProductKey } from '../shared/types/type';
-import useProductPageBtn from './ProductPage/productPageBtn';
+import useProductPageBtn from '../components/Product/productPageBtn';
 import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
 import { setSubmitSuccess } from '../shared/store/auth/authSlice';
 import MainLayout from '../shared/ui/MainLayout';
@@ -21,7 +21,11 @@ const MainPage = () => {
 
   /* --- for test ↓ --- */
   const productPageBtn = useProductPageBtn();
-  const productKey: ProductKey = { key: 'CASIO-MTP-1374D-1AVDF' };
+  const productKey: ProductKey = { key: 'xiaomi-amazfit-gts-3' };
+  // CASIO-MTP-1374D-1AVDF (5 photo)
+  // eutour-100795659 (1 photo)
+  // vais-vw-02 (4 photo)
+  // xiaomi-amazfit-gts-3 (8 photo) //TODO don't forget to delete extra images from ecommerce
   /* --- for test ↑ --- */
 
   return (
