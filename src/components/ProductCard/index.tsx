@@ -10,7 +10,7 @@ import {
   productCardContentSx,
   productCardMediaSx,
   productCardSx,
-} from './productCarsStyles';
+} from './productCardStyles';
 import { RoutePaths } from '../../shared/types/enum';
 
 interface ProductCardProps {

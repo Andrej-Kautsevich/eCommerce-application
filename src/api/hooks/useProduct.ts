@@ -14,11 +14,11 @@ const useProduct = () => {
   const dispatch = useAppDispatch();
 
   const getProduct = useCallback(
-    (key: string) => {
+    (ID: string) => {
       if (!apiRoot) {
         throw new Error('ApiRoot is not defined');
       }
-      return apiRoot.productProjections().withKey({ key }).get().execute();
+      return apiRoot.productProjections().withId({ ID }).get().execute();
     },
     [apiRoot],
   );

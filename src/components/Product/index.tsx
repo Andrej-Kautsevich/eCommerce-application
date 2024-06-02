@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { Box, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import MainLayout from '../../shared/ui/MainLayout';
+import PageTitle from '../PageTitle';
 
 const Product = () => {
-  const productKey = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
+  const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
   const { getProduct } = useProduct();
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
   const [price, setPrice] = useState(0);
@@ -17,7 +18,7 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await getProduct(productKey);
+        const response = await getProduct(productID);
         setProduct(response.body);
         if (response.body.masterVariant.prices![0].value.centAmount) {
           setPrice(response.body.masterVariant.prices![0].value.centAmount);
@@ -35,24 +36,15 @@ const Product = () => {
     // TODO solve the problem with ESLINT
     // eslint-disable-next-line no-console
     fetchProduct().catch((error) => console.log(error));
-  }, [getProduct, productKey]);
+  }, [getProduct, productID]);
 
   return (
     <MainLayout>
       <Grid container spacing={0}>
-        <Grid xs={12}>
-          <Box
-            component="div"
-            height={150}
-            sx={{ bgcolor: 'primary.main', pr: 3, pl: 3 }}
-            display="flex"
-            alignItems="center"
-          >
-            <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-              {product ? product.name.en : 'Something is wrong'}
-            </Typography>
-          </Box>
-        </Grid>
+        <PageTitle title={product ? product.name.en : 'Something is wrong'}>
+          <Breadcrumbs />
+        </PageTitle>
+
         <Grid container xs={12} spacing={2} sx={{ mr: 12, ml: 12, mt: 0 }}>
           <Grid xs={8}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>

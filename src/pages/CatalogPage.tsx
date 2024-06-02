@@ -8,6 +8,7 @@ import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
 import { CatalogCategoriesSelect, CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
 import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
+import PageTitle from '../components/PageTitle';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
 import { FilterCategories } from '../shared/types/enum';
 
@@ -63,8 +64,10 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
-      <CatalogBreadcrumbs />
-      <CatalogCategoriesSelect />
+      <PageTitle title="Catalog">
+        <CatalogBreadcrumbs />
+        <CatalogCategoriesSelect />
+      </PageTitle>
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
         <Grid xs={12} md={3}>
           <CatalogSideBar />
