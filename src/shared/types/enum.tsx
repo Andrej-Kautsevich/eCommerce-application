@@ -14,3 +14,13 @@ export enum StoreCountries {
   KAZAKHSTAN = 'KZ',
   UKRAINE = 'UA',
 }
+
+export enum FilterCategories {
+  CATEGORIES = 'categories.id',
+}
+
+export enum SortNames {
+  DEFAULT = 'default',
+  PRICE_ASC = 'price: low to high',
+  PRICE_DESC = 'price: high to low',
+}
