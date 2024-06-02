@@ -18,7 +18,7 @@ const CatalogCategoriesSelect = () => {
   const parsedCurrentCategory = parsedCategories.find((category) => category.name === currentCategory);
 
   return (
-    <Stack direction="row" spacing={1}>
+    <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" pt={1}>
       {parsedCurrentCategory &&
         parsedCurrentCategory.ancestors.map((category) => {
           const to = `${currentPathname}/${category.slug}`;

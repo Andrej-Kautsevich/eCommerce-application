@@ -13,7 +13,7 @@ const CatalogBreadcrumbs = () => {
   const pathnames = location.pathname.split('/').filter((x) => x);
 
   return (
-    <Breadcrumbs aria-label="breadcrumbs">
+    <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
       <LinkRouter underline="hover" color="inherit" to={RoutePaths.MAIN}>
         <Typography variant="body1" color="secondary">
           Main
@@ -29,7 +29,9 @@ const CatalogBreadcrumbs = () => {
           </Typography>
         ) : (
           <LinkRouter underline="hover" to={to} key={to}>
-            {breadcrumbNameMap[to]}
+            <Typography variant="body1" color="secondary">
+              {breadcrumbNameMap[to]}
+            </Typography>
           </LinkRouter>
         );
       })}

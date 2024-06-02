@@ -60,14 +60,14 @@ const CatalogPage = () => {
     };
     // eslint-disable-next-line no-console
     fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams, sortParam, categorySlug]);
+  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname]);
 
   return (
     <MainLayout>
       <PageTitle title="Catalog">
         <CatalogBreadcrumbs />
-        <CatalogCategoriesSelect />
       </PageTitle>
+      <CatalogCategoriesSelect />
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
         <Grid xs={12} md={3}>
           <CatalogSideBar />
