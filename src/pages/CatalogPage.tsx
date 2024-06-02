@@ -7,6 +7,7 @@ import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
 import { CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
 import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
+import PageTitle from '../components/PageTitle';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
 
 const GRID_COLUMNS_XS = 6;
@@ -43,6 +44,7 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
+      <PageTitle title="Catalog" />
       <CatalogBreadcrumbs />
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
         <Grid xs={12} md={3}>
