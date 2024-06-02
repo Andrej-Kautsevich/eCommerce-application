@@ -32,7 +32,13 @@ const MainImage = ({ image }: MainImageProps) => {
         target.onerror = null;
         target.src = emptyImage;
       }}
-      style={{ width: 'auto', height: 'auto', objectFit: 'cover', display: 'block', margin: 'auto' }}
+      style={{
+        width: 'auto',
+        height: 'auto',
+        objectFit: 'cover',
+        display: 'block',
+        margin: 'auto',
+      }}
     />
   );
 };
@@ -44,6 +50,7 @@ const ListOfThumbnails = ({ images, image, index, step, func }: ListOfThumbnails
         width: 60,
         height: 60,
         overflow: 'hidden',
+        borderRadius: '5px',
         border: index === step ? `2px solid ${responsiveTheme.palette.primary.main}` : 'none',
       }}
       key={image.label ?? image.url}
@@ -155,6 +162,8 @@ const Carousel = ({ product }: CarouselProps) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            borderRadius: '12px',
+            boxShadow: `0px 4px 8px ${responsiveTheme.palette.primary.main}`,
           }}
         >
           <MainImage image={images[step]} />
