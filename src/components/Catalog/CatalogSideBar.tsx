@@ -14,14 +14,6 @@ const CatalogSideBar = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      await getCategories();
-    };
-    if (!categories.length) {
-      // eslint-disable-next-line no-console
-      fetchCategories().catch((error) => console.log(error));
-    }
-
     const categoriesFilter = selectedCategories.map((id) => `"${id}"`).join(',');
     if (!categoriesFilter) {
       dispatch(setFilterParams({ [FilterCategories.CATEGORIES]: undefined }));

@@ -6,7 +6,7 @@ export enum RoutePaths {
   BASKET = '/basket',
   PRODUCT = '/product',
   PROFILE = '/profile',
-  CATALOG = '/catalog',
+  WATCHES = '/watches',
 }
 
 export enum StoreCountries {
