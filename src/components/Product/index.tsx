@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { Box, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
@@ -41,7 +41,9 @@ const Product = () => {
   return (
     <MainLayout>
       <Grid container spacing={0}>
-        <PageTitle title={product ? product.name.en : 'Something is wrong'} />
+        <PageTitle title={product ? product.name.en : 'Something is wrong'}>
+          <Breadcrumbs />
+        </PageTitle>
 
         <Grid container xs={12} spacing={2} sx={{ mr: 12, ml: 12, mt: 0 }}>
           <Grid xs={8}>

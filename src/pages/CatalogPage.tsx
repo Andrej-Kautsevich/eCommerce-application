@@ -44,8 +44,9 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
-      <PageTitle title="Catalog" />
-      <CatalogBreadcrumbs />
+      <PageTitle title="Catalog">
+        <CatalogBreadcrumbs />
+      </PageTitle>
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
         <Grid xs={12} md={3}>
           <CatalogSideBar />
