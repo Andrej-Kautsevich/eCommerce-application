@@ -1,11 +1,73 @@
 import { useState } from 'react';
-import { Box, Button, ImageList, ImageListItem, Typography } from '@mui/material';
+import { Box, Button, CardMedia, ImageList, ImageListItem } from '@mui/material';
 import { ProductProjection, Image } from '@commercetools/platform-sdk';
 import responsiveTheme from '../../shared/ui/theme';
+import emptyImage from '../../shared/assets/images/empty-img.png';
 
 interface CarouselProps {
   product: ProductProjection;
 }
+
+interface MainImageProps {
+  image: Image;
+}
+
+interface ListOfThumbnailsProps {
+  images: Image[];
+  image: Image;
+  index: number;
+  step: number;
+  func: (index: number) => void;
+}
+
+const MainImage = ({ image }: MainImageProps) => {
+  if (!image) return null;
+  return (
+    <CardMedia
+      component="img"
+      image={image.url}
+      alt={image.label ?? 'Image'}
+      onError={(e) => {
+        const target = e.target as HTMLImageElement;
+        target.onerror = null;
+        target.src = emptyImage;
+      }}
+      style={{ width: 'auto', height: 'auto', objectFit: 'cover', display: 'block', margin: 'auto' }}
+    />
+  );
+};
+
+const ListOfThumbnails = ({ images, image, index, step, func }: ListOfThumbnailsProps) => {
+  return (
+    <ImageListItem
+      style={{
+        width: 60,
+        height: 60,
+        overflow: 'hidden',
+        border: index === step ? `2px solid ${responsiveTheme.palette.primary.main}` : 'none',
+      }}
+      key={image.label ?? image.url}
+    >
+      <Box
+        component="div"
+        sx={{
+          width: '100%',
+          height: '100%',
+          cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+        }}
+        onClick={() => {
+          func(index);
+        }}
+      >
+        <MainImage image={images[index]} />
+      </Box>
+    </ImageListItem>
+  );
+};
 
 const Carousel = ({ product }: CarouselProps) => {
   const images = product?.masterVariant.images;
@@ -60,63 +122,24 @@ const Carousel = ({ product }: CarouselProps) => {
           >
             {images && images.length > 5
               ? visibleImages.map((image, index) => {
-                  const { label, url } = image;
                   return (
-                    <ImageListItem
-                      style={{
-                        width: 60,
-                        height: 60,
-                        overflow: 'hidden',
-                        border: index === 0 ? `2px solid ${responsiveTheme.palette.primary.main}` : 'none',
-                      }}
-                      key={label ?? url}
-                    >
-                      <Box
-                        component="div"
-                        sx={{
-                          width: '100%',
-                          height: '100%',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-around',
-                          alignItems: 'center',
-                        }}
-                        onClick={() => setStep((step + index) % images.length)}
-                      >
-                        <img src={url} alt={label ?? 'Image'} loading="lazy" />
-                      </Box>
-                    </ImageListItem>
+                    <ListOfThumbnails
+                      images={images}
+                      image={image}
+                      index={index}
+                      step={step}
+                      func={() => setStep((step + index) % images.length)}
+                    />
                   );
                 })
               : images.map((image, index) => (
-                  <ImageListItem
-                    style={{
-                      width: 60,
-                      height: 60,
-                      overflow: 'hidden',
-                      border: index === step ? `2px solid ${responsiveTheme.palette.primary.main}` : 'none',
-                    }}
-                    key={image.label ?? image.url}
-                  >
-                    <Box
-                      component="div"
-                      sx={{
-                        width: '100%',
-                        height: '100%',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-around',
-                        alignItems: 'center',
-                      }}
-                      onClick={() => {
-                        setStep(index);
-                      }}
-                    >
-                      <img src={image.url} alt={image.label ?? 'Image'} loading="lazy" />
-                    </Box>
-                  </ImageListItem>
+                  <ListOfThumbnails
+                    images={images}
+                    image={image}
+                    index={index}
+                    step={step}
+                    func={() => setStep(index)}
+                  />
                 ))}
           </ImageList>
 
@@ -133,29 +156,26 @@ const Carousel = ({ product }: CarouselProps) => {
             justifyContent: 'center',
             alignItems: 'center',
           }}
-          key={images[step].label ?? images[step].url}
         >
-          <img
-            src={images[step].url}
-            alt={images[step].label ?? 'Image'}
-            loading="lazy"
-            style={{ width: 'auto', height: 'auto', objectFit: 'cover', display: 'block', margin: 'auto' }}
-          />
+          <MainImage image={images[step]} />
         </ImageListItem>
       </Box>
     );
   }
 
   if (images && images.length === 1) {
-    const [{ label, url }] = images;
     return (
-      <ImageListItem sx={{ width: 400, height: 400 }} key={label ?? url}>
-        <img src={url} alt={label ?? 'Image'} loading="lazy" />
+      <ImageListItem sx={{ width: 400, height: 400 }}>
+        <MainImage image={images[step]} />
       </ImageListItem>
     );
   }
 
-  return <Typography>No images available</Typography>;
+  return (
+    <ImageListItem sx={{ width: 400, height: 400 }}>
+      <CardMedia component="img" image={emptyImage} alt={emptyImage} />
+    </ImageListItem>
+  );
 };
 
 export default Carousel;
