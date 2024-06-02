@@ -8,7 +8,7 @@ import Carousel from './Carousel';
 import MainLayout from '../../shared/ui/MainLayout';
 
 const Product = () => {
-  const productKey = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
+  const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
   const { getProduct } = useProduct();
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
   const [price, setPrice] = useState(0);
@@ -17,7 +17,7 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await getProduct(productKey);
+        const response = await getProduct(productID);
         setProduct(response.body);
         if (response.body.masterVariant.prices![0].value.centAmount) {
           setPrice(response.body.masterVariant.prices![0].value.centAmount);
@@ -35,7 +35,7 @@ const Product = () => {
     // TODO solve the problem with ESLINT
     // eslint-disable-next-line no-console
     fetchProduct().catch((error) => console.log(error));
-  }, [getProduct, productKey]);
+  }, [getProduct, productID]);
 
   return (
     <MainLayout>

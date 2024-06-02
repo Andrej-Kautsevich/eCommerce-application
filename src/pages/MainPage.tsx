@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { Alert, AlertTitle, Button, Slide, Snackbar, Typography } from '@mui/material';
-import { ProductKey } from '../shared/types/type';
-import useProductPageBtn from '../components/Product/productPageBtn';
+import { Alert, AlertTitle, Slide, Snackbar, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
 import { setSubmitSuccess } from '../shared/store/auth/authSlice';
 import MainLayout from '../shared/ui/MainLayout';
@@ -19,26 +17,11 @@ const MainPage = () => {
     dispatch(setSubmitSuccess({ status: false }));
   };
 
-  /* --- for test ↓ --- */
-  const productPageBtn = useProductPageBtn();
-  const productKey: ProductKey = { key: 'xiaomi-amazfit-gts-3' };
-  // CASIO-MTP-1374D-1AVDF (5 photo)
-  // eutour-100795659 (1 photo)
-  // vais-vw-02 (4 photo)
-  // xiaomi-amazfit-gts-3 (8 photo) //TODO don't forget to delete extra images from ecommerce
-  /* --- for test ↑ --- */
-
   return (
     <MainLayout>
       <Typography gutterBottom variant="h2" component="h1" fontFamily="Orbitron" width="50vw" sx={{ pt: 15, pl: 8 }}>
         Find your dream watch
       </Typography>
-
-      {/* --- for test ↓ --- */}
-      <Button variant="contained" sx={{ mr: 1, ml: 8 }} onClick={() => productPageBtn(productKey.key)}>
-        product page
-      </Button>
-      {/* --- for test ↑ --- */}
 
       {submitSuccess.status && (
         <Slide in={openSnackBar} direction="right">
