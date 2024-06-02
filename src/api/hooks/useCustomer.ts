@@ -1,15 +1,19 @@
 import { MyCustomerChangePassword, MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import { useCallback } from 'react';
 import useApiClient from './useApiClient';
 
 const useCustomer = () => {
   const { apiRoot } = useApiClient();
-
-  const getCustomer = () => {
+  const getCustomer = useCallback(() => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
-    return apiRoot.me().get().execute();
-  };
+    return apiRoot
+      .me()
+      .get()
+      .execute()
+      .then((response) => response.body);
+  }, [apiRoot]);
 
   const getCart = () => {
     if (!apiRoot) {
