@@ -1,13 +1,15 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
-import { CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
+import { CatalogCategoriesSelect, CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
 import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
+import { FilterCategories } from '../shared/types/enum';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 4;
@@ -18,7 +20,10 @@ const GRID_SPACING_SM = 2;
 const GRID_SPACING_MD = 3;
 
 const CatalogPage = () => {
+  const { categorySlug } = useParams();
   const { getProducts } = useProduct();
+  const { categories } = useAppSelector((state) => state.products);
+  const location = useLocation();
   const { filterParams, sortParam } = useAppSelector((state) => state.products);
 
   const [products, setProducts] = useState<ProductProjection[]>([]);
@@ -26,11 +31,26 @@ const CatalogPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const queryArgs: FetchQueryArgs = {};
+      let filter = '';
+
+      if (categorySlug) {
+        const currentCategory = categories.find((category) => category.slug.en === categorySlug);
+        const currentCategoryFilter = `${FilterCategories.CATEGORIES}: subtree("${currentCategory?.id}")`;
+        filter += currentCategoryFilter;
+      } else {
+        const currentCategorySlug = location.pathname.split('/').join('');
+        const currentCategory = categories.find((category) => category.slug.en === currentCategorySlug);
+        if (currentCategory) {
+          const currentCategoryFilter = `${FilterCategories.CATEGORIES}: subtree("${currentCategory.id}")`;
+          filter += currentCategoryFilter;
+        }
+      }
 
       if (filterParams) {
-        const filter = parseFilterParams(filterParams);
-        if (filter) queryArgs.filter = filter;
+        const parsedFilterParams = parseFilterParams(filterParams);
+        filter += parsedFilterParams;
       }
+      queryArgs.filter = filter;
 
       if (sortParam) queryArgs.sort = sortParam;
 
@@ -39,11 +59,12 @@ const CatalogPage = () => {
     };
     // eslint-disable-next-line no-console
     fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams, sortParam]);
+  }, [getProducts, filterParams, sortParam, categorySlug]);
 
   return (
     <MainLayout>
       <CatalogBreadcrumbs />
+      <CatalogCategoriesSelect />
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
         <Grid xs={12} md={3}>
           <CatalogSideBar />

@@ -13,7 +13,8 @@ import CatalogPage from '../../pages/CatalogPage';
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
-  { path: RoutePaths.WATCHES, Component: CatalogPage },
+  { path: `${RoutePaths.WATCHES}/:categorySlug`, Component: CatalogPage },
+  { path: `${RoutePaths.WATCHES}`, Component: CatalogPage },
   { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
 ];
 
