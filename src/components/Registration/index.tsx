@@ -15,7 +15,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { CheckboxElement, PasswordElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
-import { BaseAddress, MyCustomerDraft } from '@commercetools/platform-sdk';
+import {
+  BaseAddress,
+  MyCustomerAddBillingAddressIdAction,
+  MyCustomerAddShippingAddressIdAction,
+  MyCustomerDraft,
+} from '@commercetools/platform-sdk';
 import schemaPass from '../../shared/validation/passValidation';
 import schemaEmail from '../../shared/validation/emailValidation';
 import schemaName from '../../shared/validation/nameValidation';
@@ -24,7 +29,7 @@ import schemaCity from '../../shared/validation/cityValidation';
 import schemaStreet from '../../shared/validation/streetValidation';
 import schemaPostalCode from '../../shared/validation/postalCodeValidation';
 import { RegistrationForm } from './types';
-import { useCustomerAuth } from '../../api/hooks';
+import { useCustomer, useCustomerAuth } from '../../api/hooks';
 import { RoutePaths, StoreCountries } from '../../shared/types/enum';
 import schemaPostalCodeBelarus from '../../shared/validation/postalCodeOfCountriesVal/belarusPostalShema';
 import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
@@ -78,6 +83,7 @@ export default function Registration() {
   const [showAlert, setShowAlert] = useState(false); // Close error alert
   const navigate = useNavigate();
   const { customerSignUp } = useCustomerAuth();
+  const { customerUpdate } = useCustomer();
   const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
     const addresses: BaseAddress[] = [data.shippingAddress];
     let defaultBillingAddress;
@@ -108,6 +114,18 @@ export default function Registration() {
     if (signUpResult) {
       navigate(RoutePaths.MAIN);
       dispatch(setSubmitSuccess({ status: true, message: `Welcome, ${customer.firstName}!` }));
+      const shippingAddressUpdate: MyCustomerAddShippingAddressIdAction = {
+        action: 'addShippingAddressId',
+        addressId: signUpResult.body.customer.addresses[0].id,
+      };
+      const billingAddressUpdate: MyCustomerAddBillingAddressIdAction = {
+        action: 'addBillingAddressId',
+        addressId:
+          showBilling && data.billingAddress
+            ? signUpResult.body.customer.addresses[1].id
+            : signUpResult.body.customer.addresses[0].id,
+      };
+      customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() => setShowAlert(true));
     } else {
       setShowAlert(true);
     }
