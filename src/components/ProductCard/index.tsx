@@ -34,6 +34,11 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           image={parsedProduct.images.at(0)?.url}
           alt={parsedProduct.name}
           sx={productCardMediaSx}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            target.src = 'images/empty-img.png';
+          }}
         />
         <CardContent sx={productCardContentSx}>
           <Typography variant="body1" component="div" textAlign="center">
