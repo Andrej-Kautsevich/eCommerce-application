@@ -12,8 +12,6 @@ const CatalogBreadcrumbs = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter((x) => x);
 
-  // console.log(pathnames);
-
   return (
     <Box component="div" height={150} sx={{ bgcolor: 'primary.main', pr: 3, pl: 3 }} display="flex" alignItems="center">
       <Breadcrumbs aria-label="breadcrumbs">
@@ -22,17 +20,19 @@ const CatalogBreadcrumbs = () => {
             Main
           </Typography>
         </LinkRouter>
-        {pathnames.map((_, index) => {
+        {pathnames.map((value, index) => {
           const last = index === pathnames.length - 1;
           const to = `/${pathnames.slice(0, index + 1).join('/')}`;
 
           return last ? (
-            <Typography variant="body1" color="secondary" key={to}>
-              {breadcrumbNameMap[to]}{' '}
+            <Typography variant="h6" color="secondary" key={to}>
+              {value.toLocaleUpperCase()}
             </Typography>
           ) : (
             <LinkRouter underline="hover" to={to} key={to}>
-              {breadcrumbNameMap[to]}
+              <Typography variant="body1" color="secondary">
+                {breadcrumbNameMap[to]}
+              </Typography>
             </LinkRouter>
           );
         })}

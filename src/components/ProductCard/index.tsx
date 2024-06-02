@@ -22,7 +22,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Card sx={productCardSx}>
-      <CardActionArea component={RouterLink} to={`${RoutePaths.PRODUCT}/${parsedProduct.id}`} sx={productCardActionSx}>
+      <CardActionArea component={RouterLink} to={`${RoutePaths.WATCHES}/${parsedProduct.id}`} sx={productCardActionSx}>
         <HoverBox>
           <ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText', mb: 1 }} />
           <Typography variant="body2" color="primary.contrastText">

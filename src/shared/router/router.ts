@@ -14,7 +14,7 @@ const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
   { path: RoutePaths.WATCHES, Component: CatalogPage },
-  { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
+  { path: `${RoutePaths.WATCHES}/*`, Component: ProductPage },
 ];
 
 // Routes available to AUTHORIZED users add here
