@@ -6,7 +6,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import MainLayout from '../../shared/ui/MainLayout';
-import CatalogBreadcrumbs from '../CatalogBreadcrumbs';
 
 const Product = () => {
   const productKey = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
@@ -40,12 +39,19 @@ const Product = () => {
 
   return (
     <MainLayout>
-      <CatalogBreadcrumbs />
       <Grid container spacing={0}>
         <Grid xs={12}>
-          <Typography variant="h3" component="h1" fontFamily="Orbitron">
-            {product ? product.name.en : 'Something is wrong'}
-          </Typography>
+          <Box
+            component="div"
+            height={150}
+            sx={{ bgcolor: 'primary.main', pr: 3, pl: 3 }}
+            display="flex"
+            alignItems="center"
+          >
+            <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
+              {product ? product.name.en : 'Something is wrong'}
+            </Typography>
+          </Box>
         </Grid>
         <Grid container xs={12} spacing={2} sx={{ mr: 12, ml: 12, mt: 0 }}>
           <Grid xs={8}>
