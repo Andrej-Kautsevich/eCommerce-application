@@ -8,13 +8,13 @@ export default function UserProfile() {
   const [getUserLastName, setUserLastName] = useState('');
   const [getUserBirth, setUserBirth] = useState('');
   const [getUserDefaultShip, setUserDefaultShip] = useState('');
-  const [getUserInfo, setUserInfo] = useState([{}]);
+  const [userAddresses, setUserAddresses] = useState([{}]);
   const { getCustomer } = useCustomer();
 
   useEffect(() => {
     const getUserData = async () => {
       const response = await getCustomer().then((res) => res);
-      setUserInfo(response.addresses);
+      setUserAddresses(response.addresses);
       setUserName(`${response.firstName}`);
       setUserBirth(`${response.dateOfBirth}`);
       setUserLastName(`${response.lastName}`);
@@ -31,12 +31,12 @@ export default function UserProfile() {
         Date of birth: {getUserBirth.split('-').reverse().join('-')}
       </Typography>
       <Typography variant="h4" component="div" sx={{ textAlign: 'center', marginTop: '10px' }}>
-        Addresses ({getUserInfo.length}):
+        Addresses ({userAddresses.length}):
       </Typography>
       <Box
         sx={{ fontFamily: 'Poppins', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '10px' }}
       >
-        {getUserInfo.map((info: AddressesFields) => (
+        {userAddresses.map((info: AddressesFields) => (
           <Box>
             <Typography variant="h6" component="div" sx={{ bgcolor: 'primary.main', color: 'white', pr: 3, pl: 3 }}>
               {getUserDefaultShip === info.id ? 'Default shipping:' : 'Default billing:'}
