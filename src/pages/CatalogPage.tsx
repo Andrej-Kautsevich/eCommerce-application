@@ -26,13 +26,15 @@ const CatalogPage = () => {
   const { getProducts } = useProduct();
   const { categories } = useAppSelector((state) => state.products);
   const location = useLocation();
-  const { filterParams, sortParam } = useAppSelector((state) => state.products);
+  const { filterParams, sortParam, searchParam: searchString } = useAppSelector((state) => state.products);
 
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const queryArgs: FetchQueryArgs = {};
+      const queryArgs: FetchQueryArgs = {
+        // fuzzy: true,
+      };
       const filter = [];
 
       if (categorySlug) {
@@ -52,6 +54,9 @@ const CatalogPage = () => {
         const parsedFilterParams = filterParams.map((element) => parseFilterParams(element));
         filter.push(...parsedFilterParams);
       }
+      if (searchString) {
+        queryArgs['text.en'] = searchString;
+      }
       if (filter) queryArgs.filter = filter;
 
       if (sortParam) queryArgs.sort = sortParam;
@@ -61,7 +66,7 @@ const CatalogPage = () => {
     };
     // eslint-disable-next-line no-console
     fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname]);
+  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname, searchString]);
 
   return (
     <MainLayout>

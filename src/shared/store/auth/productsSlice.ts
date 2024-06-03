@@ -8,6 +8,7 @@ interface CategoriesState {
   attributes: AttributeDefinition[];
   filterParams: FilterParams[];
   sortParam: string | undefined;
+  searchParam: string | undefined;
 }
 
 const initialState: CategoriesState = {
@@ -15,6 +16,7 @@ const initialState: CategoriesState = {
   attributes: [],
   filterParams: [],
   sortParam: undefined,
+  searchParam: undefined,
 };
 
 const productsSlice = createSlice({
@@ -39,9 +41,13 @@ const productsSlice = createSlice({
     setSortParam: (state, action: PayloadAction<string>) => {
       state.sortParam = action.payload;
     },
+    setSearchParam: (state, action: PayloadAction<string | undefined>) => {
+      state.searchParam = action.payload;
+    },
   },
 });
 
-export const { fetchCategories, setFilterParams, setSortParam, fetchAttributes } = productsSlice.actions;
+export const { fetchCategories, fetchAttributes, setFilterParams, setSortParam, setSearchParam } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;
