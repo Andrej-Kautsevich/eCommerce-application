@@ -51,7 +51,7 @@ const CatalogPage = () => {
         const parsedFilterParams = parseFilterParams(filterParams);
         filter += parsedFilterParams;
       }
-      queryArgs.filter = filter;
+      if (filter) queryArgs.filter = filter;
 
       if (sortParam) queryArgs.sort = sortParam;
 
