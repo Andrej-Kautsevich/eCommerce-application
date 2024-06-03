@@ -1,5 +1,10 @@
 import { ReactNode, createContext, useCallback, useMemo, useState } from 'react';
-import { ByProjectKeyRequestBuilder, CustomerSignin, createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import {
+  ByProjectKeyRequestBuilder,
+  ClientResponse,
+  CustomerSignin,
+  createApiBuilderFromCtpClient,
+} from '@commercetools/platform-sdk';
 import { ClientBuilder } from '@commercetools/sdk-client-v2';
 import {
   anonymousAuthMiddlewareOptions,
@@ -14,7 +19,7 @@ export const ApiClientContext = createContext<ApiRootContextType | undefined>(un
 
 type ApiRootContextType = {
   apiRoot: ByProjectKeyRequestBuilder | undefined;
-  setPasswordFlow: (user: CustomerSignin) => void;
+  setPasswordFlow: (user: CustomerSignin) => Promise<ClientResponse>;
   setAnonymousFlow: () => void;
   setTokenFlow: (token: string) => void;
   setApiRoot: React.Dispatch<React.SetStateAction<ByProjectKeyRequestBuilder | undefined>>;
@@ -51,7 +56,7 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
       const newApiRoot = getApiRoot(clientBuilder);
       setApiRoot(newApiRoot);
       // need to get token immediately
-      await newApiRoot.me().carts().get().execute();
+      return newApiRoot.me().carts().get().execute();
     },
     [getApiRoot, defaultClientBuilder],
   );

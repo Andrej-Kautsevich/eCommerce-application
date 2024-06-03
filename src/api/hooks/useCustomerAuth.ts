@@ -18,12 +18,10 @@ const useCustomerAuth = () => {
       .login()
       .post({ body: user })
       .execute()
-      .then((response) => {
-        if (response.statusCode === 200) {
-          dispatch(loginSuccess());
-          tokenCache.remove();
-          setPasswordFlow(user);
-        }
+      .then(async (response) => {
+        dispatch(loginSuccess());
+        tokenCache.remove();
+        await setPasswordFlow(user);
         return response;
       })
       .catch((error: ClientResponse<AuthErrorResponse>) => {
@@ -43,17 +41,15 @@ const useCustomerAuth = () => {
       .signup()
       .post({ body: user })
       .execute()
-      .then((response) => {
-        if (response.statusCode === 201) {
-          dispatch(loginSuccess());
-          tokenCache.remove();
-          setPasswordFlow(user);
-        }
-        return true;
+      .then(async (response) => {
+        dispatch(loginSuccess());
+        tokenCache.remove();
+        await setPasswordFlow(user);
+        return response;
       })
       .catch((signupError: ClientResponse<AuthErrorResponse>) => {
         dispatch(loginError(signupError.body));
-        return false;
+        return undefined;
       }); // TODO add error handle
   };
 
