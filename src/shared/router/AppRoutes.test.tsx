@@ -76,7 +76,7 @@ it('renders registration page without crashing', () => {
 
 it('renders catalog page without crashing', () => {
   const { container } = customRender(
-    <MemoryRouter initialEntries={[RoutePaths.CATALOG]}>
+    <MemoryRouter initialEntries={[RoutePaths.WATCHES]}>
       <AppRoutes />
     </MemoryRouter>,
   );

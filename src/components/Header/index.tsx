@@ -39,8 +39,7 @@ const Header = () => {
           <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }}>
             <Box sx={{ minWidth: '60dvw', p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <MenuItem>
-                {/* TODO add link to catalog page */}
-                <HeaderLink component={RouterLink} underline="none" to={RoutePaths.CATALOG}>
+                <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
                   Watches
                 </HeaderLink>
               </MenuItem>
@@ -53,8 +52,7 @@ const Header = () => {
 
         {/* Desktop view */}
         <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
-          {/* TODO add link to catalog page */}
-          <HeaderLink component={RouterLink} underline="none" to={RoutePaths.CATALOG}>
+          <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
             Watches
           </HeaderLink>
           <LoginLogoutButtons />
