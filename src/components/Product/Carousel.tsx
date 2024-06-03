@@ -83,6 +83,7 @@ const Carousel = ({ product }: CarouselProps) => {
                       index={index}
                       step={step}
                       func={() => setStep((step + index) % images.length)}
+                      key={image.label ?? image.url}
                     />
                   );
                 })
@@ -93,6 +94,7 @@ const Carousel = ({ product }: CarouselProps) => {
                     index={index}
                     step={step}
                     func={() => setStep(index)}
+                    key={image.label ?? image.url}
                   />
                 ))}
           </ImageList>
