@@ -5,7 +5,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
-import { CatalogCategoriesSelect, CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
+import { CatalogCategoriesSelect, CatalogSearchPanel, CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
 import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
 import PageTitle from '../components/PageTitle';
@@ -73,8 +73,13 @@ const CatalogPage = () => {
           <CatalogSideBar />
         </Grid>
         <Grid container sm={12} md={9} flexDirection="column">
-          <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} alignSelf="end">
-            <CatalogSortPanel />
+          <Grid container>
+            <Grid xs="auto" flexGrow={1}>
+              <CatalogSearchPanel />
+            </Grid>
+            <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD}>
+              <CatalogSortPanel />
+            </Grid>
           </Grid>
           <Grid container mt={1} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
             {products.map((product) => (
