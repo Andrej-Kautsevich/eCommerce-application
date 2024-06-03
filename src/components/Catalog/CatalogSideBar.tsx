@@ -19,7 +19,7 @@ const CatalogSideBar = () => {
     <Toolbar>
       <List sx={{ width: '100%' }} component="ul">
         {attributes.map((attribute) => (
-          <CatalogFilterPanel attribute={attribute} />
+          <CatalogFilterPanel attribute={attribute} key={attribute.name} />
         ))}
       </List>
     </Toolbar>
