@@ -13,8 +13,9 @@ import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
 import { FilterCategories } from '../shared/types/enum';
 
 const GRID_COLUMNS_XS = 6;
-const GRID_COLUMNS_SM = 4;
-const GRID_COLUMNS_MD = 3;
+const GRID_COLUMNS_SM = 6;
+const GRID_COLUMNS_MD = 4;
+const GRID_COLUMNS_LG = 4;
 
 const GRID_SPACING_XS = 1;
 const GRID_SPACING_SM = 2;
@@ -83,7 +84,13 @@ const CatalogPage = () => {
           </Grid>
           <Grid container mt={1} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
             {products.map((product) => (
-              <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} key={product.id}>
+              <Grid
+                xs={GRID_COLUMNS_XS}
+                sm={GRID_COLUMNS_SM}
+                md={GRID_COLUMNS_MD}
+                lg={GRID_COLUMNS_LG}
+                key={product.id}
+              >
                 <ProductCard product={product} />
               </Grid>
             ))}
