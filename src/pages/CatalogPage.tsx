@@ -14,7 +14,7 @@ import { FilterCategories } from '../shared/types/enum';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 4;
-const GRID_COLUMNS_MD = 3;
+const GRID_COLUMNS_MD = 4;
 
 const GRID_SPACING_XS = 1;
 const GRID_SPACING_SM = 2;

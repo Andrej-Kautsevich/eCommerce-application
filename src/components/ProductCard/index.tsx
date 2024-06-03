@@ -45,9 +45,16 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
             {parsedProduct.name}
           </Typography>
           <Typography variant="caption">{parsedProduct.description}</Typography>
-          <Typography variant="h5" component="div">
-            {parsedProduct.price}
-          </Typography>
+          {parsedProduct.discountPrice && (
+            <>
+              <Typography variant="body2" component="div" sx={{ textDecoration: 'line-through' }}>
+                {parsedProduct.price}
+              </Typography>
+              <Typography variant="h5" component="div" color="error.light">
+                {parsedProduct.discountPrice}
+              </Typography>
+            </>
+          )}
         </CardContent>
       </CardActionArea>
     </Card>
