@@ -1,12 +1,15 @@
 import { useCallback } from 'react';
+import { QueryParam } from '@commercetools/platform-sdk';
 import useApiClient from './useApiClient';
 import { useAppDispatch } from '../../shared/store/hooks';
-import { fetchCategories } from '../../shared/store/auth/productsSlice';
+import { fetchAttributes, fetchCategories } from '../../shared/store/auth/productsSlice';
 
 export type FetchQueryArgs = {
   limit?: number;
   filter?: string | string[];
   sort?: string | string[];
+  [key: string]: QueryParam;
+  fuzzy?: boolean;
 };
 
 const useProduct = () => {
@@ -43,7 +46,17 @@ const useProduct = () => {
     [apiRoot],
   );
 
-  return { getProduct, getProducts, getCategories };
+  const getAttributes = useCallback(async () => {
+    if (!apiRoot) {
+      throw new Error('ApiRoot is not defined');
+    }
+    const response = await apiRoot.productTypes().get().execute();
+    if (response.body.results[0].attributes) {
+      dispatch(fetchAttributes(response.body.results[0].attributes));
+    }
+  }, [apiRoot, dispatch]);
+
+  return { getProduct, getProducts, getCategories, getAttributes };
 };
 
 export default useProduct;

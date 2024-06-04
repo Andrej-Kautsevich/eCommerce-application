@@ -17,6 +17,7 @@ export enum StoreCountries {
 
 export enum FilterCategories {
   CATEGORIES = 'categories.id',
+  SEARCH = 'text.en',
 }
 
 export enum SortNames {

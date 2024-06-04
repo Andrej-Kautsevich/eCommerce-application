@@ -3,82 +3,18 @@ import { Box, Button, CardMedia, ImageList, ImageListItem } from '@mui/material'
 import { ProductProjection, Image } from '@commercetools/platform-sdk';
 import responsiveTheme from '../../shared/ui/theme';
 import emptyImage from '../../shared/assets/images/empty-img.png';
+import MainImage from './MainImage';
+import ListOfThumbnails from './ListOfThumbnails';
+import ModalWindow from './ModalWindow';
 
 interface CarouselProps {
   product: ProductProjection;
 }
 
-interface MainImageProps {
-  image: Image;
-}
-
-interface ListOfThumbnailsProps {
-  images: Image[];
-  image: Image;
-  index: number;
-  step: number;
-  func: (index: number) => void;
-}
-
-const MainImage = ({ image }: MainImageProps) => {
-  if (!image) return null;
-  return (
-    <CardMedia
-      component="img"
-      image={image.url}
-      alt={image.label ?? 'Image'}
-      onError={(e) => {
-        const target = e.target as HTMLImageElement;
-        target.onerror = null;
-        target.src = emptyImage;
-      }}
-      style={{
-        width: 'auto',
-        height: 'auto',
-        objectFit: 'cover',
-        display: 'block',
-        margin: 'auto',
-      }}
-    />
-  );
-};
-
-const ListOfThumbnails = ({ images, image, index, step, func }: ListOfThumbnailsProps) => {
-  return (
-    <ImageListItem
-      style={{
-        width: 60,
-        height: 60,
-        overflow: 'hidden',
-        borderRadius: '5px',
-        border: index === step ? `2px solid ${responsiveTheme.palette.primary.main}` : 'none',
-      }}
-      key={image.label ?? image.url}
-    >
-      <Box
-        component="div"
-        sx={{
-          width: '100%',
-          height: '100%',
-          cursor: 'pointer',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-        }}
-        onClick={() => {
-          func(index);
-        }}
-      >
-        <MainImage image={images[index]} />
-      </Box>
-    </ImageListItem>
-  );
-};
-
 const Carousel = ({ product }: CarouselProps) => {
   const images = product?.masterVariant.images;
   const [step, setStep] = useState(0);
+  const [open, setOpen] = useState(false);
 
   const getVisibleImages = (imagesList: Image[], currentStep: number, count: number) => {
     const { length } = imagesList;
@@ -99,27 +35,42 @@ const Carousel = ({ product }: CarouselProps) => {
     }
   };
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   if (images && images.length > 1) {
     return (
       <Box
         sx={{
-          width: 470,
-          height: 470,
           display: 'flex',
           flexDirection: 'row',
           gap: '10px',
           justifyContent: 'center',
         }}
       >
-        <Box sx={{ width: 100, height: 470, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <ModalWindow
+          images={images}
+          step={step}
+          isOpen={open}
+          handleClose={handleClose}
+          handlePrev={handlePrev}
+          handleNext={handleNext}
+        />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
           <Button variant="contained" sx={{ height: 30 }} onClick={handlePrev}>
             ↑
           </Button>
 
           <ImageList
             sx={{
-              width: 100,
-              height: 400,
+              height: '100%',
+              width: '100%',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-around',
@@ -136,6 +87,7 @@ const Carousel = ({ product }: CarouselProps) => {
                       index={index}
                       step={step}
                       func={() => setStep((step + index) % images.length)}
+                      key={image.label ?? image.url}
                     />
                   );
                 })
@@ -146,6 +98,7 @@ const Carousel = ({ product }: CarouselProps) => {
                     index={index}
                     step={step}
                     func={() => setStep(index)}
+                    key={image.label ?? image.url}
                   />
                 ))}
           </ImageList>
@@ -155,6 +108,42 @@ const Carousel = ({ product }: CarouselProps) => {
           </Button>
         </Box>
         <ImageListItem
+          component="div"
+          sx={{
+            width: {
+              xs: '70vw',
+              sm: '65vw',
+              md: '50vw',
+              lg: '50vw',
+            },
+            overflow: 'hidden',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: '12px',
+            boxShadow: `0px 4px 8px ${responsiveTheme.palette.primary.main}`,
+          }}
+          onClick={handleOpen}
+        >
+          <MainImage image={images[step]} />
+        </ImageListItem>
+      </Box>
+    );
+  }
+
+  if (images && images.length === 1) {
+    return (
+      <div>
+        <ModalWindow
+          images={images}
+          step={step}
+          isOpen={open}
+          handleClose={handleClose}
+          handlePrev={handlePrev}
+          handleNext={handleNext}
+        />
+        <ImageListItem
+          component="div"
           style={{
             width: 470,
             height: 470,
@@ -165,18 +154,11 @@ const Carousel = ({ product }: CarouselProps) => {
             borderRadius: '12px',
             boxShadow: `0px 4px 8px ${responsiveTheme.palette.primary.main}`,
           }}
+          onClick={handleOpen}
         >
           <MainImage image={images[step]} />
         </ImageListItem>
-      </Box>
-    );
-  }
-
-  if (images && images.length === 1) {
-    return (
-      <ImageListItem sx={{ width: 400, height: 400 }}>
-        <MainImage image={images[step]} />
-      </ImageListItem>
+      </div>
     );
   }
 

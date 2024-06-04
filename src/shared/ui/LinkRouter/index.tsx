@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Link, LinkProps } from '@mui/material';
+import { forwardRef } from 'react';
 
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -8,8 +9,7 @@ interface LinkRouterProps extends LinkProps {
   // replace?: boolean;
 }
 
-function LinkRouter(props: LinkRouterProps) {
-  return <Link {...props} component={RouterLink} />;
-}
-
+const LinkRouter = forwardRef<HTMLAnchorElement, LinkRouterProps>((props, ref) => (
+  <Link ref={ref} {...props} component={RouterLink} />
+));
 export default LinkRouter;

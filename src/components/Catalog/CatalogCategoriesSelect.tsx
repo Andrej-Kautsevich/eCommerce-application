@@ -30,6 +30,7 @@ const CatalogCategoriesSelect = () => {
               href="#basic-chip"
               variant="outlined"
               clickable
+              key={category.name}
             />
           );
         })}

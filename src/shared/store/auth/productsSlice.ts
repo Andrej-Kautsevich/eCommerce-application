@@ -1,18 +1,22 @@
 /* eslint-disable no-param-reassign */
-import { Category, CategoryPagedQueryResponse } from '@commercetools/platform-sdk';
+import { AttributeDefinition, Category, CategoryPagedQueryResponse } from '@commercetools/platform-sdk';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { FilterParams } from '../../types/type';
 
 interface CategoriesState {
   categories: Category[];
-  filterParams: FilterParams | undefined;
+  attributes: AttributeDefinition[];
+  filterParams: FilterParams[];
   sortParam: string | undefined;
+  searchParam: string | undefined;
 }
 
 const initialState: CategoriesState = {
   categories: [],
-  filterParams: undefined,
+  attributes: [],
+  filterParams: [],
   sortParam: undefined,
+  searchParam: undefined,
 };
 
 const productsSlice = createSlice({
@@ -22,15 +26,28 @@ const productsSlice = createSlice({
     fetchCategories: (state, action: PayloadAction<CategoryPagedQueryResponse>) => {
       state.categories = action.payload.results;
     },
+    fetchAttributes: (state, action: PayloadAction<AttributeDefinition[]>) => {
+      state.attributes = action.payload;
+    },
     setFilterParams: (state, action: PayloadAction<FilterParams>) => {
-      state.filterParams = action.payload;
+      const key = Object.keys(action.payload)[0];
+      const index = state.filterParams.findIndex((filter) => key in filter);
+      if (index !== -1) {
+        state.filterParams[index][key] = action.payload[key];
+      } else {
+        state.filterParams.push(action.payload);
+      }
     },
     setSortParam: (state, action: PayloadAction<string>) => {
       state.sortParam = action.payload;
     },
+    setSearchParam: (state, action: PayloadAction<string | undefined>) => {
+      state.searchParam = action.payload;
+    },
   },
 });
 
-export const { fetchCategories, setFilterParams, setSortParam } = productsSlice.actions;
+export const { fetchCategories, fetchAttributes, setFilterParams, setSortParam, setSearchParam } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;

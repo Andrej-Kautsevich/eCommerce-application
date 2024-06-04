@@ -38,48 +38,54 @@ const Product = () => {
   }, [getProduct, productID]);
 
   return (
-    <Grid container spacing={0}>
+    <Grid container style={{ display: 'flex', flexDirection: 'column' }}>
       <PageTitle title={product ? product.name.en : 'Something is wrong'}>
         <Breadcrumbs />
       </PageTitle>
 
-      <Grid container xs={12} spacing={2} sx={{ mr: 12, ml: 12, mt: 0 }}>
-        <Grid xs={8}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Carousel product={product!} />
-          </div>
+      <Grid
+        container
+        columns={{ xs: 4, sm: 8, md: 12 }}
+        spacing={2}
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Grid xs={4} sm={8} md={8} style={{ display: 'flex', justifyContent: 'center', maxHeight: '500px' }}>
+          <Carousel product={product!} />
         </Grid>
-        <Grid xs={4}>
-          <Typography component="p" fontFamily="Poppins" color="text.secondary">
-            Description:
-          </Typography>
-          <Typography component="p" fontFamily="Poppins" color="text.primary" sx={{ mb: 3 }}>
-            {product ? product.description?.en : 'Something is wrong'}
-          </Typography>
-          <Typography component="p" fontFamily="Poppins" color="text.secondary">
-            Price:
-          </Typography>
-          <Typography
-            component="p"
-            fontFamily="Poppins"
-            color="text.primary"
-            sx={{
-              mb: 3,
-              textDecoration: discount > 0 ? 'line-through' : 'none',
-            }}
-          >
-            {product ? `$${(price / 100).toFixed(2)}` : 'Something is wrong'}
-          </Typography>
-          {discount > 0 && (
-            <Box>
-              <Typography component="p" fontFamily="Poppins" color="text.secondary">
-                SALE PRICE:
-              </Typography>
-              <Typography component="p" fontFamily="Poppins" color="red" sx={{ mb: 3, fontSize: 36 }}>
-                {product ? `$${(discount / 100).toFixed(2)}` : 'Something is wrong'}
-              </Typography>
-            </Box>
-          )}
+
+        <Grid xs={4} sm={8} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Box style={{ maxWidth: '390px' }}>
+            <Typography component="p" fontFamily="Poppins" color="text.secondary">
+              Description:
+            </Typography>
+            <Typography component="p" fontFamily="Poppins" color="text.primary" sx={{ mb: 3 }}>
+              {product ? product.description?.en : 'Something is wrong'}
+            </Typography>
+            <Typography component="p" fontFamily="Poppins" color="text.secondary">
+              Price:
+            </Typography>
+            <Typography
+              component="p"
+              fontFamily="Poppins"
+              color="text.primary"
+              sx={{
+                mb: 3,
+                textDecoration: discount > 0 ? 'line-through' : 'none',
+              }}
+            >
+              {product ? `$${(price / 100).toFixed(2)}` : 'Something is wrong'}
+            </Typography>
+            {discount > 0 && (
+              <Box>
+                <Typography component="p" fontFamily="Poppins" color="text.secondary">
+                  SALE PRICE:
+                </Typography>
+                <Typography component="p" fontFamily="Poppins" color="red" sx={{ mb: 3, fontSize: 36 }}>
+                  {product ? `$${(discount / 100).toFixed(2)}` : 'Something is wrong'}
+                </Typography>
+              </Box>
+            )}
+          </Box>
         </Grid>
       </Grid>
     </Grid>
