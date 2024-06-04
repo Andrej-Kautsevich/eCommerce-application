@@ -36,7 +36,7 @@ export default function UserProfile() {
         component="p"
         sx={{ textAlign: 'center', fontSize: '14px', fontWeight: '300', color: '#939393', margin: '21px 0' }}
       >
-        Welcome to your profile, your one-stop-shop for all your recent Volumenzeit account activity.
+        Welcome to your profile, your one-stop-shop for all your recent Volcano Watch account activity.
       </Typography>
       {showEditMode ? (
         <Box
