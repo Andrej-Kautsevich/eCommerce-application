@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useCustomer } from '../../api/hooks';
 import { AddressesFields } from '../../shared/types/type';
 import EditInfo from './editPersonInfoForm';
+import ChangePassword from './changeProfile';
+// import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 
 export default function UserProfile() {
   const [getUserName, setUserName] = useState('');
@@ -14,9 +16,13 @@ export default function UserProfile() {
   const [showEditMode, setShowEditMode] = useState(false);
   const { getCustomer } = useCustomer();
 
+  // const dispatch = useAppDispatch();
+  // const { customer } = useAppSelector((state) => state.customer);
+
   useEffect(() => {
     const getUserData = async () => {
       const response = await getCustomer().then((res) => res);
+
       setUserAddresses(response.addresses);
       setUserName(`${response.firstName}`);
       setUserBirth(`${response.dateOfBirth}`);
@@ -76,14 +82,12 @@ export default function UserProfile() {
           <Typography variant="h6" component="div">
             Email: {userEmail}
           </Typography>
-          <Typography variant="h6" component="div">
-            Password: *******
-          </Typography>
           <Button variant="contained" onClick={() => setShowEditMode(true)}>
             Manage Info
           </Button>
         </Box>
       )}
+      <ChangePassword />
       <Typography variant="h5" component="div" sx={{ marginTop: '50px' }}>
         Addresses ({userAddresses.length}):
       </Typography>

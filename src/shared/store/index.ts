@@ -5,6 +5,7 @@ import persistStore from 'redux-persist/es/persistStore';
 import logger from 'redux-logger';
 import authSlice from './auth/authSlice';
 import productsSlice from './auth/productsSlice';
+import customerSlice from './auth/customerSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -15,12 +16,13 @@ const authPersistConfig = {
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['auth', 'products'],
+  blacklist: ['auth', 'products', 'customer'],
 };
 
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authSlice),
   products: productsSlice,
+  customer: customerSlice,
 });
 
 export const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

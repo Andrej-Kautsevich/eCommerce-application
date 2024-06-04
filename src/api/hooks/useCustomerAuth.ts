@@ -3,6 +3,7 @@ import useApiClient from './useApiClient';
 import { loginError, loginFetch, loginSuccess, logout } from '../../shared/store/auth/authSlice';
 import { useAppDispatch } from '../../shared/store/hooks';
 import tokenCache from '../../shared/utils/tokenCache';
+import { setCustomer } from '../../shared/store/auth/customerSlice';
 
 const useCustomerAuth = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ const useCustomerAuth = () => {
       .execute()
       .then(async (response) => {
         dispatch(loginSuccess());
+        dispatch(setCustomer(response.body.customer));
         tokenCache.remove();
         await setPasswordFlow(user);
         return response;
