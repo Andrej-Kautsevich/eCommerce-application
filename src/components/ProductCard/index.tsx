@@ -4,6 +4,7 @@ import { ShoppingCartOutlined } from '@mui/icons-material';
 import { FC } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import parseProduct from '../../shared/utils/parseProduct';
+import emptyImage from '../../shared/assets/images/empty-img.png';
 import {
   HoverBox,
   productCardActionSx,
@@ -43,7 +44,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.onerror = null;
-              target.src = 'images/empty-img.png';
+              target.src = emptyImage;
             }}
           />
           <CardContent sx={productCardContentSx}>
