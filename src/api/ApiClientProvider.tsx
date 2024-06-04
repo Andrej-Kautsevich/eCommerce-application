@@ -2,6 +2,7 @@ import { ReactNode, createContext, useCallback, useMemo, useState } from 'react'
 import {
   ByProjectKeyRequestBuilder,
   ClientResponse,
+  Customer,
   CustomerSignin,
   createApiBuilderFromCtpClient,
 } from '@commercetools/platform-sdk';
@@ -19,7 +20,7 @@ export const ApiClientContext = createContext<ApiRootContextType | undefined>(un
 
 type ApiRootContextType = {
   apiRoot: ByProjectKeyRequestBuilder | undefined;
-  setPasswordFlow: (user: CustomerSignin) => Promise<ClientResponse>;
+  setPasswordFlow: (user: CustomerSignin) => Promise<ClientResponse<Customer>>;
   setAnonymousFlow: () => void;
   setTokenFlow: (token: string) => void;
   setApiRoot: React.Dispatch<React.SetStateAction<ByProjectKeyRequestBuilder | undefined>>;
@@ -56,7 +57,7 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
       const newApiRoot = getApiRoot(clientBuilder);
       setApiRoot(newApiRoot);
       // need to get token immediately
-      return newApiRoot.me().carts().get().execute();
+      return newApiRoot.me().get().execute();
     },
     [getApiRoot, defaultClientBuilder],
   );

@@ -1,20 +1,25 @@
-// import { Customer } from '@commercetools/platform-sdk';
 import { useState } from 'react';
 import { Alert, AlertTitle, Box, Button, Slide, Snackbar, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PasswordElement, TextFieldElement } from 'react-hook-form-mui';
-import { ClientResponse, InvalidCurrentPasswordError, MyCustomerChangePassword } from '@commercetools/platform-sdk';
+import {
+  ClientResponse,
+  Customer,
+  InvalidCurrentPasswordError,
+  MyCustomerChangePassword,
+} from '@commercetools/platform-sdk';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DevTool } from '@hookform/devtools';
 import * as yup from 'yup';
 import schemaPass from '../../shared/validation/passValidation';
-import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { useCustomer } from '../../api/hooks';
+import { useApiClient, useCustomer } from '../../api/hooks';
+import tokenCache from '../../shared/utils/tokenCache';
+import { useAppDispatch } from '../../shared/store/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 
-// interface ChangePasswordProps {
-//   customer: Customer;
-// }
+interface ChangePasswordProps {
+  customer: Customer;
+}
 
 type ChangePasswordForm = {
   currentPassword: string;
@@ -22,7 +27,9 @@ type ChangePasswordForm = {
   repeatNewPassword: string;
 };
 
-const ChangePassword = (/* { customer }: ChangePasswordProps */) => {
+const ChangePassword = ({ customer }: ChangePasswordProps) => {
+  const dispatch = useAppDispatch();
+
   const [showAlert, setShowAlert] = useState(false); // Close error alert
   const [changeError, setChangeError] = useState('');
 
@@ -46,9 +53,8 @@ const ChangePassword = (/* { customer }: ChangePasswordProps */) => {
 
   const { control, handleSubmit } = useForm<ChangePasswordForm>({ mode: 'onChange', resolver: yupResolver(schema) });
 
-  const dispatch = useAppDispatch();
-  const { customer } = useAppSelector((state) => state.customer);
   const { changePassword } = useCustomer();
+  const { setPasswordFlow } = useApiClient();
 
   const onSubmit: SubmitHandler<ChangePasswordForm> = async (data) => {
     if (customer) {
@@ -63,7 +69,11 @@ const ChangePassword = (/* { customer }: ChangePasswordProps */) => {
             setChangeError(error.body.message);
           },
         );
-        if (response) dispatch(setCustomer(response.body));
+        if (response) {
+          tokenCache.remove();
+          const newCustomer = (await setPasswordFlow({ email: customer.email, password: data.newPassword })).body;
+          dispatch(setCustomer(newCustomer));
+        }
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error);

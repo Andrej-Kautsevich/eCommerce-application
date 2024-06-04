@@ -4,7 +4,8 @@ import { useCustomer } from '../../api/hooks';
 import { AddressesFields } from '../../shared/types/type';
 import EditInfo from './editPersonInfoForm';
 import ChangePassword from './changeProfile';
-// import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setCustomer } from '../../shared/store/auth/customerSlice';
 
 export default function UserProfile() {
   const [getUserName, setUserName] = useState('');
@@ -16,22 +17,25 @@ export default function UserProfile() {
   const [showEditMode, setShowEditMode] = useState(false);
   const { getCustomer } = useCustomer();
 
-  // const dispatch = useAppDispatch();
-  // const { customer } = useAppSelector((state) => state.customer);
+  const dispatch = useAppDispatch();
+  const { customer } = useAppSelector((state) => state.customer);
 
   useEffect(() => {
     const getUserData = async () => {
-      const response = await getCustomer().then((res) => res);
-
-      setUserAddresses(response.addresses);
-      setUserName(`${response.firstName}`);
-      setUserBirth(`${response.dateOfBirth}`);
-      setUserLastName(`${response.lastName}`);
-      setUserDefaultShip(`${response.defaultShippingAddressId}`);
-      setUserEmail(`${response.email}`);
+      if (!customer) {
+        const response = await getCustomer();
+        dispatch(setCustomer(response));
+      } else {
+        setUserAddresses(customer.addresses);
+        setUserName(`${customer.firstName}`);
+        setUserBirth(`${customer.dateOfBirth}`);
+        setUserLastName(`${customer.lastName}`);
+        setUserDefaultShip(`${customer.defaultShippingAddressId}`);
+        setUserEmail(`${customer.email}`);
+      }
     };
     getUserData().catch((err: Error) => err);
-  }, [getCustomer]);
+  }, [getCustomer, dispatch, customer]);
   return (
     <Box sx={{ paddingTop: '50px' }}>
       <Typography variant="h3" component="div" sx={{ textAlign: 'center' }}>
@@ -87,7 +91,7 @@ export default function UserProfile() {
           </Button>
         </Box>
       )}
-      <ChangePassword />
+      {customer && <ChangePassword customer={customer} />}
       <Typography variant="h5" component="div" sx={{ marginTop: '50px' }}>
         Addresses ({userAddresses.length}):
       </Typography>
