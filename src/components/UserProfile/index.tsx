@@ -91,7 +91,11 @@ export default function UserProfile() {
           </Button>
         </Box>
       )}
-      {customer && <ChangePassword customer={customer} />}
+      {customer && (
+        <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mt: 6 }}>
+          <ChangePassword customer={customer} />
+        </Box>
+      )}
       <Typography variant="h5" component="div" sx={{ marginTop: '50px' }}>
         Addresses ({userAddresses.length}):
       </Typography>

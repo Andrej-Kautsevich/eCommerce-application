@@ -31,6 +31,7 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
   const dispatch = useAppDispatch();
 
   const [showAlert, setShowAlert] = useState(false); // Close error alert
+  const [success, setSuccess] = useState(false);
   const [changeError, setChangeError] = useState('');
 
   const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -51,7 +52,10 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
       .required('Repeat Password is required'),
   });
 
-  const { control, handleSubmit } = useForm<ChangePasswordForm>({ mode: 'onChange', resolver: yupResolver(schema) });
+  const { control, handleSubmit, reset } = useForm<ChangePasswordForm>({
+    mode: 'onChange',
+    resolver: yupResolver(schema),
+  });
 
   const { changePassword } = useCustomer();
   const { setPasswordFlow } = useApiClient();
@@ -67,12 +71,19 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
         const response = await changePassword(changePasswordData).catch(
           (error: ClientResponse<InvalidCurrentPasswordError>) => {
             setChangeError(error.body.message);
+            setShowAlert(true);
           },
         );
         if (response) {
           tokenCache.remove();
           const newCustomer = (await setPasswordFlow({ email: customer.email, password: data.newPassword })).body;
           dispatch(setCustomer(newCustomer));
+          setSuccess(true);
+          reset({
+            currentPassword: '',
+            newPassword: '',
+            repeatNewPassword: '',
+          });
         }
       } catch (error) {
         // eslint-disable-next-line no-console
@@ -115,7 +126,7 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
           autoComplete="email"
           control={control}
         />
-        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
           Save new password
         </Button>
         {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
@@ -123,9 +134,19 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
       {changeError && (
         <Slide in={showAlert} direction="right">
           <Snackbar open={showAlert} autoHideDuration={2000} onClose={handleSnackBarClose}>
-            <Alert sx={{ width: '100%' }} severity="success" onClose={handleSnackBarClose}>
+            <Alert sx={{ width: '100%' }} severity="error" onClose={handleSnackBarClose}>
               <AlertTitle>Error!</AlertTitle>
               {changeError}
+            </Alert>
+          </Snackbar>
+        </Slide>
+      )}
+      {success && (
+        <Slide in={success} direction="right">
+          <Snackbar open={success} autoHideDuration={2000} onClose={() => setSuccess(false)}>
+            <Alert sx={{ width: '100%' }} severity="success" onClose={() => setSuccess(false)}>
+              <AlertTitle>Success!</AlertTitle>
+              Password has been successfully changed.
             </Alert>
           </Snackbar>
         </Slide>
