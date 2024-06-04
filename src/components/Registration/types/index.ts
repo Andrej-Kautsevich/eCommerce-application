@@ -16,7 +16,6 @@ export type EditPersonalInfo = {
   lastName: string;
   dateOfBirth: Date;
   email: string;
-  password: string;
 };
 
 type Address = {
