@@ -80,9 +80,6 @@ export default function UserProfile() {
           <Typography variant="h6" component="div">
             Date of birth: {getUserBirth.split('-').reverse().join('-')}
           </Typography>
-          <Typography variant="h6" component="div" sx={{ color: '#939393', mt: 1 }}>
-            Email & Password
-          </Typography>
           <Typography variant="h6" component="div">
             Email: {userEmail}
           </Typography>
