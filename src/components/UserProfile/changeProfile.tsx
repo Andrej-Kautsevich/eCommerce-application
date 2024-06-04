@@ -1,12 +1,16 @@
 // import { Customer } from '@commercetools/platform-sdk';
-import { Box, Button, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Alert, AlertTitle, Box, Button, Slide, Snackbar, Typography } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PasswordElement, TextFieldElement } from 'react-hook-form-mui';
+import { ClientResponse, InvalidCurrentPasswordError, MyCustomerChangePassword } from '@commercetools/platform-sdk';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DevTool } from '@hookform/devtools';
 import * as yup from 'yup';
 import schemaPass from '../../shared/validation/passValidation';
-// import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { useCustomer } from '../../api/hooks';
+import { setCustomer } from '../../shared/store/auth/customerSlice';
 
 // interface ChangePasswordProps {
 //   customer: Customer;
@@ -19,6 +23,18 @@ type ChangePasswordForm = {
 };
 
 const ChangePassword = (/* { customer }: ChangePasswordProps */) => {
+  const [showAlert, setShowAlert] = useState(false); // Close error alert
+  const [changeError, setChangeError] = useState('');
+
+  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    event?.preventDefault();
+    if (reason === 'clickaway') {
+      return;
+    }
+    setShowAlert(false);
+    setChangeError('');
+  };
+
   const schema = yup.object().shape({
     currentPassword: schemaPass,
     newPassword: schemaPass,
@@ -28,13 +44,31 @@ const ChangePassword = (/* { customer }: ChangePasswordProps */) => {
       .required('Repeat Password is required'),
   });
 
-  // const dispatch = useAppDispatch();
-  // const { customer } = useAppSelector((state) => state.customer);
-
   const { control, handleSubmit } = useForm<ChangePasswordForm>({ mode: 'onChange', resolver: yupResolver(schema) });
 
+  const dispatch = useAppDispatch();
+  const { customer } = useAppSelector((state) => state.customer);
+  const { changePassword } = useCustomer();
+
   const onSubmit: SubmitHandler<ChangePasswordForm> = async (data) => {
-    console.log(data);
+    if (customer) {
+      const changePasswordData: MyCustomerChangePassword = {
+        version: customer.version,
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      };
+      try {
+        const response = await changePassword(changePasswordData).catch(
+          (error: ClientResponse<InvalidCurrentPasswordError>) => {
+            setChangeError(error.body.message);
+          },
+        );
+        if (response) dispatch(setCustomer(response.body));
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    }
   };
 
   return (
@@ -76,6 +110,16 @@ const ChangePassword = (/* { customer }: ChangePasswordProps */) => {
         </Button>
         {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
       </Box>
+      {changeError && (
+        <Slide in={showAlert} direction="right">
+          <Snackbar open={showAlert} autoHideDuration={2000} onClose={handleSnackBarClose}>
+            <Alert sx={{ width: '100%' }} severity="success" onClose={handleSnackBarClose}>
+              <AlertTitle>Error!</AlertTitle>
+              {changeError}
+            </Alert>
+          </Snackbar>
+        </Slide>
+      )}
     </Box>
   );
 };
