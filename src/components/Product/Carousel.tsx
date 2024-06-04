@@ -42,8 +42,6 @@ const Carousel = ({ product }: CarouselProps) => {
     return (
       <Box
         sx={{
-          width: 470,
-          height: 470,
           display: 'flex',
           flexDirection: 'row',
           gap: '10px',
@@ -58,15 +56,21 @@ const Carousel = ({ product }: CarouselProps) => {
           handlePrev={handlePrev}
           handleNext={handleNext}
         />
-        <Box sx={{ width: 100, height: 470, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+          }}
+        >
           <Button variant="contained" sx={{ height: 30 }} onClick={handlePrev}>
             ↑
           </Button>
 
           <ImageList
             sx={{
-              width: 100,
-              height: 400,
+              height: '100%',
+              width: '100%',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-around',
@@ -105,9 +109,13 @@ const Carousel = ({ product }: CarouselProps) => {
         </Box>
         <ImageListItem
           component="div"
-          style={{
-            width: 470,
-            height: 470,
+          sx={{
+            width: {
+              xs: '70vw',
+              sm: '65vw',
+              md: '50vw',
+              lg: '50vw',
+            },
             overflow: 'hidden',
             display: 'flex',
             justifyContent: 'center',
