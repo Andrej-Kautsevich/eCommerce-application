@@ -19,6 +19,7 @@ const PageTitle = ({ title, children }: PageTitleProps) => {
         ml: '-50vw',
         left: '50%',
         position: 'relative',
+        mb: '10px',
       }}
       display="flex"
       alignItems="center"
