@@ -5,7 +5,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
-import { CatalogCategoriesSelect, CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
+import { CatalogCategoriesSelect, CatalogSearchPanel, CatalogSideBar, CatalogSortPanel } from '../components/Catalog';
 import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
 import PageTitle from '../components/PageTitle';
@@ -26,13 +26,15 @@ const CatalogPage = () => {
   const { getProducts } = useProduct();
   const { categories } = useAppSelector((state) => state.products);
   const location = useLocation();
-  const { filterParams, sortParam } = useAppSelector((state) => state.products);
+  const { filterParams, sortParam, searchParam: searchString } = useAppSelector((state) => state.products);
 
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const queryArgs: FetchQueryArgs = {};
+      const queryArgs: FetchQueryArgs = {
+        // fuzzy: true,
+      };
       const filter = [];
 
       if (categorySlug) {
@@ -52,6 +54,9 @@ const CatalogPage = () => {
         const parsedFilterParams = filterParams.map((element) => parseFilterParams(element));
         filter.push(...parsedFilterParams);
       }
+      if (searchString) {
+        queryArgs['text.en'] = searchString;
+      }
       if (filter) queryArgs.filter = filter;
 
       if (sortParam) queryArgs.sort = sortParam;
@@ -61,7 +66,7 @@ const CatalogPage = () => {
     };
     // eslint-disable-next-line no-console
     fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname]);
+  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname, searchString]);
 
   return (
     <MainLayout>
@@ -74,8 +79,13 @@ const CatalogPage = () => {
           <CatalogSideBar />
         </Grid>
         <Grid container sm={12} md={9} flexDirection="column">
-          <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD} alignSelf="end">
-            <CatalogSortPanel />
+          <Grid container>
+            <Grid xs="auto" flexGrow={1}>
+              <CatalogSearchPanel />
+            </Grid>
+            <Grid xs={GRID_COLUMNS_XS} sm={GRID_COLUMNS_SM} md={GRID_COLUMNS_MD}>
+              <CatalogSortPanel />
+            </Grid>
           </Grid>
           <Grid container mt={1} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
             {products.map((product) => (

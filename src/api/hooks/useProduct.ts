@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { QueryParam } from '@commercetools/platform-sdk';
 import useApiClient from './useApiClient';
 import { useAppDispatch } from '../../shared/store/hooks';
 import { fetchAttributes, fetchCategories } from '../../shared/store/auth/productsSlice';
@@ -7,6 +8,8 @@ export type FetchQueryArgs = {
   limit?: number;
   filter?: string | string[];
   sort?: string | string[];
+  [key: string]: QueryParam;
+  fuzzy?: boolean;
 };
 
 const useProduct = () => {
