@@ -1,12 +1,11 @@
 import { Grid, Typography } from '@mui/material';
-import { PasswordElement, TextFieldElement, useForm } from 'react-hook-form-mui';
+import { TextFieldElement, useForm } from 'react-hook-form-mui';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { EditPersonalInfo } from '../Registration/types';
 import schemaName from '../../shared/validation/nameValidation';
 import schemaBirthDate from '../../shared/validation/validationBirthDate';
-import schemaPass from '../../shared/validation/passValidation';
 import schemaEmail from '../../shared/validation/emailValidation';
 
 export default function EditInfo() {
@@ -15,7 +14,6 @@ export default function EditInfo() {
     lastName: schemaName.required('Last name is required'),
     dateOfBirth: schemaBirthDate,
     email: schemaEmail,
-    password: schemaPass,
   });
   const { control } = useForm<EditPersonalInfo>({ mode: 'onChange', resolver: yupResolver(schema) });
   return (
@@ -63,18 +61,6 @@ export default function EditInfo() {
           label="Email Address"
           name="email"
           autoComplete="email"
-          control={control}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <PasswordElement
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="new-password"
           control={control}
         />
       </Grid>
