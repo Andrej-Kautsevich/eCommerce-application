@@ -7,6 +7,7 @@ type ParsedProduct = {
   description: string;
   images: Image[];
   price: string;
+  discountPrice: string | undefined;
 };
 
 const defaultProduct = {
@@ -17,6 +18,7 @@ const defaultProduct = {
 
 const parseProduct = (product: ProductProjection): ParsedProduct => {
   let { description, images, price } = defaultProduct;
+  let discountPrice;
 
   if (product.description) {
     description = product.description.en;
@@ -28,6 +30,9 @@ const parseProduct = (product: ProductProjection): ParsedProduct => {
 
   if (product.masterVariant.prices) {
     price = `$${product.masterVariant.prices[0].value.centAmount / 100}`;
+    if (product.masterVariant.prices[0].discounted?.value) {
+      discountPrice = `$${product.masterVariant.prices[0].discounted.value.centAmount / 100}`;
+    }
   }
 
   const parsedProduct: ParsedProduct = {
@@ -36,6 +41,7 @@ const parseProduct = (product: ProductProjection): ParsedProduct => {
     description,
     images,
     price,
+    discountPrice,
   };
 
   return parsedProduct;
