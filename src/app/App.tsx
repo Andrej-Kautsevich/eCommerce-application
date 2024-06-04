@@ -1,5 +1,5 @@
 import '../shared/ui/main.scss';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -31,17 +31,18 @@ const App = () => {
     } else {
       setIsLoading(false);
     }
-  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer]);
 
-  useLayoutEffect(() => {
-    const fetchCategories = async () => {
-      await getCategories();
-    };
-    if (!categories.length) {
-      // eslint-disable-next-line no-console
-      fetchCategories().catch((error) => console.log(error));
+    if (!isLoading) {
+      const fetchCategories = async () => {
+        await getCategories();
+      };
+
+      if (!categories.length) {
+        // eslint-disable-next-line no-console
+        fetchCategories().catch((error) => console.log(error));
+      }
     }
-  });
+  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer, categories.length, getCategories, isLoading]);
 
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner

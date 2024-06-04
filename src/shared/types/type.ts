@@ -1,5 +1,3 @@
-import { FilterCategories } from './enum';
-
 export type ProductKey = {
   key: string;
 };
@@ -11,5 +9,5 @@ export type AddressesFields = {
   country?: string;
 };
 export type FilterParams = {
-  [FilterCategories.CATEGORIES]?: string;
+  [key: string]: string | undefined;
 };

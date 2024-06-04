@@ -32,26 +32,26 @@ const CatalogPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const queryArgs: FetchQueryArgs = {};
-      let filter = '';
+      const filter = [];
 
       if (categorySlug) {
         const currentCategory = categories.find((category) => category.slug.en === categorySlug);
         const currentCategoryFilter = `${FilterCategories.CATEGORIES}: subtree("${currentCategory?.id}")`;
-        filter += currentCategoryFilter;
+        filter.push(currentCategoryFilter);
       } else {
         const currentCategorySlug = location.pathname.split('/').join('');
         const currentCategory = categories.find((category) => category.slug.en === currentCategorySlug);
         if (currentCategory) {
           const currentCategoryFilter = `${FilterCategories.CATEGORIES}: subtree("${currentCategory.id}")`;
-          filter += currentCategoryFilter;
+          filter.push(currentCategoryFilter);
         }
       }
 
       if (filterParams) {
-        const parsedFilterParams = parseFilterParams(filterParams);
-        filter += parsedFilterParams;
+        const parsedFilterParams = filterParams.map((element) => parseFilterParams(element));
+        filter.push(...parsedFilterParams);
       }
-      queryArgs.filter = filter;
+      if (filter) queryArgs.filter = filter;
 
       if (sortParam) queryArgs.sort = sortParam;
 
