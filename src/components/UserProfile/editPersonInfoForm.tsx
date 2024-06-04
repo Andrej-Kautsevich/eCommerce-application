@@ -66,18 +66,6 @@ export default function EditInfo() {
           control={control}
         />
       </Grid>
-      <Grid item xs={12}>
-        <PasswordElement
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="new-password"
-          control={control}
-        />
-      </Grid>
     </Grid>
   );
 }
