@@ -1,5 +1,6 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
@@ -77,8 +78,13 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
-      <PageTitle title="Catalog">
-        <CatalogBreadcrumbs />
+      <PageTitle>
+        <Box>
+          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
+            Catalog
+            <CatalogBreadcrumbs />
+          </Typography>
+        </Box>
       </PageTitle>
       <CatalogCategoriesSelect />
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>

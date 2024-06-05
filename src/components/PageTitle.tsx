@@ -1,12 +1,11 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface PageTitleProps {
-  title: string;
   children: ReactNode;
 }
 
-const PageTitle = ({ title, children }: PageTitleProps) => {
+const PageTitle = ({ children }: PageTitleProps) => {
   return (
     <Box
       component="div"
@@ -35,9 +34,6 @@ const PageTitle = ({ title, children }: PageTitleProps) => {
           paddingLeft: '40px',
         }}
       >
-        <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-          {title}
-        </Typography>
         {children}
       </Box>
     </Box>
