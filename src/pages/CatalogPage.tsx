@@ -33,7 +33,7 @@ const CatalogPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const queryArgs: FetchQueryArgs = {
-        // fuzzy: true,
+        fuzzy: true,
       };
       const filter = [];
 
