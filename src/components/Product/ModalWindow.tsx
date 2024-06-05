@@ -8,15 +8,20 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '1000px',
-  height: '650px',
+  width: {
+    xs: '98vw',
+    sm: '85vw',
+    md: '70vw',
+    lg: '55vw',
+  },
+  height: '90vh',
   bgcolor: 'background.paper',
   borderRadius: '15px',
   p: 4,
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'space-around',
 };
 
 interface ModalWindowProps {
@@ -37,15 +42,51 @@ const ModalWindow = ({ images, step, isOpen, handleClose, handlePrev, handleNext
         </IconButton>
         <Button
           variant="contained"
-          sx={{ height: 30, position: 'absolute', left: 0, display: images.length > 1 ? 'flex' : 'none', ml: '10px' }}
+          sx={{
+            width: {
+              xs: '25px',
+              sm: '40px',
+              md: '60px',
+            },
+            height: '80%',
+            position: 'absolute',
+            left: 0,
+            display: images.length > 1 ? 'flex' : 'none',
+            ml: '5px',
+            padding: 0,
+            minWidth: '25px',
+          }}
           onClick={handlePrev}
         >
           ←
         </Button>
-        <MainImage image={images[step]} />
+        <Box
+          sx={{
+            padding: 2,
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <MainImage image={images[step]} />
+        </Box>
+
         <Button
           variant="contained"
-          sx={{ height: 30, position: 'absolute', right: 0, display: images.length > 1 ? 'flex' : 'none', mr: '10px' }}
+          sx={{
+            width: {
+              xs: '20px',
+              sm: '40px',
+              md: '60px',
+            },
+            height: '80%',
+            position: 'absolute',
+            right: 0,
+            display: images.length > 1 ? 'flex' : 'none',
+            mr: '5px',
+            padding: 0,
+            minWidth: '30px',
+          }}
           onClick={handleNext}
         >
           →
