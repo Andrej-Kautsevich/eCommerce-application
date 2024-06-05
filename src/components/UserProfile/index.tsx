@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import { useCustomer } from '../../api/hooks';
 import { AddressesFields } from '../../shared/types/type';
 import EditInfo from './editPersonInfoForm';
+import ChangePassword from './changeProfile';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setCustomer } from '../../shared/store/auth/customerSlice';
 
 export default function UserProfile() {
   const [getUserName, setUserName] = useState('');
@@ -14,18 +17,25 @@ export default function UserProfile() {
   const [showEditMode, setShowEditMode] = useState(false);
   const { getCustomer } = useCustomer();
 
+  const dispatch = useAppDispatch();
+  const { customer } = useAppSelector((state) => state.customer);
+
   useEffect(() => {
     const getUserData = async () => {
-      const response = await getCustomer().then((res) => res);
-      setUserAddresses(response.addresses);
-      setUserName(`${response.firstName}`);
-      setUserBirth(`${response.dateOfBirth}`);
-      setUserLastName(`${response.lastName}`);
-      setUserDefaultShip(`${response.defaultShippingAddressId}`);
-      setUserEmail(`${response.email}`);
+      if (!customer) {
+        const response = await getCustomer();
+        dispatch(setCustomer(response));
+      } else {
+        setUserAddresses(customer.addresses);
+        setUserName(`${customer.firstName}`);
+        setUserBirth(`${customer.dateOfBirth}`);
+        setUserLastName(`${customer.lastName}`);
+        setUserDefaultShip(`${customer.defaultShippingAddressId}`);
+        setUserEmail(`${customer.email}`);
+      }
     };
     getUserData().catch((err: Error) => err);
-  }, [getCustomer]);
+  }, [getCustomer, dispatch, customer]);
   return (
     <Box sx={{ paddingTop: '50px' }}>
       <Typography variant="h3" component="div" sx={{ textAlign: 'center' }}>
@@ -70,18 +80,17 @@ export default function UserProfile() {
           <Typography variant="h6" component="div">
             Date of birth: {getUserBirth.split('-').reverse().join('-')}
           </Typography>
-          <Typography variant="h6" component="div" sx={{ color: '#939393', mt: 1 }}>
-            Email & Password
-          </Typography>
           <Typography variant="h6" component="div">
             Email: {userEmail}
-          </Typography>
-          <Typography variant="h6" component="div">
-            Password: *******
           </Typography>
           <Button variant="contained" onClick={() => setShowEditMode(true)}>
             Manage Info
           </Button>
+        </Box>
+      )}
+      {customer && (
+        <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mt: 6 }}>
+          <ChangePassword customer={customer} />
         </Box>
       )}
       <Typography variant="h5" component="div" sx={{ marginTop: '50px' }}>

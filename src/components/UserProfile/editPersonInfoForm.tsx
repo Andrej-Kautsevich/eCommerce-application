@@ -52,7 +52,7 @@ export default function EditInfo() {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-          Email & Password
+          Email
         </Typography>
         <TextFieldElement
           required
