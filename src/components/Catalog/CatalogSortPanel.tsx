@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../shared/store/hooks';
 import { setSortParam } from '../../shared/store/auth/productsSlice';
 
 const CatalogSortPanel = () => {
-  const sortNames = [SortNames.PRICE_ASC, SortNames.PRICE_DESC];
+  const sortNames = [SortNames.PRICE_ASC, SortNames.PRICE_DESC, SortNames.NAME];
   const dispatch = useAppDispatch();
 
   const [sortParamInput, setSortParamInput] = useState('');
@@ -20,6 +20,9 @@ const CatalogSortPanel = () => {
         break;
       case SortNames.PRICE_DESC:
         dispatch(setSortParam('price desc'));
+        break;
+      case SortNames.NAME:
+        dispatch(setSortParam('name.en asc'));
         break;
       default:
     }

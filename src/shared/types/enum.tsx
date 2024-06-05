@@ -24,4 +24,5 @@ export enum SortNames {
   DEFAULT = 'default',
   PRICE_ASC = 'price: low to high',
   PRICE_DESC = 'price: high to low',
+  NAME = 'name: alphabetically',
 }
