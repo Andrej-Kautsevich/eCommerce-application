@@ -14,7 +14,6 @@ export default function UserProfile() {
   const [getUserDefaultShip, setUserDefaultShip] = useState('');
   const [userAddresses, setUserAddresses] = useState([{}]);
   const [userEmail, setUserEmail] = useState('');
-  const [showEditMode, setShowEditMode] = useState(false);
   const { getCustomer } = useCustomer();
 
   const dispatch = useAppDispatch();
@@ -48,46 +47,22 @@ export default function UserProfile() {
       >
         Welcome to your profile, your one-stop-shop for all your recent Volcano Watch account activity.
       </Typography>
-      {showEditMode ? (
-        <Box
-          component="form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            // console.log('Send data');
-          }}
-        >
-          <Typography variant="h5" component="div" sx={{ mb: 1 }}>
-            Please type your new data
-          </Typography>
-          <EditInfo />
-          <Box sx={{ display: 'flex', gap: '10px', flexWrap: 'wrap', mt: 1 }}>
-            <Button type="submit" variant="contained">
-              Save Changes
-            </Button>
-            <Button variant="contained" onClick={() => setShowEditMode(false)}>
-              Cancel
-            </Button>
-          </Box>
-        </Box>
-      ) : (
-        <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3 }}>
-          <Typography variant="h6" component="div" sx={{ color: '#939393' }}>
-            My info
-          </Typography>
-          <Typography variant="h6" component="div">
-            Name: {getUserName} {getUserLastName}
-          </Typography>
-          <Typography variant="h6" component="div">
-            Date of birth: {getUserBirth.split('-').reverse().join('-')}
-          </Typography>
-          <Typography variant="h6" component="div">
-            Email: {userEmail}
-          </Typography>
-          <Button variant="contained" onClick={() => setShowEditMode(true)}>
-            Manage Info
-          </Button>
-        </Box>
-      )}
+      <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
+        <Typography variant="h6" component="div" sx={{ color: '#939393' }}>
+          My info
+        </Typography>
+        <Typography variant="h6" component="div">
+          Name: {getUserName} {getUserLastName}
+        </Typography>
+        <Typography variant="h6" component="div">
+          Date of birth: {getUserBirth.split('-').reverse().join('-')}
+        </Typography>
+        <Typography variant="h6" component="div">
+          Email: {userEmail}
+        </Typography>
+        <Button variant="contained">Manage Info</Button>
+      </Box>
+      <EditInfo />
       {customer && (
         <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mt: 6 }}>
           <ChangePassword customer={customer} />

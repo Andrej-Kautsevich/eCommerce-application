@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { TextFieldElement, useForm } from 'react-hook-form-mui';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,9 +17,13 @@ export default function EditInfo() {
   });
   const { control } = useForm<EditPersonalInfo>({ mode: 'onChange', resolver: yupResolver(schema) });
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
+    <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
+      <Box component="form">
+        <Typography variant="h5" component="div" sx={{ mb: 1 }}>
+          Change Personal Info
+        </Typography>
         <TextFieldElement
+          sx={{ mb: 1 }}
           name="firstName"
           required
           fullWidth
@@ -29,9 +33,8 @@ export default function EditInfo() {
           autoComplete="given-name"
           control={control}
         />
-      </Grid>
-      <Grid item xs={12} sm={6}>
         <TextFieldElement
+          sx={{ mb: 1 }}
           required
           fullWidth
           id="lastName"
@@ -40,17 +43,14 @@ export default function EditInfo() {
           autoComplete="family-name"
           control={control}
         />
-      </Grid>
-      <Grid item xs={12}>
         <DatePickerElement
+          sx={{ mb: 1 }}
           inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
           required
           helperText="You must be at least 18 years old to visit site"
           name="dateOfBirth"
           control={control}
         />
-      </Grid>
-      <Grid item xs={12}>
         <Typography variant="h6" component="div" sx={{ mb: 1 }}>
           Email
         </Typography>
@@ -63,7 +63,10 @@ export default function EditInfo() {
           autoComplete="email"
           control={control}
         />
-      </Grid>
-    </Grid>
+        <Button type="submit" variant="contained" sx={{ mt: 1, mb: 3 }}>
+          Save Changes
+        </Button>
+      </Box>
+    </Box>
   );
 }
