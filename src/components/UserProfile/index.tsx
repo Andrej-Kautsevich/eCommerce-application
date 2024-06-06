@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Slide, Snackbar, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useCustomer } from '../../api/hooks';
 import { AddressesFields } from '../../shared/types/type';
@@ -14,6 +14,8 @@ export default function UserProfile() {
   const [getUserDefaultShip, setUserDefaultShip] = useState('');
   const [userAddresses, setUserAddresses] = useState([{}]);
   const [userEmail, setUserEmail] = useState('');
+  const [showEditMode, setShowEditMode] = useState(false);
+  const [success, setSuccess] = useState(false);
   const { getCustomer } = useCustomer();
 
   const dispatch = useAppDispatch();
@@ -35,6 +37,12 @@ export default function UserProfile() {
     };
     getUserData().catch((err: Error) => err);
   }, [getCustomer, dispatch, customer]);
+
+  const handleSuccess = () => {
+    setShowEditMode(false);
+    setSuccess(true);
+  };
+
   return (
     <Box sx={{ paddingTop: '50px' }}>
       <Typography variant="h3" component="div" sx={{ textAlign: 'center' }}>
@@ -47,22 +55,26 @@ export default function UserProfile() {
       >
         Welcome to your profile, your one-stop-shop for all your recent Volcano Watch account activity.
       </Typography>
-      <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
-        <Typography variant="h6" component="div" sx={{ color: '#939393' }}>
-          My info
-        </Typography>
-        <Typography variant="h6" component="div">
-          Name: {getUserName} {getUserLastName}
-        </Typography>
-        <Typography variant="h6" component="div">
-          Date of birth: {getUserBirth.split('-').reverse().join('-')}
-        </Typography>
-        <Typography variant="h6" component="div">
-          Email: {userEmail}
-        </Typography>
-        <Button variant="contained">Manage Info</Button>
-      </Box>
-      <EditInfo />
+      {!showEditMode && (
+        <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
+          <Typography variant="h6" component="div" sx={{ color: '#939393' }}>
+            My info
+          </Typography>
+          <Typography variant="h6" component="div">
+            Name: {getUserName} {getUserLastName}
+          </Typography>
+          <Typography variant="h6" component="div">
+            Date of birth: {getUserBirth.split('-').reverse().join('-')}
+          </Typography>
+          <Typography variant="h6" component="div">
+            Email: {userEmail}
+          </Typography>
+          <Button variant="contained" onClick={() => setShowEditMode(true)}>
+            Manage Info
+          </Button>
+        </Box>
+      )}
+      {showEditMode && <EditInfo onSuccess={handleSuccess} />}
       {customer && (
         <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mt: 6 }}>
           <ChangePassword customer={customer} />
@@ -101,6 +113,16 @@ export default function UserProfile() {
           </Box>
         ))}
       </Box>
+      {success && (
+        <Slide in={success} direction="right">
+          <Snackbar open={success} autoHideDuration={2000} onClose={() => setSuccess(false)}>
+            <Alert sx={{ width: '100%' }} severity="success" onClose={() => setSuccess(false)}>
+              <AlertTitle>Success!</AlertTitle>
+              Your info was successfully updated
+            </Alert>
+          </Snackbar>
+        </Slide>
+      )}
     </Box>
   );
 }
