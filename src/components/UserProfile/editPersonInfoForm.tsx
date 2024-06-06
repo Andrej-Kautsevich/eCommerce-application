@@ -19,6 +19,7 @@ import schemaEmail from '../../shared/validation/emailValidation';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { useCustomer } from '../../api/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
+import formatDate from '../../shared/utils/formatDate';
 
 interface EditInfoProps {
   onSuccess: () => void;
@@ -57,7 +58,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
       setValue('firstName', customer.firstName!);
       setValue('lastName', customer.lastName!);
       setValue('email', customer.email);
-      setValue('dateOfBirth', dayjs(customer.dateOfBirth).format('YYYY-DD-MM') as unknown as Date); // TODO fix type assertion
+      setValue('dateOfBirth', dayjs(customer.dateOfBirth).format('YYYY-MM-DD') as unknown as Date); // TODO fix type assertion
     }
   }, [customer, setValue]);
 
@@ -75,7 +76,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
 
       const dateOfBirthAction: MyCustomerSetDateOfBirthAction = {
         action: 'setDateOfBirth',
-        dateOfBirth: data.dateOfBirth.toISOString().slice(0, 10),
+        dateOfBirth: formatDate(data.dateOfBirth),
       };
 
       const emailAction: MyCustomerChangeEmailAction = {
