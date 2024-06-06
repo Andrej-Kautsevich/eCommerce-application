@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { Box, Breadcrumbs, Typography } from '@mui/material';
+import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
@@ -37,10 +37,25 @@ const Product = () => {
     fetchProduct().catch((error) => console.log(error));
   }, [getProduct, productID]);
 
+  if (!product) {
+    return (
+      <Box style={{ display: 'flex', flexDirection: 'column' }}>
+        <PageTitle>
+          <Skeleton variant="text" width="80%" animation="wave" />
+        </PageTitle>
+        <CircularProgress sx={{ alignSelf: 'center' }} />;
+      </Box>
+    );
+  }
+
   return (
     <Grid container style={{ display: 'flex', flexDirection: 'column' }}>
-      <PageTitle title={product ? product.name.en : 'Something is wrong'}>
-        <Breadcrumbs />
+      <PageTitle>
+        <Box>
+          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
+            {product.name.en}
+          </Typography>
+        </Box>
       </PageTitle>
 
       <Grid
@@ -50,7 +65,7 @@ const Product = () => {
         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
         <Grid xs={4} sm={8} md={8} style={{ display: 'flex', justifyContent: 'center', maxHeight: '500px' }}>
-          <Carousel product={product!} />
+          <Carousel product={product} />
         </Grid>
 
         <Grid xs={4} sm={8} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -73,7 +88,7 @@ const Product = () => {
                 textDecoration: discount > 0 ? 'line-through' : 'none',
               }}
             >
-              {product ? `$${(price / 100).toFixed(2)}` : 'Something is wrong'}
+              {`$${(price / 100).toFixed(2)}`}
             </Typography>
             {discount > 0 && (
               <Box>
@@ -81,7 +96,7 @@ const Product = () => {
                   SALE PRICE:
                 </Typography>
                 <Typography component="p" fontFamily="Poppins" color="red" sx={{ mb: 3, fontSize: 36 }}>
-                  {product ? `$${(discount / 100).toFixed(2)}` : 'Something is wrong'}
+                  {`$${(discount / 100).toFixed(2)}`}
                 </Typography>
               </Box>
             )}
