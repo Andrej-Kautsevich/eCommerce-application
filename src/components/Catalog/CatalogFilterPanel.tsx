@@ -1,8 +1,8 @@
 import { AttributeDefinition } from '@commercetools/platform-sdk';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Box, Checkbox, Collapse, FormControlLabel, List, ListItemButton, ListItemText } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
-import { useAppDispatch } from '../../shared/store/hooks';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setFilterParams } from '../../shared/store/auth/productsSlice';
 
 interface CatalogFilterPanelProps {
@@ -13,6 +13,14 @@ const CatalogFilterPanel = ({ attribute }: CatalogFilterPanelProps) => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [selectedAttributes, setSelectedAttributes] = useState<string[]>([]);
+  const { filterParams } = useAppSelector((state) => state.products);
+
+  // Reset selectedAttributes when filterParams is reset
+  useEffect(() => {
+    if (filterParams.every((filterParam) => filterParam[`variants.attributes.${attribute.name}.key`] === undefined)) {
+      setSelectedAttributes([]);
+    }
+  }, [filterParams, attribute.name]);
 
   const handleClick = () => {
     setOpen(!open);
