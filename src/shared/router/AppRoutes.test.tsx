@@ -73,3 +73,12 @@ it('renders registration page without crashing', () => {
   );
   expect(container.firstChild).toBeInTheDocument();
 });
+
+it('renders catalog page without crashing', () => {
+  const { container } = customRender(
+    <MemoryRouter initialEntries={[RoutePaths.WATCHES]}>
+      <AppRoutes />
+    </MemoryRouter>,
+  );
+  expect(container.firstChild).toBeInTheDocument();
+});

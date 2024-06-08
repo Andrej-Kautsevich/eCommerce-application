@@ -1,9 +1,18 @@
 import { Button, Box } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RoutePaths } from '../../shared/types/enum';
 import useCustomerAuth from '../../api/hooks/useCustomerAuth';
 import { RootState } from '../../shared/store';
+
+const style = {
+  display: 'flex',
+  flexDirection: { xs: 'column', sm: 'row' },
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '10px',
+};
 
 const LoginLogoutButtons = () => {
   const isAuthCustomer = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -11,7 +20,7 @@ const LoginLogoutButtons = () => {
   const { customerLogOut } = useCustomerAuth();
 
   return !isAuthCustomer ? (
-    <Box>
+    <Box sx={style}>
       <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.LOGIN)}>
         Login
       </Button>
@@ -21,7 +30,7 @@ const LoginLogoutButtons = () => {
       </Button>
     </Box>
   ) : (
-    <Box>
+    <Box sx={style}>
       <Button
         variant="contained"
         sx={{ mr: 1, ml: 1 }}
@@ -32,14 +41,12 @@ const LoginLogoutButtons = () => {
       >
         Logout
       </Button>
-
-      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.LOGIN)}>
-        Login
-      </Button>
-
-      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.REGISTRATION)}>
-        Register
-      </Button>
+      <AccountCircleIcon
+        fontSize="large"
+        color="primary"
+        sx={{ cursor: 'pointer' }}
+        onClick={() => navigate(RoutePaths.PROFILE)}
+      />
     </Box>
   );
 };

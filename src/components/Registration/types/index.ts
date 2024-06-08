@@ -11,6 +11,12 @@ export type RegistrationForm = {
   email: string;
   password: string;
 };
+export type EditPersonalInfo = {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date;
+  email: string;
+};
 
 type Address = {
   country: StoreCountries;

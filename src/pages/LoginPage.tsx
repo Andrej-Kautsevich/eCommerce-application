@@ -1,7 +1,12 @@
 import LoginTab from '../components/login';
+import MainLayout from '../shared/ui/MainLayout';
 
 const LoginPage = () => {
-  return <LoginTab />;
+  return (
+    <MainLayout>
+      <LoginTab />
+    </MainLayout>
+  );
 };
 
 export default LoginPage;

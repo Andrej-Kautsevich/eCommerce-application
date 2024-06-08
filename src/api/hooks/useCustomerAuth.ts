@@ -3,6 +3,7 @@ import useApiClient from './useApiClient';
 import { loginError, loginFetch, loginSuccess, logout } from '../../shared/store/auth/authSlice';
 import { useAppDispatch } from '../../shared/store/hooks';
 import tokenCache from '../../shared/utils/tokenCache';
+import { setCustomer } from '../../shared/store/auth/customerSlice';
 
 const useCustomerAuth = () => {
   const dispatch = useAppDispatch();
@@ -18,12 +19,11 @@ const useCustomerAuth = () => {
       .login()
       .post({ body: user })
       .execute()
-      .then((response) => {
-        if (response.statusCode === 200) {
-          dispatch(loginSuccess());
-          tokenCache.remove();
-          setPasswordFlow(user);
-        }
+      .then(async (response) => {
+        dispatch(loginSuccess());
+        dispatch(setCustomer(response.body.customer));
+        tokenCache.remove();
+        await setPasswordFlow(user);
         return response;
       })
       .catch((error: ClientResponse<AuthErrorResponse>) => {
@@ -43,17 +43,15 @@ const useCustomerAuth = () => {
       .signup()
       .post({ body: user })
       .execute()
-      .then((response) => {
-        if (response.statusCode === 201) {
-          dispatch(loginSuccess());
-          tokenCache.remove();
-          setPasswordFlow(user);
-        }
-        return true;
+      .then(async (response) => {
+        dispatch(loginSuccess());
+        tokenCache.remove();
+        await setPasswordFlow(user);
+        return response;
       })
       .catch((signupError: ClientResponse<AuthErrorResponse>) => {
         dispatch(loginError(signupError.body));
-        return false;
+        return undefined;
       }); // TODO add error handle
   };
 
