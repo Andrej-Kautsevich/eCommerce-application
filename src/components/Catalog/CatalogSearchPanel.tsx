@@ -12,8 +12,8 @@ const CatalogSearchPanel = () => {
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
     setSearchInput(input);
-    if (input.length > 3) dispatch(setSearchParam(input));
-    if (!input) dispatch(setSearchParam(undefined));
+    if (input.length > 2) dispatch(setSearchParam(input));
+    if (input.length <= 2) dispatch(setSearchParam(undefined));
   };
 
   return (

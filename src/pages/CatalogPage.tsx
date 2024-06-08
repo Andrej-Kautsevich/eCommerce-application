@@ -38,7 +38,7 @@ const CatalogPage = () => {
     const fetchProducts = async () => {
       setIsProductsFetching(true);
       const queryArgs: FetchQueryArgs = {
-        // fuzzy: true,
+        fuzzy: true,
       };
       const filter = [];
 
