@@ -1,5 +1,6 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
@@ -21,17 +22,21 @@ const GRID_SPACING_XS = 1;
 const GRID_SPACING_SM = 2;
 const GRID_SPACING_MD = 3;
 
+const ITEMS_PER_PAGE = 20;
+
 const CatalogPage = () => {
   const { categorySlug } = useParams();
   const { getProducts } = useProduct();
   const { categories } = useAppSelector((state) => state.products);
   const location = useLocation();
   const { filterParams, sortParam, searchParam: searchString } = useAppSelector((state) => state.products);
+  const [isProductsFetching, setIsProductsFetching] = useState(true);
 
   const [products, setProducts] = useState<ProductProjection[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsProductsFetching(true);
       const queryArgs: FetchQueryArgs = {
         // fuzzy: true,
       };
@@ -61,7 +66,10 @@ const CatalogPage = () => {
 
       if (sortParam) queryArgs.sort = sortParam;
 
-      const result = await getProducts(queryArgs).then((res) => res.body.results);
+      const result = await getProducts(queryArgs).then((res) => {
+        setIsProductsFetching(false);
+        return res.body.results;
+      });
       setProducts([...result]);
     };
     // eslint-disable-next-line no-console
@@ -70,8 +78,13 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
-      <PageTitle title="Catalog">
-        <CatalogBreadcrumbs />
+      <PageTitle>
+        <Box>
+          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
+            Catalog
+            <CatalogBreadcrumbs />
+          </Typography>
+        </Box>
       </PageTitle>
       <CatalogCategoriesSelect />
       <Grid container pt={2} spacing={{ xs: GRID_SPACING_XS }}>
@@ -88,17 +101,19 @@ const CatalogPage = () => {
             </Grid>
           </Grid>
           <Grid container mt={1} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
-            {products.map((product) => (
-              <Grid
-                xs={GRID_COLUMNS_XS}
-                sm={GRID_COLUMNS_SM}
-                md={GRID_COLUMNS_MD}
-                lg={GRID_COLUMNS_LG}
-                key={product.id}
-              >
-                <ProductCard product={product} />
-              </Grid>
-            ))}
+            {(isProductsFetching ? Array.from(new Array(ITEMS_PER_PAGE)) : products).map(
+              (product: ProductProjection, index) => (
+                <Grid
+                  xs={GRID_COLUMNS_XS}
+                  sm={GRID_COLUMNS_SM}
+                  md={GRID_COLUMNS_MD}
+                  lg={GRID_COLUMNS_LG}
+                  key={product ? product.id : index}
+                >
+                  <ProductCard product={product} />
+                </Grid>
+              ),
+            )}
           </Grid>
         </Grid>
       </Grid>

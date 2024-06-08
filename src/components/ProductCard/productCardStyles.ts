@@ -7,6 +7,7 @@ export const productCardSx: SxProps<Theme> = {
 
 export const productCardMediaSx: SxProps<Theme> = {
   height: CARD_MEDIA_HEIGHT,
+  width: '100%',
 };
 
 export const productCardContentSx: SxProps<Theme> = {
@@ -17,6 +18,7 @@ export const productCardContentSx: SxProps<Theme> = {
   alignItems: 'center',
   justifyContent: 'center',
   width: '100%',
+  textAlign: 'center',
 };
 
 export const productCardActionSx: SxProps<Theme> = {
