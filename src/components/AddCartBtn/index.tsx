@@ -3,9 +3,9 @@ import { Button } from '@mui/material';
 
 export default function AddCartBtn() {
   return (
-    <Button variant="contained">
+    <Button variant="contained" size="medium">
       Add to Cart
-      <ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText', ml: 1 }} />
+      <ShoppingCartOutlined fontSize="medium" sx={{ color: 'primary.contrastText', ml: 1 }} />
     </Button>
   );
 }

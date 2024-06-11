@@ -14,6 +14,7 @@ import {
 } from './productCardStyles';
 import { RoutePaths } from '../../shared/types/enum';
 import { CARD_MD_HEIGHT, CARD_SM_HEIGHT, CARD_XS_HEIGHT } from './constants';
+import AddCartBtn from '../AddCartBtn';
 
 interface ProductCardProps {
   product: ProductProjection | undefined;
@@ -85,6 +86,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                 {productDiscountPrice}
               </Typography>
             )}
+            <AddCartBtn />
           </CardContent>
         </CardActionArea>
       </Card>
