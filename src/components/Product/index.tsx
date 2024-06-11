@@ -6,6 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import PageTitle from '../PageTitle';
+import AddCartBtn from '../AddCartBtn';
 
 const Product = () => {
   const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
@@ -100,6 +101,7 @@ const Product = () => {
                 </Typography>
               </Box>
             )}
+            <AddCartBtn />
           </Box>
         </Grid>
       </Grid>
