@@ -19,6 +19,7 @@ import { useCustomerAuth } from '../../api/hooks';
 import { RoutePaths } from '../../shared/types/enum';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
+import useFetchCart from '../../api/utils/fetchCart';
 
 type LoginForm = {
   email: string;
@@ -35,6 +36,7 @@ export default function LoginTab() {
   const dispatch = useAppDispatch();
   const { customerLogin } = useCustomerAuth();
   const { loginError } = useAppSelector((state) => state.auth);
+  const fetchCart = useFetchCart();
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
@@ -43,6 +45,7 @@ export default function LoginTab() {
     if (response) {
       navigate(RoutePaths.MAIN);
       dispatch(setSubmitSuccess({ status: true, message: `Welcome back, ${response.body.customer.firstName}` }));
+      fetchCart().catch((error) => console.log(error));
     } else {
       setShowAlert(true);
     }

@@ -10,6 +10,7 @@ import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
 import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
+import useFetchCart from '../api/utils/fetchCart';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -17,10 +18,12 @@ const App = () => {
   const { apiRoot, setAnonymousFlow, setTokenFlow } = useApiClient();
   const [isLoading, setIsLoading] = useState(true);
   const { getCategories } = useProduct();
+  const fetchCart = useFetchCart();
 
   useEffect(() => {
     if (!apiRoot) {
       const refreshToken = tokenCache.get().token;
+
       // if user has authorization
       // TODO handle anonymous refresh token
       if (isAuthCustomer && refreshToken) {
@@ -41,8 +44,9 @@ const App = () => {
         // eslint-disable-next-line no-console
         fetchCategories().catch((error) => console.log(error));
       }
+      fetchCart().catch((error) => console.log(error));
     }
-  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer, categories.length, getCategories, isLoading]);
+  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer, categories.length, getCategories, isLoading, fetchCart]);
 
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner
