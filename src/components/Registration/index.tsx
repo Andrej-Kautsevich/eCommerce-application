@@ -128,6 +128,7 @@ export default function Registration() {
             : signUpResult.body.customer.addresses[0].id,
       };
       customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() => setShowAlert(true));
+      // eslint-disable-next-line no-console
       fetchCart().catch((error) => console.log(error));
     } else {
       setShowAlert(true);

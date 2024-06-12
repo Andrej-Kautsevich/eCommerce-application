@@ -45,6 +45,7 @@ export default function LoginTab() {
     if (response) {
       navigate(RoutePaths.MAIN);
       dispatch(setSubmitSuccess({ status: true, message: `Welcome back, ${response.body.customer.firstName}` }));
+      // eslint-disable-next-line no-console
       fetchCart().catch((error) => console.log(error));
     } else {
       setShowAlert(true);

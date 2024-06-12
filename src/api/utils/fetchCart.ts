@@ -11,6 +11,7 @@ const useFetchCart = () => {
     if (response.body.results.length === 0) {
       await createCart();
     }
+    // eslint-disable-next-line no-console
     console.log(response.body.results[0].id);
   };
 
