@@ -10,7 +10,7 @@ import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
 import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
-import useFetchCart from '../api/utils/fetchCart';
+import useCart from '../api/hooks/useCart';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -18,7 +18,7 @@ const App = () => {
   const { apiRoot, setAnonymousFlow, setTokenFlow } = useApiClient();
   const [isLoading, setIsLoading] = useState(true);
   const { getCategories } = useProduct();
-  const fetchCart = useFetchCart();
+  const { fetchCart } = useCart();
 
   useEffect(() => {
     if (!apiRoot) {

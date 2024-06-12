@@ -19,7 +19,7 @@ import { useCustomerAuth } from '../../api/hooks';
 import { RoutePaths } from '../../shared/types/enum';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
-import useFetchCart from '../../api/utils/fetchCart';
+import useCart from '../../api/hooks/useCart';
 
 type LoginForm = {
   email: string;
@@ -36,7 +36,7 @@ export default function LoginTab() {
   const dispatch = useAppDispatch();
   const { customerLogin } = useCustomerAuth();
   const { loginError } = useAppSelector((state) => state.auth);
-  const fetchCart = useFetchCart();
+  const { fetchCart } = useCart();
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {

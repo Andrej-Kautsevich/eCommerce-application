@@ -36,7 +36,7 @@ import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCoun
 import schemaPostalCodeUkraine from '../../shared/validation/postalCodeOfCountriesVal/ukrainePostalShema';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
-import useFetchCart from '../../api/utils/fetchCart';
+import useCart from '../../api/hooks/useCart';
 
 export default function Registration() {
   const [showBilling, setBilling] = useState(false);
@@ -85,7 +85,7 @@ export default function Registration() {
   const navigate = useNavigate();
   const { customerSignUp } = useCustomerAuth();
   const { customerUpdate } = useCustomer();
-  const fetchCart = useFetchCart();
+  const { fetchCart } = useCart();
   const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
     const addresses: BaseAddress[] = [data.shippingAddress];
     let defaultBillingAddress;
