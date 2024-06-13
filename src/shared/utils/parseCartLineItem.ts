@@ -6,9 +6,11 @@ type ParsedLineItem = {
   productId: string;
   name: string;
   images: Image[];
-  price: string;
-  discountPrice: string | undefined;
-  totalPrice: string;
+  prices: {
+    price: string;
+    discountPrice: string | undefined;
+    totalPrice: string;
+  };
   quantity: number;
 };
 
@@ -21,13 +23,12 @@ const parseLineItem = (item: LineItem): ParsedLineItem => {
   let discountPrice;
   const price = `$${item.price.value.centAmount / 100}`;
   const totalPrice = `$${item.totalPrice.centAmount / 100}`;
+  if (item.price.discounted) {
+    discountPrice = `$${item.price.discounted.value.centAmount / 100}`;
+  }
 
   if (item.variant.images) {
     images = item.variant.images;
-  }
-
-  if (item.price.discounted) {
-    discountPrice = `$${item.price.discounted.value.centAmount / 100}`;
   }
 
   return {
@@ -35,9 +36,11 @@ const parseLineItem = (item: LineItem): ParsedLineItem => {
     productId: item.productId,
     name: item.name.en,
     images,
-    price,
-    discountPrice,
-    totalPrice,
+    prices: {
+      price,
+      discountPrice,
+      totalPrice,
+    },
     quantity: item.quantity,
   };
 };
