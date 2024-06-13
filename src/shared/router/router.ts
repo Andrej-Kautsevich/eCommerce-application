@@ -8,6 +8,7 @@ import { RoutePaths } from '../types/enum';
 import ProductPage from '../../pages/ProductPage';
 import UserProfilePage from '../../pages/UserProfile';
 import CatalogPage from '../../pages/CatalogPage';
+import AboutUsPage from '../../pages/AboutUsPage';
 
 // Routes available to ALL users add here
 const commonRoutes: RouteProps[] = [
@@ -16,6 +17,7 @@ const commonRoutes: RouteProps[] = [
   { path: `${RoutePaths.WATCHES}/:categorySlug`, Component: CatalogPage },
   { path: `${RoutePaths.WATCHES}`, Component: CatalogPage },
   { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
+  { path: `${RoutePaths.ABOUT}/*`, Component: AboutUsPage },
 ];
 
 // Routes available to AUTHORIZED users add here
