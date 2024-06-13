@@ -14,7 +14,7 @@ const BasketPage = () => {
   useEffect(() => {
     const fetchCart = async () => {
       const response = await getCart();
-      setCart(response.body);
+      setCart(response.body.results[0]);
     };
 
     // eslint-disable-next-line no-console

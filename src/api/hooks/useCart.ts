@@ -1,30 +1,30 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { MyCartAddLineItemAction, MyCartRemoveLineItemAction, MyCartUpdate } from '@commercetools/platform-sdk';
 import useApiClient from './useApiClient';
 import useCustomer from './useCustomer';
 import { Currency } from '../../shared/types/enum';
-import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { setCartId } from '../../shared/store/auth/cartSlice';
+import { /*  useAppDispatch, */ useAppSelector } from '../../shared/store/hooks';
+// import { setCartId } from '../../shared/store/auth/cartSlice';
 
 const useCart = () => {
   const { apiRoot } = useApiClient();
   const { getCart } = useCustomer();
   const cartId = useAppSelector((state) => state.cart.cartId);
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const response = await getCart();
-        dispatch(setCartId(response.body.results[0].id));
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching cart:', error);
-      }
-    };
-    // eslint-disable-next-line no-console
-    fetchCart().catch((error) => console.log(error));
-  }, [getCart, dispatch]);
+  // useEffect(() => {
+  //   const fetchCart = async () => {
+  //     try {
+  //       const response = await getCart();
+  //       dispatch(setCartId(response.body.results[0].id));
+  //     } catch (error) {
+  //       // eslint-disable-next-line no-console
+  //       console.error('Error fetching cart:', error);
+  //     }
+  //   };
+  //   // eslint-disable-next-line no-console
+  //   fetchCart().catch((error) => console.log(error));
+  // }, [getCart, dispatch]);
 
   const createCart = () => {
     if (!apiRoot) {
