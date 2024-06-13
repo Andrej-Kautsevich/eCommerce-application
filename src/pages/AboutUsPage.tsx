@@ -1,12 +1,7 @@
 import AboutUs from '../components/AboutUs';
-import MainLayout from '../shared/ui/MainLayout';
 
 const AboutUsPage = () => {
-  return (
-    <MainLayout>
-      <AboutUs />
-    </MainLayout>
-  );
+  return <AboutUs />;
 };
 
 export default AboutUsPage;
