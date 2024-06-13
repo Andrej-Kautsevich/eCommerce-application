@@ -11,3 +11,11 @@ export type AddressesFields = {
 export type FilterParams = {
   [key: string]: string | undefined;
 };
+
+export type TeamMemberCard = {
+  name: string;
+  role: string;
+  bio: string;
+  photo: string;
+  profile: string;
+};
