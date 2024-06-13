@@ -58,6 +58,7 @@ const Carousel = ({ product }: CarouselProps) => {
         />
         <Box
           sx={{
+            height: '100%',
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column',
