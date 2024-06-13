@@ -19,7 +19,8 @@ const useCustomer = () => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
-    return apiRoot.me().activeCart().get().execute();
+    // return apiRoot.me().activeCart().get().execute();
+    return apiRoot.me().carts().get().execute();
   }, [apiRoot]);
 
   /**

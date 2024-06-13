@@ -26,3 +26,7 @@ export enum SortNames {
   PRICE_DESC = 'price: high to low',
   NAME = 'name: alphabetically',
 }
+
+export enum Currency {
+  USD = 'USD',
+}
