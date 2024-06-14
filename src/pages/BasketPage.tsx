@@ -7,7 +7,7 @@ import MainLayout from '../shared/ui/MainLayout';
 import { useCustomer } from '../api/hooks';
 import CartItems from '../components/Cart/CartItems';
 import CartTotalPrice from '../components/Cart/CartTotalPrice';
-import CartPromoCode from '../components/Cart/CartPromocode';
+import CartPromoCode from '../components/Cart/CartPromoCode';
 import CartRemoveAllItems from '../components/Cart/CartRemoveAllItems';
 import LinkRouter from '../shared/ui/LinkRouter';
 import { RoutePaths } from '../shared/types/enum';

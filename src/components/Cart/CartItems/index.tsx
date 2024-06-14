@@ -10,10 +10,10 @@ const CartItems = ({ items }: CartItemProps) => {
   return (
     <List component="ul">
       {items.map((item, index) => (
-        <>
+        <div key={item.id}>
           {index !== 0 && <Divider component="li" />}
           <CartItem item={item} />
-        </>
+        </div>
       ))}
     </List>
   );
