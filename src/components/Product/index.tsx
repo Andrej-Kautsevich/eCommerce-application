@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, CircularProgress, Skeleton, Slide, Snackbar, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import PageTitle from '../PageTitle';
 import AddCartBtn from '../AddCartBtn';
+import DeleteCartBtn from '../DeleteCartBtn';
+import { useCustomer } from '../../api/hooks';
+import {
+  setCurrencyProductCount,
+  setCurrencyItemCartId,
+  setCartId,
+  setCartUpdate,
+} from '../../shared/store/auth/cartSlice';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 
 const Product = () => {
   const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
@@ -14,6 +23,25 @@ const Product = () => {
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const { getCart } = useCustomer();
+  const dispatch = useAppDispatch();
+  const currencyProductCount = useAppSelector((state) => state.cart.currencyProductCount);
+  const cartUpdate = useAppSelector((state) => state.cart.cartUpdate);
+
+  const fetchCart = async () => {
+    const response = await getCart();
+    const itemList = response.body.results[0].lineItems;
+
+    dispatch(setCartId(response.body.results[0].id));
+    for (let i = 0; i < itemList.length; i += 1) {
+      if (itemList[i].productId === productID) {
+        dispatch(setCurrencyItemCartId(itemList[i].id));
+        dispatch(setCurrencyProductCount(itemList[i].quantity));
+      }
+    }
+  };
+  // eslint-disable-next-line no-console
+  fetchCart().catch((error) => console.log(error));
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -36,7 +64,15 @@ const Product = () => {
     // TODO solve the problem with ESLINT
     // eslint-disable-next-line no-console
     fetchProduct().catch((error) => console.log(error));
-  }, [getProduct, productID]);
+  }, [getProduct, productID, currencyProductCount]);
+
+  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    event?.preventDefault();
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch(setCartUpdate({ status: false }));
+  };
 
   if (!product) {
     return (
@@ -101,7 +137,31 @@ const Product = () => {
                 </Typography>
               </Box>
             )}
+            <Typography component="p" fontFamily="Poppins" color="text.secondary">
+              Items in cart:
+            </Typography>
+            <Typography
+              component="p"
+              fontFamily="Poppins"
+              color="text.primary"
+              sx={{
+                mb: 3,
+              }}
+            >
+              {currencyProductCount}
+            </Typography>
             <AddCartBtn />
+            <DeleteCartBtn />
+            {cartUpdate.status && (
+              <Slide in={cartUpdate.status} direction="right">
+                <Snackbar open={cartUpdate.status} autoHideDuration={2000} onClose={handleSnackBarClose}>
+                  <Alert sx={{ width: '100%' }} severity="success" onClose={handleSnackBarClose}>
+                    <AlertTitle>Success!</AlertTitle>
+                    {cartUpdate.message}
+                  </Alert>
+                </Snackbar>
+              </Slide>
+            )}
           </Box>
         </Grid>
       </Grid>

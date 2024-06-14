@@ -31,3 +31,8 @@ export enum SortNames {
 export enum Currency {
   USD = 'USD',
 }
+
+export enum Status {
+  ADD = 'successful addition',
+  Remove = 'successful removal',
+}
