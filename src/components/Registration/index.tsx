@@ -36,6 +36,7 @@ import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCoun
 import schemaPostalCodeUkraine from '../../shared/validation/postalCodeOfCountriesVal/ukrainePostalShema';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
+import useCart from '../../api/hooks/useCart';
 
 export default function Registration() {
   const [showBilling, setBilling] = useState(false);
@@ -84,6 +85,7 @@ export default function Registration() {
   const navigate = useNavigate();
   const { customerSignUp } = useCustomerAuth();
   const { customerUpdate } = useCustomer();
+  const { fetchCart } = useCart();
   const onSubmit: SubmitHandler<RegistrationForm> = async (data) => {
     const addresses: BaseAddress[] = [data.shippingAddress];
     let defaultBillingAddress;
@@ -126,6 +128,8 @@ export default function Registration() {
             : signUpResult.body.customer.addresses[0].id,
       };
       customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() => setShowAlert(true));
+      // eslint-disable-next-line no-console
+      fetchCart().catch((error) => console.log(error));
     } else {
       setShowAlert(true);
     }
