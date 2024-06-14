@@ -1,4 +1,3 @@
-// import { useEffect } from 'react';
 import {
   Cart,
   MyCartAddLineItemAction,
@@ -9,30 +8,14 @@ import {
 import useApiClient from './useApiClient';
 import useCustomer from './useCustomer';
 import { Currency } from '../../shared/types/enum';
-import { /*  useAppDispatch, */ useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setCart } from '../../shared/store/auth/cartSlice';
-// import { setCartId } from '../../shared/store/auth/cartSlice';
 
 const useCart = () => {
   const { apiRoot } = useApiClient();
   const { getCart } = useCustomer();
   const cartId = useAppSelector((state) => state.cart.cartId);
   const dispatch = useAppDispatch();
-  // const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   const fetchCart = async () => {
-  //     try {
-  //       const response = await getCart();
-  //       dispatch(setCartId(response.body.results[0].id));
-  //     } catch (error) {
-  //       // eslint-disable-next-line no-console
-  //       console.error('Error fetching cart:', error);
-  //     }
-  //   };
-  //   // eslint-disable-next-line no-console
-  //   fetchCart().catch((error) => console.log(error));
-  // }, [getCart, dispatch]);
 
   const createCart = () => {
     if (!apiRoot) {
@@ -45,7 +28,7 @@ const useCart = () => {
       .execute();
   };
 
-  const addItem = (cartVersion: number, productID: string = '97c20d0b-b254-46b3-b6f9-c3b39392cadf') => {
+  const addItem = async (cartVersion: number, productID: string) => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
@@ -60,10 +43,17 @@ const useCart = () => {
       actions: [itemUpdateAction],
     };
 
-    return apiRoot.me().carts().withId({ ID: cartId }).post({ body: myCartAddLineItemAction }).execute();
+    const response = await apiRoot
+      .me()
+      .carts()
+      .withId({ ID: cartId })
+      .post({ body: myCartAddLineItemAction })
+      .execute();
+
+    dispatch(setCart(response.body));
   };
 
-  const deleteItem = (cartVersion: number, itemId: string) => {
+  const deleteItem = async (cartVersion: number, itemId: string) => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
@@ -78,7 +68,14 @@ const useCart = () => {
       actions: [itemUpdateAction],
     };
 
-    return apiRoot.me().carts().withId({ ID: cartId }).post({ body: myCartRemoveLineItemAction }).execute();
+    const response = await apiRoot
+      .me()
+      .carts()
+      .withId({ ID: cartId })
+      .post({ body: myCartRemoveLineItemAction })
+      .execute();
+
+    dispatch(setCart(response.body));
   };
 
   const deleteAllItems = async (cart: Cart) => {

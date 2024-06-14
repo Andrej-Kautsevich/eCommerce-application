@@ -1,10 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Cart } from '@commercetools/platform-sdk';
 import { Box, Breadcrumbs, Button, Divider, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import PageTitle from '../components/PageTitle';
 import MainLayout from '../shared/ui/MainLayout';
-import { useCustomer } from '../api/hooks';
 import CartItems from '../components/Cart/CartItems';
 import CartTotalPrice from '../components/Cart/CartTotalPrice';
 import CartPromoCode from '../components/Cart/CartPromoCode';
@@ -12,21 +9,10 @@ import CartRemoveAllItems from '../components/Cart/CartRemoveAllItems';
 import LinkRouter from '../shared/ui/LinkRouter';
 import { RoutePaths } from '../shared/types/enum';
 import emptyCartImg from '../shared/assets/images/cart.png';
+import { useAppSelector } from '../shared/store/hooks';
 
 const BasketPage = () => {
-  const [cart, setCart] = useState<Cart | undefined>(undefined);
-
-  const { getCart } = useCustomer();
-
-  useEffect(() => {
-    const fetchCart = async () => {
-      const response = await getCart();
-      setCart(response.body.results[0]);
-    };
-
-    // eslint-disable-next-line no-console
-    fetchCart().catch((error) => console.error('error fetching cart: ', error));
-  }, [getCart]);
+  const { cart } = useAppSelector((state) => state.cart);
 
   if (!cart || cart.lineItems.length === 0)
     return (
