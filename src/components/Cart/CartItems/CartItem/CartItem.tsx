@@ -36,6 +36,7 @@ const CartItem = ({ item }: CartItemProps) => {
         // eslint-disable-next-line no-console
         await changeItemQuantity(cart.version, id, value).catch((error) => console.log(error));
       } else {
+        // if input is empty delete product completely
         await handleItemDelete();
       }
     }

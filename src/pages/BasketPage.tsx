@@ -26,15 +26,6 @@ const BasketPage = () => {
 
     // eslint-disable-next-line no-console
     fetchCart().catch((error) => console.error('error fetching cart: ', error));
-
-    // try {
-    //   getCart()
-    //     .then((res) => setCart(res.body))
-    //     // eslint-disable-next-line no-console
-    //     .catch((error) => console.log(error));
-    // } catch (error) {
-    //   throw new Error('error fetching cart');
-    // }
   }, [getCart]);
 
   if (!cart || cart.lineItems.length === 0)

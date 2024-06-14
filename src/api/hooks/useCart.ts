@@ -1,5 +1,6 @@
 // import { useEffect } from 'react';
 import {
+  Cart,
   MyCartAddLineItemAction,
   MyCartChangeLineItemQuantityAction,
   MyCartRemoveLineItemAction,
@@ -80,6 +81,33 @@ const useCart = () => {
     return apiRoot.me().carts().withId({ ID: cartId }).post({ body: myCartRemoveLineItemAction }).execute();
   };
 
+  const deleteAllItems = async (cart: Cart) => {
+    if (!apiRoot) {
+      throw new Error('ApiRoot is not defined');
+    }
+
+    const itemUpdateActions = cart.lineItems.map((item) => {
+      const itemUpdateAction: MyCartRemoveLineItemAction = {
+        action: 'removeLineItem',
+        lineItemId: item.id,
+      };
+      return itemUpdateAction;
+    });
+
+    const myCartRemoveLineItemAction: MyCartUpdate = {
+      version: cart.version,
+      actions: itemUpdateActions,
+    };
+
+    const response = await apiRoot
+      .me()
+      .carts()
+      .withId({ ID: cartId })
+      .post({ body: myCartRemoveLineItemAction })
+      .execute();
+    dispatch(setCart(response.body));
+  };
+
   const changeItemQuantity = async (cartVersion: number, itemId: string, quantity: number) => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
@@ -118,6 +146,6 @@ const useCart = () => {
     }
   };
 
-  return { createCart, addItem, fetchCart, deleteItem, changeItemQuantity };
+  return { createCart, addItem, fetchCart, deleteItem, deleteAllItems, changeItemQuantity };
 };
 export default useCart;
