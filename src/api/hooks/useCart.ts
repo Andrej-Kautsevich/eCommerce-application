@@ -70,7 +70,6 @@ const useCart = () => {
     const itemUpdateAction: MyCartRemoveLineItemAction = {
       action: 'removeLineItem',
       lineItemId: itemId,
-      quantity: 1,
     };
 
     const myCartRemoveLineItemAction: MyCartUpdate = {
@@ -81,7 +80,7 @@ const useCart = () => {
     return apiRoot.me().carts().withId({ ID: cartId }).post({ body: myCartRemoveLineItemAction }).execute();
   };
 
-  const changeItemQuantity = (cartVersion: number, itemId: string, quantity: number) => {
+  const changeItemQuantity = async (cartVersion: number, itemId: string, quantity: number) => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
@@ -97,7 +96,14 @@ const useCart = () => {
       actions: [action],
     };
 
-    return apiRoot.me().carts().withId({ ID: cartId }).post({ body: myCartChangeLineItemQuantityAction }).execute();
+    const response = await apiRoot
+      .me()
+      .carts()
+      .withId({ ID: cartId })
+      .post({ body: myCartChangeLineItemQuantityAction })
+      .execute();
+
+    dispatch(setCart(response.body));
   };
 
   const fetchCart = async () => {

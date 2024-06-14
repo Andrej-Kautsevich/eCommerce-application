@@ -16,20 +16,28 @@ interface CartItemProps {
 }
 
 const CartItem = ({ item }: CartItemProps) => {
-  const { changeItemQuantity } = useCart();
+  const { changeItemQuantity, deleteItem } = useCart();
   const { cart } = useAppSelector((state) => state.cart);
 
   const parsedItem = parseLineItem(item);
   const { images, name, productId, prices, quantity, id } = parsedItem;
   const productLink = `${RoutePaths.PRODUCT}/${productId}`;
 
-  const handleItemQuantityChange = async (value: number | null) => {
-    console.log(cart?.version);
+  const handleItemDelete = async () => {
     if (cart) {
-      console.log(id, 'new value: ', value);
-      // await deleteItem(cart.version, id).catch((error) => console.log(error));
-      if (value) await changeItemQuantity(cart.version, id, value);
-      console.log(cart?.version);
+      // eslint-disable-next-line no-console
+      await deleteItem(cart.version, id).catch((error) => console.log(error));
+    }
+  };
+
+  const handleItemQuantityChange = async (value: number | null) => {
+    if (cart) {
+      if (value) {
+        // eslint-disable-next-line no-console
+        await changeItemQuantity(cart.version, id, value).catch((error) => console.log(error));
+      } else {
+        await handleItemDelete();
+      }
     }
   };
 
@@ -51,7 +59,7 @@ const CartItem = ({ item }: CartItemProps) => {
       </LinkRouter>
       <Box width="100%" display="flex" justifyContent="space-between" flexDirection="column">
         <Box sx={cartItemInfoSx}>
-          <IconButton sx={cartItemRemoveSx}>
+          <IconButton sx={cartItemRemoveSx} onClick={handleItemDelete}>
             <Delete />
           </IconButton>
           <Typography variant="body1" component="div">
@@ -76,12 +84,7 @@ const CartItem = ({ item }: CartItemProps) => {
           </Box>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <NumberInput
-            // eslint-disable-next-line no-console
-            onChange={(_, newValue) => handleItemQuantityChange(newValue)}
-            min={1}
-            defaultValue={quantity}
-          />
+          <NumberInput onChange={(_, newValue) => handleItemQuantityChange(newValue)} min={1} defaultValue={quantity} />
           <Typography variant="h5" component="div">
             {prices.totalPrice}
           </Typography>
