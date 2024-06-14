@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import PageTitle from '../components/PageTitle';
 import MainLayout from '../shared/ui/MainLayout';
 import { useCustomer } from '../api/hooks';
-import CartItem from '../components/Cart/CartItem';
+import CartItems from '../components/Cart/CartItems';
 
 const BasketPage = () => {
   const [cart, setCart] = useState<Cart | undefined>(undefined);
@@ -48,9 +48,7 @@ const BasketPage = () => {
           Your Cart
         </Typography>
       </PageTitle>
-      {cart.lineItems.map((item) => (
-        <CartItem item={item} />
-      ))}
+      <CartItems items={cart.lineItems} />
     </MainLayout>
   );
 };

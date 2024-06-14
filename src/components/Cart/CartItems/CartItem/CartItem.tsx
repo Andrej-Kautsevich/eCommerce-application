@@ -1,11 +1,13 @@
 import { LineItem } from '@commercetools/platform-sdk';
-import { Box, CardMedia, Typography } from '@mui/material';
-import emptyImage from '../../shared/assets/images/empty-img.png';
-import { cartItemInfo, cartItemMediaSx, cartItemSx } from './CartItemStyles';
-import parseLineItem from '../../shared/utils/parseCartLineItem';
-import { ITEM_HEIGHT_XS } from './constants';
-import LinkRouter from '../CatalogBreadcrumbs/LinkRouter';
-import { RoutePaths } from '../../shared/types/enum';
+import { Box, CardMedia, IconButton, Typography } from '@mui/material';
+import { Delete } from '@mui/icons-material';
+import emptyImage from '../../../../shared/assets/images/empty-img.png';
+import { cartItemInfoSx, cartItemMediaSx, cartItemRemoveSx, cartItemSx } from './CartItemStyles';
+import parseLineItem from '../../../../shared/utils/parseCartLineItem';
+import { ITEM_HEIGHT_XS } from '../../constants';
+import LinkRouter from '../../../CatalogBreadcrumbs/LinkRouter';
+import { RoutePaths } from '../../../../shared/types/enum';
+import NumberInput from '../../../../shared/ui/NumberInput';
 
 interface CartItemProps {
   item: LineItem;
@@ -14,12 +16,12 @@ interface CartItemProps {
 const CartItem = ({ item }: CartItemProps) => {
   const parsedItem = parseLineItem(item);
 
-  const { images, name, productId, prices } = parsedItem;
+  const { images, name, productId, prices, quantity } = parsedItem;
   const productLink = `${RoutePaths.PRODUCT}/${productId}`;
 
   return (
     <Box sx={cartItemSx} height={{ xs: ITEM_HEIGHT_XS }}>
-      <LinkRouter to={productLink}>
+      <LinkRouter to={productLink} mr={5}>
         <CardMedia
           sx={cartItemMediaSx}
           component="img"
@@ -33,15 +35,18 @@ const CartItem = ({ item }: CartItemProps) => {
           }}
         />
       </LinkRouter>
-      <Box width="100%" display="flex" flexDirection="column">
-        <Box sx={cartItemInfo}>
+      <Box width="100%" display="flex" justifyContent="space-between" flexDirection="column">
+        <Box sx={cartItemInfoSx}>
+          <IconButton sx={cartItemRemoveSx}>
+            <Delete />
+          </IconButton>
           <Typography variant="body1" component="div">
             {name}
           </Typography>
           <Typography variant="caption" component="div" color="text.secondary">
             {`Article: ${productId}`}
           </Typography>
-          <Box display="flex">
+          <Box display="flex" alignItems="center">
             {prices.discountPrice && (
               <Typography variant="body1" component="div" color="error.light" mr={1}>
                 {prices.discountPrice}
@@ -56,8 +61,14 @@ const CartItem = ({ item }: CartItemProps) => {
             </Typography>
           </Box>
         </Box>
-        <Box>
-          <Typography variant="h6" component="div">
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <NumberInput
+            // eslint-disable-next-line no-console
+            onChange={(event, newValue) => console.log(`${event.type} event: the new value is ${newValue}`)}
+            min={1}
+            defaultValue={quantity}
+          />
+          <Typography variant="h5" component="div">
             {prices.totalPrice}
           </Typography>
         </Box>
