@@ -12,7 +12,7 @@ const CartItems = ({ items }: CartItemProps) => {
       {items.map((item, index) => (
         <div key={item.id}>
           {index !== 0 && <Divider component="li" />}
-          <CartItem item={item} />
+          <CartItem item={item} key={item.id} />
         </div>
       ))}
     </List>

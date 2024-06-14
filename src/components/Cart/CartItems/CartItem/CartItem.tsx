@@ -8,16 +8,30 @@ import { ITEM_HEIGHT_XS } from '../../constants';
 import LinkRouter from '../../../CatalogBreadcrumbs/LinkRouter';
 import { RoutePaths } from '../../../../shared/types/enum';
 import NumberInput from '../../../../shared/ui/NumberInput';
+import useCart from '../../../../api/hooks/useCart';
+import { useAppSelector } from '../../../../shared/store/hooks';
 
 interface CartItemProps {
   item: LineItem;
 }
 
 const CartItem = ({ item }: CartItemProps) => {
-  const parsedItem = parseLineItem(item);
+  const { changeItemQuantity } = useCart();
+  const { cart } = useAppSelector((state) => state.cart);
 
-  const { images, name, productId, prices, quantity } = parsedItem;
+  const parsedItem = parseLineItem(item);
+  const { images, name, productId, prices, quantity, id } = parsedItem;
   const productLink = `${RoutePaths.PRODUCT}/${productId}`;
+
+  const handleItemQuantityChange = async (value: number | null) => {
+    console.log(cart?.version);
+    if (cart) {
+      console.log(id, 'new value: ', value);
+      // await deleteItem(cart.version, id).catch((error) => console.log(error));
+      if (value) await changeItemQuantity(cart.version, id, value);
+      console.log(cart?.version);
+    }
+  };
 
   return (
     <Box sx={cartItemSx} height={{ xs: ITEM_HEIGHT_XS }}>
@@ -64,7 +78,7 @@ const CartItem = ({ item }: CartItemProps) => {
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <NumberInput
             // eslint-disable-next-line no-console
-            onChange={(event, newValue) => console.log(`${event.type} event: the new value is ${newValue}`)}
+            onChange={(_, newValue) => handleItemQuantityChange(newValue)}
             min={1}
             defaultValue={quantity}
           />

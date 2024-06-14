@@ -1,15 +1,22 @@
 // import { useEffect } from 'react';
-import { MyCartAddLineItemAction, MyCartRemoveLineItemAction, MyCartUpdate } from '@commercetools/platform-sdk';
+import {
+  MyCartAddLineItemAction,
+  MyCartChangeLineItemQuantityAction,
+  MyCartRemoveLineItemAction,
+  MyCartUpdate,
+} from '@commercetools/platform-sdk';
 import useApiClient from './useApiClient';
 import useCustomer from './useCustomer';
 import { Currency } from '../../shared/types/enum';
-import { /*  useAppDispatch, */ useAppSelector } from '../../shared/store/hooks';
+import { /*  useAppDispatch, */ useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setCart } from '../../shared/store/auth/cartSlice';
 // import { setCartId } from '../../shared/store/auth/cartSlice';
 
 const useCart = () => {
   const { apiRoot } = useApiClient();
   const { getCart } = useCustomer();
   const cartId = useAppSelector((state) => state.cart.cartId);
+  const dispatch = useAppDispatch();
   // const dispatch = useAppDispatch();
 
   // useEffect(() => {
@@ -74,14 +81,37 @@ const useCart = () => {
     return apiRoot.me().carts().withId({ ID: cartId }).post({ body: myCartRemoveLineItemAction }).execute();
   };
 
+  const changeItemQuantity = (cartVersion: number, itemId: string, quantity: number) => {
+    if (!apiRoot) {
+      throw new Error('ApiRoot is not defined');
+    }
+
+    const action: MyCartChangeLineItemQuantityAction = {
+      action: 'changeLineItemQuantity',
+      lineItemId: itemId,
+      quantity,
+    };
+
+    const myCartChangeLineItemQuantityAction: MyCartUpdate = {
+      version: cartVersion,
+      actions: [action],
+    };
+
+    return apiRoot.me().carts().withId({ ID: cartId }).post({ body: myCartChangeLineItemQuantityAction }).execute();
+  };
+
   const fetchCart = async () => {
     const response = await getCart();
+    const cart = response.body.results[0];
 
-    if (response.body.results.length === 0) {
-      await createCart();
+    if (!cart) {
+      const newCart = (await createCart()).body;
+      dispatch(setCart(newCart));
+    } else {
+      dispatch(setCart(cart));
     }
   };
 
-  return { createCart, addItem, fetchCart, deleteItem };
+  return { createCart, addItem, fetchCart, deleteItem, changeItemQuantity };
 };
 export default useCart;

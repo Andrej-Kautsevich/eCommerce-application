@@ -1,13 +1,16 @@
 /* eslint-disable no-param-reassign */
+import { Cart } from '@commercetools/platform-sdk';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface CartState {
+  cart: Cart | undefined;
   cartId: string;
   cartTotalProducts: number | undefined;
   productList: Product[];
 }
 
 const initialState: CartState = {
+  cart: undefined,
   cartId: '',
   cartTotalProducts: undefined,
   productList: [],
@@ -22,6 +25,10 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    setCart: (state, action: PayloadAction<Cart>) => {
+      state.cart = action.payload;
+      state.cartId = action.payload.id;
+    },
     setCartId: (state, action: PayloadAction<string>) => {
       state.cartId = action.payload;
     },
@@ -34,6 +41,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { setCartId, setTotalProducts, setProductList } = cartSlice.actions;
+export const { setCart, setCartId, setTotalProducts, setProductList } = cartSlice.actions;
 
 export default cartSlice.reducer;
