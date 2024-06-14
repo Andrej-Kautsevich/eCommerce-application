@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Cart } from '@commercetools/platform-sdk';
-import { Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import PageTitle from '../components/PageTitle';
 import MainLayout from '../shared/ui/MainLayout';
 import { useCustomer } from '../api/hooks';
 import CartItems from '../components/Cart/CartItems';
+import CartTotalPrice from '../components/Cart/CartTotalPrice';
 
 const BasketPage = () => {
   const [cart, setCart] = useState<Cart | undefined>(undefined);
@@ -49,6 +50,8 @@ const BasketPage = () => {
         </Typography>
       </PageTitle>
       <CartItems items={cart.lineItems} />
+      <Divider flexItem />
+      <CartTotalPrice totalPrice={cart.totalPrice} />
     </MainLayout>
   );
 };
