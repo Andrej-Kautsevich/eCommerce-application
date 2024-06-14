@@ -61,16 +61,19 @@ const Cart = () => {
   };
 
   return (
-    <Box>
-      {productList.map((product) => (
-        <Typography key={product.id} sx={{ mb: 1 }}>
-          {product.id}: {product.quantity}
-          <Button variant="contained" sx={{ ml: 2 }} onClick={deleteProduct(product.id)}>
-            delete
-          </Button>
-        </Typography>
-      ))}
-    </Box>
+    <>
+      <Typography key="promo">Promo Codes:</Typography>
+      <Box>
+        {productList.map((product) => (
+          <Typography key={product.id} sx={{ mb: 1 }}>
+            {product.id}: {product.quantity}
+            <Button variant="contained" sx={{ ml: 2 }} onClick={deleteProduct(product.id)}>
+              delete
+            </Button>
+          </Typography>
+        ))}
+      </Box>
+    </>
   );
 };
 
