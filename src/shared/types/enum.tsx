@@ -31,3 +31,7 @@ export enum SortNames {
 export enum Currency {
   USD = 'USD',
 }
+
+export enum Links {
+  RSSCHOOL = 'https://rs.school/',
+}
