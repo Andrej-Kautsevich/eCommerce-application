@@ -19,6 +19,7 @@ export const productCardContentSx: SxProps<Theme> = {
   justifyContent: 'center',
   width: '100%',
   textAlign: 'center',
+  p: 1,
 };
 
 export const productCardActionSx: SxProps<Theme> = {

@@ -86,8 +86,8 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                 {productDiscountPrice}
               </Typography>
             )}
-            <AddCartBtn />
           </CardContent>
+          <AddCartBtn />
         </CardActionArea>
       </Card>
     </Box>
