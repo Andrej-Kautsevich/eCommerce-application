@@ -15,7 +15,7 @@ import * as yup from 'yup';
 import schemaEmail from '../../shared/validation/emailValidation';
 import schemaPass from '../../shared/validation/passValidation';
 import { useCustomerAuth } from '../../api/hooks';
-import { ErrorMessages, RoutePaths } from '../../shared/types/enum';
+import { SnackbarMessages, RoutePaths } from '../../shared/types/enum';
 import useCart from '../../api/hooks/useCart';
 
 type LoginForm = {
@@ -44,7 +44,7 @@ export default function LoginTab() {
       const greetingMessage = `Welcome back, ${response.body.customer.firstName}`;
       enqueueSnackbar(greetingMessage, { variant: 'success' });
       fetchCart().catch(() => {
-        enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
       });
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;

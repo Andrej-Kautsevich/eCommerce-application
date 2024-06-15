@@ -12,7 +12,7 @@ import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
 import PageTitle from '../components/PageTitle';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
-import { ErrorMessages, FilterCategories } from '../shared/types/enum';
+import { SnackbarMessages, FilterCategories } from '../shared/types/enum';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 6;
@@ -85,7 +85,7 @@ const CatalogPage = () => {
       setProducts([...result]);
     };
 
-    fetchProducts().catch(() => enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' }));
+    fetchProducts().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
   }, [
     getProducts,
     filterParams,

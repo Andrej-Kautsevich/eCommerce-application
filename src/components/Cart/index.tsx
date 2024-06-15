@@ -5,7 +5,7 @@ import { useCustomer } from '../../api/hooks';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setTotalProducts, setProductList } from '../../shared/store/auth/cartSlice';
 import useCart from '../../api/hooks/useCart';
-import { ErrorMessages } from '../../shared/types/enum';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 const Cart = () => {
   const { getCart } = useCustomer();
@@ -29,12 +29,12 @@ const Cart = () => {
 
         dispatch(setProductList(itemList));
       } catch (error) {
-        enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
       }
     };
 
     if (initialFetch) {
-      fetchCart().catch(() => enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' }));
+      fetchCart().catch(() => enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' }));
       setInitialFetch(false);
     }
   }, [getCart, dispatch, initialFetch, enqueueSnackbar]);
@@ -54,9 +54,9 @@ const Cart = () => {
         }));
         dispatch(setProductList(itemList));
       };
-      fetchAddItem().catch(() => enqueueSnackbar(ErrorMessages.ADD_ITEM_FETCH, { variant: 'error' }));
+      fetchAddItem().catch(() => enqueueSnackbar(SnackbarMessages.ADD_ITEM_FETCH_ERROR, { variant: 'error' }));
     } catch (error) {
-      enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' });
+      enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' });
     }
   };
 

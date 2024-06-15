@@ -5,8 +5,8 @@ import { useSnackbar } from 'notistack';
 import { useCustomer } from '../../api/hooks';
 import useCart from '../../api/hooks/useCart';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { setCartUpdate, setCurrencyProductCount } from '../../shared/store/auth/cartSlice';
-import { ErrorMessages, Status } from '../../shared/types/enum';
+import { setCurrencyProductCount } from '../../shared/store/auth/cartSlice';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 const DeleteCartBtn = () => {
   const { getCart } = useCustomer();
@@ -39,7 +39,7 @@ const DeleteCartBtn = () => {
             dispatch(setCurrencyProductCount(0));
           }
         }
-        dispatch(setCartUpdate({ status: true, message: Status.Remove }));
+        enqueueSnackbar(SnackbarMessages.REMOVE_ITEM_SUCCESS, { variant: 'success' });
       };
 
       fetchDeleteItem().catch((e) => {
@@ -47,7 +47,7 @@ const DeleteCartBtn = () => {
         enqueueSnackbar(error.body.message, { variant: 'error' });
       });
     } catch (error) {
-      enqueueSnackbar(ErrorMessages.DELETE_ITEM_FETCH, { variant: 'error' });
+      enqueueSnackbar(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, { variant: 'error' });
     }
   };
 

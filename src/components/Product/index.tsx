@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ClientResponse, ErrorObject, ProductProjection } from '@commercetools/platform-sdk';
-import { Alert, AlertTitle, Box, CircularProgress, Skeleton, Slide, Snackbar, Typography } from '@mui/material';
+import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
 import useProduct from '../../api/hooks/useProduct';
@@ -10,14 +10,9 @@ import PageTitle from '../PageTitle';
 import AddCartBtn from '../AddCartBtn';
 import DeleteCartBtn from '../DeleteCartBtn';
 import { useCustomer } from '../../api/hooks';
-import {
-  setCurrencyProductCount,
-  setCurrencyItemCartId,
-  setCartId,
-  setCartUpdate,
-} from '../../shared/store/auth/cartSlice';
+import { setCurrencyProductCount, setCurrencyItemCartId, setCartId } from '../../shared/store/auth/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { ErrorMessages } from '../../shared/types/enum';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 const Product = () => {
   const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
@@ -29,7 +24,6 @@ const Product = () => {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const currencyProductCount = useAppSelector((state) => state.cart.currencyProductCount);
-  const cartUpdate = useAppSelector((state) => state.cart.cartUpdate);
 
   const fetchCart = async () => {
     const response = await getCart();
@@ -44,7 +38,7 @@ const Product = () => {
     }
   };
   fetchCart().catch(() => {
-    enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+    enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
   });
 
   useEffect(() => {
@@ -64,16 +58,8 @@ const Product = () => {
       }
     };
 
-    fetchProduct().catch(() => enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' }));
+    fetchProduct().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
   }, [getProduct, productID, currencyProductCount, enqueueSnackbar]);
-
-  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    event?.preventDefault();
-    if (reason === 'clickaway') {
-      return;
-    }
-    dispatch(setCartUpdate({ status: false }));
-  };
 
   if (!product) {
     return (
@@ -153,16 +139,6 @@ const Product = () => {
             </Typography>
             <AddCartBtn />
             <DeleteCartBtn />
-            {cartUpdate.status && (
-              <Slide in={cartUpdate.status} direction="right">
-                <Snackbar open={cartUpdate.status} autoHideDuration={2000} onClose={handleSnackBarClose}>
-                  <Alert sx={{ width: '100%' }} severity="success" onClose={handleSnackBarClose}>
-                    <AlertTitle>Success!</AlertTitle>
-                    {cartUpdate.message}
-                  </Alert>
-                </Snackbar>
-              </Slide>
-            )}
           </Box>
         </Grid>
       </Grid>

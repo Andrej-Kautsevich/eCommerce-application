@@ -33,7 +33,7 @@ import schemaStreet from '../../shared/validation/streetValidation';
 import schemaPostalCode from '../../shared/validation/postalCodeValidation';
 import { RegistrationForm } from './types';
 import { useCustomer, useCustomerAuth } from '../../api/hooks';
-import { ErrorMessages, RoutePaths, StoreCountries } from '../../shared/types/enum';
+import { SnackbarMessages, RoutePaths, StoreCountries } from '../../shared/types/enum';
 import schemaPostalCodeBelarus from '../../shared/validation/postalCodeOfCountriesVal/belarusPostalShema';
 import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
 import schemaPostalCodeUkraine from '../../shared/validation/postalCodeOfCountriesVal/ukrainePostalShema';
@@ -129,10 +129,10 @@ export default function Registration() {
             : signUpResult.body.customer.addresses[0].id,
       };
       customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() =>
-        enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' }),
+        enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }),
       );
       fetchCart().catch(() => {
-        enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
       });
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;

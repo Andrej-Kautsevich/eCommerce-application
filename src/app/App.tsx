@@ -12,7 +12,7 @@ import { useApiClient } from '../api/hooks';
 import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
 import useCart from '../api/hooks/useCart';
-import { ErrorMessages } from '../shared/types/enum';
+import { SnackbarMessages } from '../shared/types/enum';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -44,10 +44,10 @@ const App = () => {
       };
 
       if (!categories.length) {
-        fetchCategories().catch(() => enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' }));
+        fetchCategories().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
       }
       fetchCart().catch(() => {
-        enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
       });
     }
   }, [
@@ -70,7 +70,7 @@ const App = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <SnackbarProvider maxSnack={3}>
+        <SnackbarProvider maxSnack={3} preventDuplicate>
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>

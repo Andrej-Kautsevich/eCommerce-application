@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { useCustomer } from '../../api/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 import formatDate from '../../shared/utils/formatDate';
-import { ErrorMessages } from '../../shared/types/enum';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 interface EditInfoProps {
   onSuccess: () => void;
@@ -84,7 +84,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
 
         if (response) {
           dispatch(setCustomer(response.body));
-          enqueueSnackbar(ErrorMessages.CUSTOMER_INFO_CHANGE_SUCCESS, { variant: 'success' });
+          enqueueSnackbar(SnackbarMessages.CUSTOMER_INFO_CHANGE_SUCCESS, { variant: 'success' });
           onSuccess();
           reset({
             firstName: '',

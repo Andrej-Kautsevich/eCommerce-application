@@ -7,7 +7,6 @@ interface CartState {
   productList: Product[];
   currencyProductCount: number;
   currencyItemCartId: string;
-  cartUpdate: CartUpdate;
 }
 
 const initialState: CartState = {
@@ -16,7 +15,6 @@ const initialState: CartState = {
   productList: [],
   currencyProductCount: 0,
   currencyItemCartId: '',
-  cartUpdate: { status: false },
 };
 
 interface Product {
@@ -24,11 +22,6 @@ interface Product {
   productId: string;
   quantity: number;
 }
-
-type CartUpdate = {
-  status: boolean;
-  message?: string;
-};
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -49,19 +42,10 @@ const cartSlice = createSlice({
     setCurrencyItemCartId: (state, action: PayloadAction<string>) => {
       state.currencyItemCartId = action.payload;
     },
-    setCartUpdate: (state, action: PayloadAction<CartUpdate>) => {
-      state.cartUpdate = action.payload;
-    },
   },
 });
 
-export const {
-  setCartId,
-  setTotalProducts,
-  setProductList,
-  setCurrencyProductCount,
-  setCurrencyItemCartId,
-  setCartUpdate,
-} = cartSlice.actions;
+export const { setCartId, setTotalProducts, setProductList, setCurrencyProductCount, setCurrencyItemCartId } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;
