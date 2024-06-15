@@ -1,6 +1,6 @@
-import { AuthErrorResponse, ClientResponse, MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
+import { MyCustomerDraft, MyCustomerSignin } from '@commercetools/platform-sdk';
 import useApiClient from './useApiClient';
-import { loginError, loginFetch, loginSuccess, logout } from '../../shared/store/auth/authSlice';
+import { loginFetch, loginSuccess, logout } from '../../shared/store/auth/authSlice';
 import { useAppDispatch } from '../../shared/store/hooks';
 import tokenCache from '../../shared/utils/tokenCache';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
@@ -44,11 +44,7 @@ const useCustomerAuth = () => {
         tokenCache.remove();
         await setPasswordFlow(user);
         return response;
-      })
-      .catch((signupError: ClientResponse<AuthErrorResponse>) => {
-        dispatch(loginError(signupError.body));
-        return undefined;
-      }); // TODO add error handle
+      });
   };
 
   const customerLogOut = () => {

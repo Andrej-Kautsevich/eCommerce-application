@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { Box, Alert, AlertTitle, Slide } from '@mui/material';
+import { Box } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -16,11 +16,14 @@ import * as yup from 'yup';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { CheckboxElement, PasswordElement, SelectElement, TextFieldElement } from 'react-hook-form-mui';
 import {
+  AuthErrorResponse,
   BaseAddress,
+  ClientResponse,
   MyCustomerAddBillingAddressIdAction,
   MyCustomerAddShippingAddressIdAction,
   MyCustomerDraft,
 } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import schemaPass from '../../shared/validation/passValidation';
 import schemaEmail from '../../shared/validation/emailValidation';
 import schemaName from '../../shared/validation/nameValidation';
@@ -30,12 +33,10 @@ import schemaStreet from '../../shared/validation/streetValidation';
 import schemaPostalCode from '../../shared/validation/postalCodeValidation';
 import { RegistrationForm } from './types';
 import { useCustomer, useCustomerAuth } from '../../api/hooks';
-import { RoutePaths, StoreCountries } from '../../shared/types/enum';
+import { ErrorMessages, RoutePaths, StoreCountries } from '../../shared/types/enum';
 import schemaPostalCodeBelarus from '../../shared/validation/postalCodeOfCountriesVal/belarusPostalShema';
 import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
 import schemaPostalCodeUkraine from '../../shared/validation/postalCodeOfCountriesVal/ukrainePostalShema';
-import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
 import useCart from '../../api/hooks/useCart';
 
 export default function Registration() {
@@ -43,7 +44,7 @@ export default function Registration() {
   // state for getting value from country and set logit validation
   const [countryFieldValue, setCountryFieldValue] = useState('');
   const [countryFieldValueBilling, setCountryFieldValueBilling] = useState('');
-  const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const checkValueForCountry = (nameOfState: string) => {
     if (nameOfState === 'KZ') return schemaPostalCodeKazakhstan;
@@ -81,7 +82,6 @@ export default function Registration() {
       defaultBillingAddress: yup.boolean().default(false),
     });
   }
-  const [showAlert, setShowAlert] = useState(false); // Close error alert
   const navigate = useNavigate();
   const { customerSignUp } = useCustomerAuth();
   const { customerUpdate } = useCustomer();
@@ -112,10 +112,11 @@ export default function Registration() {
       defaultShippingAddress,
     };
 
-    const signUpResult = await customerSignUp(customer);
-    if (signUpResult) {
+    try {
+      const signUpResult = await customerSignUp(customer);
       navigate(RoutePaths.MAIN);
-      dispatch(setSubmitSuccess({ status: true, message: `Welcome, ${customer.firstName}!` }));
+      const greetingMessage = `Welcome, ${customer.firstName}!`;
+      enqueueSnackbar(greetingMessage, { variant: 'success' });
       const shippingAddressUpdate: MyCustomerAddShippingAddressIdAction = {
         action: 'addShippingAddressId',
         addressId: signUpResult.body.customer.addresses[0].id,
@@ -127,17 +128,20 @@ export default function Registration() {
             ? signUpResult.body.customer.addresses[1].id
             : signUpResult.body.customer.addresses[0].id,
       };
-      customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() => setShowAlert(true));
-      // eslint-disable-next-line no-console
-      fetchCart().catch((error) => console.log(error));
-    } else {
-      setShowAlert(true);
+      customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() =>
+        enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' }),
+      );
+      fetchCart().catch(() => {
+        enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+      });
+    } catch (e) {
+      const error = e as ClientResponse<AuthErrorResponse>;
+      enqueueSnackbar(error.body.message, { variant: 'error' });
     }
   };
 
   const countryOptions = Object.entries(StoreCountries).map(([label, id]) => ({ id, label }));
   const { control, handleSubmit } = useForm<RegistrationForm>({ mode: 'onChange', resolver: yupResolver(schema) });
-  const { loginError } = useAppSelector((state) => state.auth);
 
   return (
     <Container maxWidth="sm">
@@ -364,21 +368,6 @@ export default function Registration() {
           </Typography>
           {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
         </Box>
-      </Box>
-      <Box height="116px">
-        {showAlert && (
-          <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
-            <Alert
-              severity="error"
-              onClose={() => {
-                setShowAlert(false);
-              }}
-            >
-              <AlertTitle>Error</AlertTitle>
-              {loginError}
-            </Alert>
-          </Slide>
-        )}
       </Box>
     </Container>
   );

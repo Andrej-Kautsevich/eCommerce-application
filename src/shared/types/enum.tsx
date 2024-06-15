@@ -42,5 +42,6 @@ export enum Links {
 }
 
 export enum ErrorMessages {
-  CART_FETCH = 'Failed to fetch cart, please try later',
+  GENERAL_ERROR = 'Something wrong, please try later!',
+  CART_FETCH = 'Failed to fetch cart, please try later!',
 }
