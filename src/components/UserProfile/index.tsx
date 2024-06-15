@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Slide, Snackbar, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useCustomer } from '../../api/hooks';
 import { AddressesFields } from '../../shared/types/type';
@@ -15,7 +15,6 @@ export default function UserProfile() {
   const [userAddresses, setUserAddresses] = useState([{}]);
   const [userEmail, setUserEmail] = useState('');
   const [showEditMode, setShowEditMode] = useState(false);
-  const [success, setSuccess] = useState(false);
   const { getCustomer } = useCustomer();
 
   const dispatch = useAppDispatch();
@@ -40,7 +39,6 @@ export default function UserProfile() {
 
   const handleSuccess = () => {
     setShowEditMode(false);
-    setSuccess(true);
   };
 
   return (
@@ -113,16 +111,6 @@ export default function UserProfile() {
           </Box>
         ))}
       </Box>
-      {success && (
-        <Slide in={success} direction="right">
-          <Snackbar open={success} autoHideDuration={2000} onClose={() => setSuccess(false)}>
-            <Alert sx={{ width: '100%' }} severity="success" onClose={() => setSuccess(false)}>
-              <AlertTitle>Success!</AlertTitle>
-              Your info was successfully updated
-            </Alert>
-          </Snackbar>
-        </Slide>
-      )}
     </Box>
   );
 }
