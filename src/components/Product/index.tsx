@@ -8,11 +8,11 @@ import Carousel from './Carousel';
 import PageTitle from '../PageTitle';
 import AddCartBtn from '../AddCartBtn';
 import DeleteCartBtn from '../DeleteCartBtn';
-import { useCustomer } from '../../api/hooks';
+// import { useCustomer } from '../../api/hooks';
 import {
-  setCurrencyProductCount,
-  setCurrencyItemCartId,
-  setCartId,
+  // setCurrencyProductCount,
+  // setCurrencyItemCartId,
+  // setCartId,
   setCartUpdate,
 } from '../../shared/store/auth/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
@@ -23,25 +23,25 @@ const Product = () => {
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const { getCart } = useCustomer();
+  // const { getCart } = useCustomer();
   const dispatch = useAppDispatch();
   const currencyProductCount = useAppSelector((state) => state.cart.currencyProductCount);
   const cartUpdate = useAppSelector((state) => state.cart.cartUpdate);
 
-  const fetchCart = async () => {
-    const response = await getCart();
-    const itemList = response.body.results[0].lineItems;
+  // const fetchCart = async () => {
+  //   const response = await getCart();
+  //   const itemList = response.body.results[0].lineItems;
 
-    dispatch(setCartId(response.body.results[0].id));
-    for (let i = 0; i < itemList.length; i += 1) {
-      if (itemList[i].productId === productID) {
-        dispatch(setCurrencyItemCartId(itemList[i].id));
-        dispatch(setCurrencyProductCount(itemList[i].quantity));
-      }
-    }
-  };
-  // eslint-disable-next-line no-console
-  fetchCart().catch((error) => console.log(error));
+  //   dispatch(setCartId(response.body.results[0].id));
+  //   for (let i = 0; i < itemList.length; i += 1) {
+  //     if (itemList[i].productId === productID) {
+  //       dispatch(setCurrencyItemCartId(itemList[i].id));
+  //       dispatch(setCurrencyProductCount(itemList[i].quantity));
+  //     }
+  //   }
+  // };
+  // // eslint-disable-next-line no-console
+  // fetchCart().catch((error) => console.log(error));
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -150,7 +150,7 @@ const Product = () => {
             >
               {currencyProductCount}
             </Typography>
-            <AddCartBtn />
+            <AddCartBtn productID={productID} />
             <DeleteCartBtn />
             {cartUpdate.status && (
               <Slide in={cartUpdate.status} direction="right">
