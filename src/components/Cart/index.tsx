@@ -22,8 +22,10 @@ const Cart = () => {
 
         const itemList = response.body.results[0].lineItems.map((item) => ({
           id: item.id,
+          productId: item.productId,
           quantity: item.quantity,
         }));
+
         dispatch(setProductList(itemList));
       } catch (error) {
         // eslint-disable-next-line no-console
@@ -48,6 +50,7 @@ const Cart = () => {
 
         const itemList = updatedCart.body.results[0].lineItems.map((item) => ({
           id: item.id,
+          productId: item.productId,
           quantity: item.quantity,
         }));
         dispatch(setProductList(itemList));
