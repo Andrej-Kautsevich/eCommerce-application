@@ -40,3 +40,7 @@ export enum Status {
 export enum Links {
   RSSCHOOL = 'https://rs.school/',
 }
+
+export enum ErrorMessages {
+  CART_FETCH = 'Failed to fetch cart, please try later',
+}

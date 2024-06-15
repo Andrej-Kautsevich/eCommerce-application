@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { SnackbarProvider } from 'notistack';
 import { useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
@@ -57,9 +58,11 @@ const App = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <SnackbarProvider maxSnack={3}>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </SnackbarProvider>
       </ThemeProvider>
     </LocalizationProvider>
   );

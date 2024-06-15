@@ -25,10 +25,6 @@ const useCustomerAuth = () => {
         tokenCache.remove();
         await setPasswordFlow(user);
         return response;
-      })
-      .catch((error: ClientResponse<AuthErrorResponse>) => {
-        dispatch(loginError(error.body));
-        return undefined;
       });
   };
 

@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { ShoppingCartOutlined } from '@mui/icons-material';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useCustomer } from '../../api/hooks';
 import useCart from '../../api/hooks/useCart';
 import { useAppDispatch } from '../../shared/store/hooks';
