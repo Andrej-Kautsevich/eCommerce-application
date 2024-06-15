@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useAppSelector } from '../shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
@@ -19,6 +19,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { getCategories } = useProduct();
   const { fetchCart } = useCart();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!apiRoot) {
@@ -44,10 +45,20 @@ const App = () => {
         // eslint-disable-next-line no-console
         fetchCategories().catch((error) => console.log(error));
       }
-      // eslint-disable-next-line no-console
+
       fetchCart().catch((error) => console.log(error));
     }
-  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer, categories.length, getCategories, isLoading, fetchCart]);
+  }, [
+    apiRoot,
+    setAnonymousFlow,
+    setTokenFlow,
+    isAuthCustomer,
+    categories.length,
+    getCategories,
+    isLoading,
+    dispatch,
+    fetchCart,
+  ]);
 
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner
