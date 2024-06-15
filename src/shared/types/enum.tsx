@@ -36,3 +36,7 @@ export enum Status {
   ADD = 'successful addition',
   Remove = 'successful removal',
 }
+
+export enum Links {
+  RSSCHOOL = 'https://rs.school/',
+}
