@@ -7,6 +7,7 @@ import useProduct from '../../api/hooks/useProduct';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import CatalogFilterPanel from './CatalogFilterPanel';
 import { setFilterParams } from '../../shared/store/auth/productsSlice';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 const CatalogSideBar = () => {
   const { getAttributes } = useProduct();
@@ -20,8 +21,13 @@ const CatalogSideBar = () => {
   useEffect(() => {
     if (!attributes.length)
       getAttributes().catch((e) => {
-        const error = e as ClientResponse<ErrorObject>;
-        enqueueSnackbar(error.body.message, { variant: 'error' });
+        // case if error is ClientResponse<ErrorObject>
+        if (typeof e === 'object' && e !== null && 'body' in e) {
+          const error = e as ClientResponse<ErrorObject>;
+          enqueueSnackbar(error.body.message, { variant: 'error' });
+        } else {
+          enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' });
+        }
       });
 
     // Disable button if no filterParams is selected
