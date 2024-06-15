@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { ShoppingCartOutlined } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { useCustomer } from '../../api/hooks';
 import useCart from '../../api/hooks/useCart';
 import { useAppDispatch } from '../../shared/store/hooks';
@@ -35,9 +35,11 @@ export default function AddCartBtn() {
   };
 
   return (
-    <Button variant="contained" onClick={addProduct(productID)}>
-      Add to Cart
-      <ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText', ml: 1 }} />
-    </Button>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+      <Button variant="contained" size="medium" sx={{ mb: 1 }} onClick={addProduct(productID)}>
+        Add to Cart
+        <ShoppingCartOutlined fontSize="medium" sx={{ color: 'primary.contrastText', ml: 1 }} />
+      </Button>
+    </Box>
   );
 }
