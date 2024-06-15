@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { useCustomer } from '../../api/hooks';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setTotalProducts, setProductList } from '../../shared/store/auth/cartSlice';
 import useCart from '../../api/hooks/useCart';
+import { ErrorMessages } from '../../shared/types/enum';
 
 const Cart = () => {
   const { getCart } = useCustomer();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const productList = useAppSelector((state) => state.cart.productList);
   const [initialFetch, setInitialFetch] = useState(true);
   const { deleteItem } = useCart();
@@ -16,8 +19,6 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const response = await getCart();
-        // eslint-disable-next-line no-console
-        console.log(response.body.results[0]);
         dispatch(setTotalProducts(response.body.results[0].totalLineItemQuantity));
 
         const itemList = response.body.results[0].lineItems.map((item) => ({
@@ -28,17 +29,15 @@ const Cart = () => {
 
         dispatch(setProductList(itemList));
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching cart:', error);
+        enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
       }
     };
 
     if (initialFetch) {
-      // eslint-disable-next-line no-console
-      fetchCart().catch((error) => console.log(error));
+      fetchCart().catch(() => enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' }));
       setInitialFetch(false);
     }
-  }, [getCart, dispatch, initialFetch]);
+  }, [getCart, dispatch, initialFetch, enqueueSnackbar]);
 
   const deleteProduct = (itemId: string) => async () => {
     try {
@@ -55,11 +54,9 @@ const Cart = () => {
         }));
         dispatch(setProductList(itemList));
       };
-      // eslint-disable-next-line no-console
-      fetchAddItem().catch((error) => console.log(error));
+      fetchAddItem().catch(() => enqueueSnackbar(ErrorMessages.ADD_ITEM_FETCH, { variant: 'error' }));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error adding item to cart:', error);
+      enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' });
     }
   };
 

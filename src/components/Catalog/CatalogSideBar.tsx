@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button, List, Toolbar } from '@mui/material';
 import { FilterListOff } from '@mui/icons-material';
+import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import useProduct from '../../api/hooks/useProduct';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import CatalogFilterPanel from './CatalogFilterPanel';
@@ -9,13 +11,18 @@ import { setFilterParams } from '../../shared/store/auth/productsSlice';
 const CatalogSideBar = () => {
   const { getAttributes } = useProduct();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [isFilterApplied, setIsFilterApplied] = useState(false);
 
   const { attributes, filterParams } = useAppSelector((state) => state.products);
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    if (!attributes.length) getAttributes().catch((error) => console.log(error));
+    if (!attributes.length)
+      getAttributes().catch((e) => {
+        const error = e as ClientResponse<ErrorObject>;
+        enqueueSnackbar(error.body.message, { variant: 'error' });
+      });
 
     // Disable button if no filterParams is selected
     setIsFilterApplied(
@@ -24,7 +31,7 @@ const CatalogSideBar = () => {
         return filterParam[key] !== undefined;
       }),
     );
-  }, [attributes, filterParams, dispatch, getAttributes]);
+  }, [attributes, filterParams, dispatch, getAttributes, enqueueSnackbar]);
 
   const handleReset = () => {
     attributes.forEach((attribute) => {

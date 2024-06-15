@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ProductProjection } from '@commercetools/platform-sdk';
+import { ClientResponse, ErrorObject, ProductProjection } from '@commercetools/platform-sdk';
 import { Alert, AlertTitle, Box, CircularProgress, Skeleton, Slide, Snackbar, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useSnackbar } from 'notistack';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import PageTitle from '../PageTitle';
@@ -16,6 +17,7 @@ import {
   setCartUpdate,
 } from '../../shared/store/auth/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { ErrorMessages } from '../../shared/types/enum';
 
 const Product = () => {
   const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
@@ -25,6 +27,7 @@ const Product = () => {
   const [discount, setDiscount] = useState(0);
   const { getCart } = useCustomer();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const currencyProductCount = useAppSelector((state) => state.cart.currencyProductCount);
   const cartUpdate = useAppSelector((state) => state.cart.cartUpdate);
 
@@ -40,8 +43,9 @@ const Product = () => {
       }
     }
   };
-  // eslint-disable-next-line no-console
-  fetchCart().catch((error) => console.log(error));
+  fetchCart().catch(() => {
+    enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+  });
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -54,17 +58,14 @@ const Product = () => {
         if (response.body.masterVariant.prices![0].discounted?.value.centAmount) {
           setDiscount(response.body.masterVariant.prices![0].discounted?.value.centAmount);
         }
-      } catch (error) {
-        // TODO solve the problem with ESLINT
-        // eslint-disable-next-line no-console
-        console.error('Error fetching product:', error);
+      } catch (e) {
+        const error = e as ClientResponse<ErrorObject>;
+        enqueueSnackbar(error.body.message, { variant: 'error' });
       }
     };
 
-    // TODO solve the problem with ESLINT
-    // eslint-disable-next-line no-console
-    fetchProduct().catch((error) => console.log(error));
-  }, [getProduct, productID, currencyProductCount]);
+    fetchProduct().catch(() => enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' }));
+  }, [getProduct, productID, currencyProductCount, enqueueSnackbar]);
 
   const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     event?.preventDefault();

@@ -44,4 +44,8 @@ export enum Links {
 export enum ErrorMessages {
   GENERAL_ERROR = 'Something wrong, please try later!',
   CART_FETCH = 'Failed to fetch cart, please try later!',
+  ADD_ITEM_FETCH = 'Error adding item to cart',
+  DELETE_ITEM_FETCH = 'Error deleting item from cart',
+  PASSWORD_CHANGE_SUCCESS = 'Password has been successfully changed.',
+  CUSTOMER_INFO_CHANGE_SUCCESS = 'Successfully updated',
 }

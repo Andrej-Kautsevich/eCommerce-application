@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { SnackbarProvider } from 'notistack';
+import { SnackbarProvider, useSnackbar } from 'notistack';
 import { useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
@@ -12,6 +12,7 @@ import { useApiClient } from '../api/hooks';
 import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
 import useCart from '../api/hooks/useCart';
+import { ErrorMessages } from '../shared/types/enum';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -20,6 +21,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { getCategories } = useProduct();
   const { fetchCart } = useCart();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!apiRoot) {
@@ -42,13 +44,23 @@ const App = () => {
       };
 
       if (!categories.length) {
-        // eslint-disable-next-line no-console
-        fetchCategories().catch((error) => console.log(error));
+        fetchCategories().catch(() => enqueueSnackbar(ErrorMessages.GENERAL_ERROR, { variant: 'error' }));
       }
-      // eslint-disable-next-line no-console
-      fetchCart().catch((error) => console.log(error));
+      fetchCart().catch(() => {
+        enqueueSnackbar(ErrorMessages.CART_FETCH, { variant: 'error' });
+      });
     }
-  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer, categories.length, getCategories, isLoading, fetchCart]);
+  }, [
+    apiRoot,
+    setAnonymousFlow,
+    setTokenFlow,
+    isAuthCustomer,
+    categories.length,
+    getCategories,
+    isLoading,
+    fetchCart,
+    enqueueSnackbar,
+  ]);
 
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner
