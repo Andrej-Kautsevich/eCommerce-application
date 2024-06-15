@@ -7,6 +7,7 @@ import { fetchAttributes, fetchCategories } from '../../shared/store/auth/produc
 export type FetchQueryArgs = {
   limit?: number;
   filter?: string | string[];
+  offset?: number;
   sort?: string | string[];
   [key: string]: QueryParam;
   fuzzy?: boolean;
