@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
+import { Cart } from '@commercetools/platform-sdk';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Cart as ApiCart } from '@commercetools/platform-sdk';
 
 interface CartState {
-  cart: ApiCart;
+  cart: Cart | undefined;
   cartId: string;
   cartTotalProducts: number | undefined;
   productList: Product[];
@@ -13,34 +13,7 @@ interface CartState {
 }
 
 const initialState: CartState = {
-  cart: {
-    id: '',
-    version: 0,
-    createdAt: '',
-    lastModifiedAt: '',
-    lastModifiedBy: {},
-    createdBy: {},
-    lineItems: [],
-    cartState: '',
-    totalPrice: {
-      type: 'centPrecision',
-      centAmount: 0,
-      currencyCode: '',
-      fractionDigits: 0,
-    },
-    shippingMode: '',
-    shipping: [],
-    customLineItems: [],
-    discountCodes: [],
-    directDiscounts: [],
-    inventoryMode: '',
-    taxMode: '',
-    taxRoundingMode: '',
-    taxCalculationMode: '',
-    refusedGifts: [],
-    origin: '',
-    itemShippingAddresses: [],
-  },
+  cart: undefined,
   cartId: '',
   cartTotalProducts: undefined,
   productList: [],
@@ -64,8 +37,9 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    setCart: (state, action: PayloadAction<ApiCart>) => {
+    setCart: (state, action: PayloadAction<Cart>) => {
       state.cart = action.payload;
+      state.cartId = action.payload.id;
     },
     setCartId: (state, action: PayloadAction<string>) => {
       state.cartId = action.payload;

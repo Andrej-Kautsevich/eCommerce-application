@@ -8,7 +8,7 @@ interface MainLayoutProps {
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" sx={{ mb: 3 }}>
       <Header />
       <Box component="main">{children}</Box>
     </Container>
