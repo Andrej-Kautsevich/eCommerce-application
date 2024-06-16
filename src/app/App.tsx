@@ -1,7 +1,7 @@
 import '../shared/ui/main.scss';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { SnackbarProvider, useSnackbar } from 'notistack';
@@ -9,12 +9,10 @@ import { useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
-// import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
 import useCart from '../api/hooks/useCart';
 import { SnackbarMessages } from '../shared/types/enum';
-import ColorModeProvider, { ColorModeContext } from '../shared/utils/theme/colorModeProvider';
-import { getTheme } from '../shared/ui/theme';
+import ColorModeProvider from '../shared/utils/theme/colorModeProvider';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -64,11 +62,6 @@ const App = () => {
     enqueueSnackbar,
   ]);
 
-  // theme
-  const colorMode = useContext(ColorModeContext);
-
-  const theme = getTheme(colorMode.mode);
-
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner
   }
@@ -77,13 +70,13 @@ const App = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
       <ColorModeProvider>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider maxSnack={3} preventDuplicate>
-            <BrowserRouter>
-              <AppRoutes />
-            </BrowserRouter>
-          </SnackbarProvider>
-        </ThemeProvider>
+        {/* <ThemeProvider theme={appTheme}> */}
+        <SnackbarProvider maxSnack={3} preventDuplicate>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </SnackbarProvider>
+        {/* </ThemeProvider> */}
       </ColorModeProvider>
     </LocalizationProvider>
   );

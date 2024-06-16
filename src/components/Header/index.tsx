@@ -7,6 +7,7 @@ import LoginLogoutButtons from './LoginLogoutButtons';
 import useBasketButton from './useBasketButton';
 import HeaderLink from '../../shared/ui/HeaderLink';
 import { RoutePaths } from '../../shared/types/enum';
+import ThemeButton from './ThemeButton2';
 
 const Header = () => {
   const basketButton = useBasketButton();
@@ -67,6 +68,7 @@ const Header = () => {
         <IconButton color="inherit" onClick={() => basketButton()}>
           <ShoppingBasket color="primary" />
         </IconButton>
+        <ThemeButton />
       </Toolbar>
     </AppBar>
   );

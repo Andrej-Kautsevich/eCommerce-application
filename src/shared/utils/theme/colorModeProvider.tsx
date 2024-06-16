@@ -1,12 +1,16 @@
-import { PaletteMode, useMediaQuery } from '@mui/material';
+import { PaletteMode, ThemeProvider, useMediaQuery } from '@mui/material';
 import { ReactNode, createContext, useMemo, useState } from 'react';
+import { getTheme } from '../../ui/theme';
 
 type ColorModeContextType = {
   toggleColorMode: () => void;
   mode: PaletteMode;
 };
 
-export const ColorModeContext = createContext<ColorModeContextType>({ toggleColorMode: () => {}, mode: 'light' });
+export const ColorModeContext = createContext<ColorModeContextType>({
+  toggleColorMode: () => {},
+  mode: 'light',
+});
 
 interface ToggleColorModeProps {
   children: ReactNode;
@@ -28,7 +32,13 @@ const ColorModeProvider = ({ children }: ToggleColorModeProps) => {
     [mode],
   );
 
-  return <ColorModeContext.Provider value={colorMode}>{children}</ColorModeContext.Provider>;
+  const theme = useMemo(() => getTheme(mode), [mode]);
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </ColorModeContext.Provider>
+  );
 };
 
 export default ColorModeProvider;
