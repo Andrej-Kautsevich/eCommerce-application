@@ -1,5 +1,5 @@
 import '../shared/ui/main.scss';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -9,10 +9,12 @@ import { useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
-import theme from '../shared/ui/theme';
+// import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
 import useCart from '../api/hooks/useCart';
 import { SnackbarMessages } from '../shared/types/enum';
+import ColorModeProvider, { ColorModeContext } from '../shared/utils/theme/colorModeProvider';
+import { getTheme } from '../shared/ui/theme';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -62,6 +64,11 @@ const App = () => {
     enqueueSnackbar,
   ]);
 
+  // theme
+  const colorMode = useContext(ColorModeContext);
+
+  const theme = getTheme(colorMode.mode);
+
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner
   }
@@ -69,13 +76,15 @@ const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <SnackbarProvider maxSnack={3} preventDuplicate>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </SnackbarProvider>
-      </ThemeProvider>
+      <ColorModeProvider>
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider maxSnack={3} preventDuplicate>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </ColorModeProvider>
     </LocalizationProvider>
   );
 };
