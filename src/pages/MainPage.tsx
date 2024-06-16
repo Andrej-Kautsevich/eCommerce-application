@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import MainLayout from '../shared/ui/MainLayout';
 import mainImageBackground from '../shared/assets/images/backgroundMainPage.jpg';
+import mainImageBackgroundDark from '../shared/assets/images/backgroundMainPageDark.png';
 
 const MainPage = () => {
   return (
@@ -24,11 +25,12 @@ const MainPage = () => {
           minHeight={200}
           xs={12}
           sm={6}
-          sx={{
-            backgroundImage: `url(${mainImageBackground})`,
+          sx={(theme) => ({
+            backgroundImage:
+              theme.palette.mode === 'light' ? `url(${mainImageBackground})` : `url(${mainImageBackgroundDark})`, // check theme mode and change to dark version of image
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
-          }}
+          })}
         />
       </Grid>
     </MainLayout>
