@@ -11,6 +11,7 @@ import { useApiClient } from '../api/hooks';
 import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
 import useCart from '../api/hooks/useCart';
+import usePromoCode from '../api/hooks/usePromoCode';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -19,6 +20,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { getCategories } = useProduct();
   const { fetchCart } = useCart();
+  const { fetchPromoCodes } = usePromoCode();
 
   useEffect(() => {
     if (!apiRoot) {
@@ -46,8 +48,20 @@ const App = () => {
       }
       // eslint-disable-next-line no-console
       fetchCart().catch((error) => console.log(error));
+      // eslint-disable-next-line no-console
+      fetchPromoCodes().catch((error) => console.log(error));
     }
-  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer, categories.length, getCategories, isLoading, fetchCart]);
+  }, [
+    apiRoot,
+    setAnonymousFlow,
+    setTokenFlow,
+    isAuthCustomer,
+    categories.length,
+    getCategories,
+    isLoading,
+    fetchCart,
+    fetchPromoCodes,
+  ]);
 
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner

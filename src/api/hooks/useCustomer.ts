@@ -21,6 +21,12 @@ const useCustomer = () => {
     }
     return apiRoot.me().carts().get().execute();
   };
+  const getPromoCodes = () => {
+    if (!apiRoot) {
+      throw new Error('ApiRoot is not defined');
+    }
+    return apiRoot.discountCodes().get().execute();
+  };
 
   /**
    *
@@ -51,7 +57,7 @@ const useCustomer = () => {
     return apiRoot.me().password().post({ body: customerChangePassword }).execute();
   };
 
-  return { getCustomer, getCart, customerUpdate, changePassword };
+  return { getCustomer, getCart, customerUpdate, changePassword, getPromoCodes };
 };
 
 export default useCustomer;
