@@ -1,15 +1,18 @@
 import { useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import { useCustomer } from '../../api/hooks';
 import useCart from '../../api/hooks/useCart';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { setCartUpdate, setCurrencyProductCount } from '../../shared/store/auth/cartSlice';
-import { Status } from '../../shared/types/enum';
+import { setCurrencyProductCount } from '../../shared/store/auth/cartSlice';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 const DeleteCartBtn = () => {
   const { getCart } = useCustomer();
   const { deleteItem } = useCart();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const productID = useLocation().pathname.split('/').slice(2).join();
   const currencyItemCartId = useAppSelector((state) => state.cart.currencyItemCartId);
   const currencyProductCount = useAppSelector((state) => state.cart.currencyProductCount);
@@ -36,14 +39,15 @@ const DeleteCartBtn = () => {
             dispatch(setCurrencyProductCount(0));
           }
         }
-        dispatch(setCartUpdate({ status: true, message: Status.Remove }));
+        enqueueSnackbar(SnackbarMessages.REMOVE_ITEM_SUCCESS, { variant: 'success' });
       };
 
-      // eslint-disable-next-line no-console
-      fetchDeleteItem().catch((error) => console.log(error));
+      fetchDeleteItem().catch((e) => {
+        const error = e as ClientResponse<ErrorObject>;
+        enqueueSnackbar(error.body.message, { variant: 'error' });
+      });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error adding item to cart:', error);
+      enqueueSnackbar(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, { variant: 'error' });
     }
   };
 

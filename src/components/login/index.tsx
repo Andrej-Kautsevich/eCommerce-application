@@ -4,21 +4,18 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Alert, AlertTitle, Slide } from '@mui/material';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PasswordElement, TextFieldElement } from 'react-hook-form-mui';
-import { MyCustomerSignin } from '@commercetools/platform-sdk';
+import { AuthErrorResponse, ClientResponse, MyCustomerSignin } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
 import schemaEmail from '../../shared/validation/emailValidation';
 import schemaPass from '../../shared/validation/passValidation';
 import { useCustomerAuth } from '../../api/hooks';
-import { RoutePaths } from '../../shared/types/enum';
-import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { setSubmitSuccess } from '../../shared/store/auth/authSlice';
+import { SnackbarMessages, RoutePaths } from '../../shared/types/enum';
 import useCart from '../../api/hooks/useCart';
 
 type LoginForm = {
@@ -26,29 +23,32 @@ type LoginForm = {
   password: string;
 };
 export default function LoginTab() {
+  const { enqueueSnackbar } = useSnackbar();
+
   const schema = yup.object().shape({
     email: schemaEmail,
     password: schemaPass,
   });
 
-  const [showAlert, setShowAlert] = useState(false); // Close error alert
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const { customerLogin } = useCustomerAuth();
-  const { loginError } = useAppSelector((state) => state.auth);
   const { fetchCart } = useCart();
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     const customer: MyCustomerSignin = data;
-    const response = await customerLogin(customer);
-    if (response) {
+
+    try {
+      const response = await customerLogin(customer);
       navigate(RoutePaths.MAIN);
-      dispatch(setSubmitSuccess({ status: true, message: `Welcome back, ${response.body.customer.firstName}` }));
-      // eslint-disable-next-line no-console
-      fetchCart().catch((error) => console.log(error));
-    } else {
-      setShowAlert(true);
+      const greetingMessage = `Welcome back, ${response.body.customer.firstName}`;
+      enqueueSnackbar(greetingMessage, { variant: 'success' });
+      fetchCart().catch(() => {
+        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
+      });
+    } catch (e) {
+      const error = e as ClientResponse<AuthErrorResponse>;
+      enqueueSnackbar(error.body.message, { variant: 'error' });
     }
   };
 
@@ -104,21 +104,6 @@ export default function LoginTab() {
           </Box>
         </Typography>
         {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
-      </Box>
-      <Box height="116px">
-        {showAlert && (
-          <Slide in={showAlert} mountOnEnter unmountOnExit direction="left">
-            <Alert
-              severity="error"
-              onClose={() => {
-                setShowAlert(false);
-              }}
-            >
-              <AlertTitle>Error</AlertTitle>
-              {loginError}
-            </Alert>
-          </Slide>
-        )}
       </Box>
     </Container>
   );
