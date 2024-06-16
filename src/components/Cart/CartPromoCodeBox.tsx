@@ -1,6 +1,6 @@
 import { Box, Button, OutlinedInput, Typography } from '@mui/material';
 
-const CartPromoCode = () => {
+const CartPromoCodeBox = () => {
   return (
     <Box component="form">
       <Typography>Have a promo code? Type it here:</Typography>
@@ -14,4 +14,4 @@ const CartPromoCode = () => {
   );
 };
 
-export default CartPromoCode;
+export default CartPromoCodeBox;
