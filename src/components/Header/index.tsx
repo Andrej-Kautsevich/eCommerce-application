@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, MenuItem, Box, Drawer, Link } from '@mui/material';
-import { ShoppingBasket } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link as RouterLink } from 'react-router-dom';
 import LoginLogoutButtons from './LoginLogoutButtons';
-import useBasketButton from './useBasketButton';
 import HeaderLink from '../../shared/ui/HeaderLink';
 import { RoutePaths } from '../../shared/types/enum';
+import BasketButton from './BasketButton';
 import ThemeButton from './ThemeButton';
 
 const Header = () => {
-  const basketButton = useBasketButton();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -50,6 +48,8 @@ const Header = () => {
               <MenuItem>
                 <LoginLogoutButtons />
               </MenuItem>
+              <BasketButton />
+              <ThemeButton />
             </Box>
           </Drawer>
         </Box>
@@ -63,12 +63,9 @@ const Header = () => {
             About Us
           </HeaderLink>
           <LoginLogoutButtons />
+          <BasketButton />
+          <ThemeButton />
         </Box>
-
-        <IconButton color="inherit" onClick={() => basketButton()}>
-          <ShoppingBasket color="primary" />
-        </IconButton>
-        <ThemeButton />
       </Toolbar>
     </AppBar>
   );
