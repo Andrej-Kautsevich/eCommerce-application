@@ -1,6 +1,9 @@
 import { Button } from '@mui/material';
+import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import useCart from '../../api/hooks/useCart';
 import { useAppSelector } from '../../shared/store/hooks';
+import { SnackbarMessages } from '../../shared/types/enum';
 import { ProductIDCartBtnProps } from '../../shared/types/interface';
 
 function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
@@ -8,6 +11,7 @@ function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
   const cart = useAppSelector((state) => state.cart.cart);
   const { fetchCart } = useCart();
   const lessQuantity = quantity! - 1;
+  const { enqueueSnackbar } = useSnackbar();
 
   const deleteProduct = () => async () => {
     if (cart) {
@@ -18,10 +22,12 @@ function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
           await deleteItem(cart.version, itemID!);
         }
 
-        await fetchCart();
+        await fetchCart().catch((e) => {
+          const error = e as ClientResponse<ErrorObject>;
+          enqueueSnackbar(error.body.message, { variant: 'error' });
+        });
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error adding item to cart:', error);
+        enqueueSnackbar(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, { variant: 'error' });
       }
     }
   };

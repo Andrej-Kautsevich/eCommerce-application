@@ -3,12 +3,14 @@ import { useLocation } from 'react-router-dom';
 import { Cart, ProductProjection } from '@commercetools/platform-sdk';
 import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useSnackbar } from 'notistack';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import PageTitle from '../PageTitle';
 import AddCartBtn from '../AddCartBtn';
 import DeleteCartBtn from '../DeleteCartBtn';
-import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { useAppSelector } from '../../shared/store/hooks';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 const Product = () => {
   const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
@@ -16,10 +18,10 @@ const Product = () => {
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart.cart);
   const [itemID, setItemID] = useState('');
   const [itemQuantity, setItemQuantity] = useState(0);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     function containsProduct(cartOfItems: Cart, productId: string): boolean {
@@ -56,10 +58,8 @@ const Product = () => {
       }
     };
 
-    // TODO solve the problem with ESLINT
-    // eslint-disable-next-line no-console
-    fetchProduct().catch((error) => console.log(error));
-  }, [getProduct, productID, cart?.lineItems, dispatch, cart]);
+    fetchProduct().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
+  }, [getProduct, productID, enqueueSnackbar, cart]);
 
   if (!product) {
     return (
@@ -137,6 +137,7 @@ const Product = () => {
             >
               {itemQuantity}
             </Typography>
+
             <AddCartBtn productID={productID} />
             <DeleteCartBtn productID={productID} itemID={itemID} quantity={itemQuantity} />
           </Box>

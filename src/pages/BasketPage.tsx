@@ -4,7 +4,7 @@ import PageTitle from '../components/PageTitle';
 import MainLayout from '../shared/ui/MainLayout';
 import CartItems from '../components/Cart/CartItems';
 import CartTotalPrice from '../components/Cart/CartTotalPrice';
-import CartPromoCode from '../components/Cart/CartPromoCode';
+import CartPromoCodeBox from '../components/Cart/CartPromoCodeBox';
 import CartRemoveAllItems from '../components/Cart/CartRemoveAllItems';
 import LinkRouter from '../shared/ui/LinkRouter';
 import { RoutePaths } from '../shared/types/enum';
@@ -77,7 +77,7 @@ const BasketPage = () => {
           <Divider flexItem />
         </Grid>
         <Grid xs={6} alignSelf="center">
-          <CartPromoCode />
+          <CartPromoCodeBox />
         </Grid>
         <Grid xs={3} />
         <Grid xs={3} textAlign="end">

@@ -1,22 +1,29 @@
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
+import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import useCart from '../../api/hooks/useCart';
 import { useAppSelector } from '../../shared/store/hooks';
 import { ProductIDCartBtnProps } from '../../shared/types/interface';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 function AddCartBtn({ productID }: ProductIDCartBtnProps) {
   const { addItem } = useCart();
   const cart = useAppSelector((state) => state.cart.cart);
   const { fetchCart } = useCart();
+  const { enqueueSnackbar } = useSnackbar();
 
   const addProduct = () => async () => {
     if (cart) {
       try {
-        await addItem(cart.version, productID!);
+        await addItem(cart.version, productID!).catch((e) => {
+          const error = e as ClientResponse<ErrorObject>;
+          enqueueSnackbar(error.body.message, { variant: 'error' });
+        });
         await fetchCart();
+        enqueueSnackbar(SnackbarMessages.ADD_ITEM_SUCCESS, { variant: 'success' });
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error adding item to cart:', error);
+        enqueueSnackbar(SnackbarMessages.ADD_ITEM_FETCH_ERROR, { variant: 'error' });
       }
     }
   };

@@ -4,13 +4,15 @@ import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
 import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
 import useCart from '../api/hooks/useCart';
+import { SnackbarMessages } from '../shared/types/enum';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -19,7 +21,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { getCategories } = useProduct();
   const { fetchCart } = useCart();
-  const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!apiRoot) {
@@ -42,11 +44,11 @@ const App = () => {
       };
 
       if (!categories.length) {
-        // eslint-disable-next-line no-console
-        fetchCategories().catch((error) => console.log(error));
+        fetchCategories().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
       }
-      // eslint-disable-next-line no-console
-      fetchCart().catch((error) => console.log(error));
+      fetchCart().catch(() => {
+        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
+      });
     }
   }, [
     apiRoot,
@@ -56,8 +58,8 @@ const App = () => {
     categories.length,
     getCategories,
     isLoading,
-    dispatch,
     fetchCart,
+    enqueueSnackbar,
   ]);
 
   if (isLoading) {
@@ -68,9 +70,11 @@ const App = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <SnackbarProvider maxSnack={3} preventDuplicate>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </SnackbarProvider>
       </ThemeProvider>
     </LocalizationProvider>
   );
