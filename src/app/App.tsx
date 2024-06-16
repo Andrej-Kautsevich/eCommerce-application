@@ -70,13 +70,11 @@ const App = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
       <ColorModeProvider>
-        {/* <ThemeProvider theme={appTheme}> */}
         <SnackbarProvider maxSnack={3} preventDuplicate>
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>
         </SnackbarProvider>
-        {/* </ThemeProvider> */}
       </ColorModeProvider>
     </LocalizationProvider>
   );
