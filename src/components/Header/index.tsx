@@ -42,6 +42,9 @@ const Header = () => {
                 <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
                   Watches
                 </HeaderLink>
+                <HeaderLink component={RouterLink} underline="none" to={RoutePaths.ABOUT}>
+                  About Us
+                </HeaderLink>
               </MenuItem>
               <MenuItem>
                 <LoginLogoutButtons />
@@ -51,9 +54,12 @@ const Header = () => {
         </Box>
 
         {/* Desktop view */}
-        <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center' }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex', gap: 30 }, alignItems: 'center' }}>
           <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
             Watches
+          </HeaderLink>
+          <HeaderLink component={RouterLink} underline="none" to={RoutePaths.ABOUT}>
+            About Us
           </HeaderLink>
           <LoginLogoutButtons />
         </Box>

@@ -1,6 +1,6 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
-import { Box, Typography } from '@mui/material';
+import { Box, Pagination, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
@@ -22,7 +22,7 @@ const GRID_SPACING_XS = 1;
 const GRID_SPACING_SM = 2;
 const GRID_SPACING_MD = 3;
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 6;
 
 const CatalogPage = () => {
   const { categorySlug } = useParams();
@@ -31,13 +31,22 @@ const CatalogPage = () => {
   const location = useLocation();
   const { filterParams, sortParam, searchParam: searchString } = useAppSelector((state) => state.products);
   const [isProductsFetching, setIsProductsFetching] = useState(true);
-
+  const [totalProducts, setTotalProducts] = useState<number | undefined>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [products, setProducts] = useState<ProductProjection[]>([]);
+  const offsetValue = currentPage * ITEMS_PER_PAGE - ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(totalProducts! / ITEMS_PER_PAGE);
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
       setIsProductsFetching(true);
       const queryArgs: FetchQueryArgs = {
+        limit: ITEMS_PER_PAGE,
+        offset: offsetValue,
         fuzzy: true,
       };
       const filter = [];
@@ -68,13 +77,14 @@ const CatalogPage = () => {
 
       const result = await getProducts(queryArgs).then((res) => {
         setIsProductsFetching(false);
+        setTotalProducts(res.body.total);
         return res.body.results;
       });
       setProducts([...result]);
     };
     // eslint-disable-next-line no-console
     fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname, searchString]);
+  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname, searchString, offsetValue]);
 
   return (
     <MainLayout>
@@ -100,7 +110,12 @@ const CatalogPage = () => {
               <CatalogSortPanel />
             </Grid>
           </Grid>
-          <Grid container mt={1} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
+          <Grid
+            container
+            mt={1}
+            spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}
+            sx={{ mb: 3 }}
+          >
             {(isProductsFetching ? Array.from(new Array(ITEMS_PER_PAGE)) : products).map(
               (product: ProductProjection, index) => (
                 <Grid
@@ -115,6 +130,9 @@ const CatalogPage = () => {
               ),
             )}
           </Grid>
+          <Box sx={{ mb: 10, display: 'flex', justifyContent: 'center' }}>
+            <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+          </Box>
         </Grid>
       </Grid>
     </MainLayout>

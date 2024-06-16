@@ -7,6 +7,7 @@ export enum RoutePaths {
   PRODUCT = '/product',
   PROFILE = '/profile',
   WATCHES = '/watches',
+  ABOUT = '/about',
 }
 
 export enum StoreCountries {
@@ -29,4 +30,13 @@ export enum SortNames {
 
 export enum Currency {
   USD = 'USD',
+}
+
+export enum Status {
+  ADD = 'successful addition',
+  Remove = 'successful removal',
+}
+
+export enum Links {
+  RSSCHOOL = 'https://rs.school/',
 }
