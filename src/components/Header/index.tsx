@@ -16,7 +16,7 @@ const Header = () => {
 
   return (
     <AppBar position="static" sx={{ boxShadow: 0 }} color="secondary">
-      <Toolbar sx={{ pl: { xs: 2, sm: 1, md: 0 }, pr: { xs: 2, sm: 1, md: 0 } }}>
+      <Toolbar sx={{ pl: { xs: 2, sm: 0, md: 0 }, pr: { xs: 2, sm: 0, md: 0 } }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
           <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">
             Volcano Watch
