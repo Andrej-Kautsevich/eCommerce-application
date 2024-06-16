@@ -9,7 +9,7 @@ interface MainLayoutProps {
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
     <Box height="100%" minHeight="100vh" sx={{ bgcolor: 'background.default' }}>
-      <Container maxWidth="lg" sx={{ mb: 3 }}>
+      <Container maxWidth="lg" sx={{ pb: 3 }}>
         <Header />
         <Box component="main">{children}</Box>
       </Container>
