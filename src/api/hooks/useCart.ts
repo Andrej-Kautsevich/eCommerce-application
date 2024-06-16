@@ -1,5 +1,6 @@
 import {
   Cart,
+  MyCartAddDiscountCodeAction,
   MyCartAddLineItemAction,
   MyCartChangeLineItemQuantityAction,
   MyCartRemoveLineItemAction,
@@ -131,6 +132,31 @@ const useCart = () => {
     dispatch(setCart(response.body));
   };
 
+  const addDiscountCode = async (cartVersion: number, discountCode: string) => {
+    if (!apiRoot) {
+      throw new Error('ApiRoot is not defined');
+    }
+
+    const action: MyCartAddDiscountCodeAction = {
+      action: 'addDiscountCode',
+      code: discountCode,
+    };
+
+    const myCartAddDiscountCodeAction: MyCartUpdate = {
+      version: cartVersion,
+      actions: [action],
+    };
+
+    const response = await apiRoot
+      .me()
+      .carts()
+      .withId({ ID: cartId })
+      .post({ body: myCartAddDiscountCodeAction })
+      .execute();
+
+    dispatch(setCart(response.body));
+  };
+
   const fetchCart = async () => {
     const response = await getCart();
     const cart = response.body.results[0];
@@ -143,6 +169,6 @@ const useCart = () => {
     }
   };
 
-  return { createCart, addItem, fetchCart, deleteItem, deleteAllItems, changeItemQuantity };
+  return { createCart, addItem, fetchCart, deleteItem, deleteAllItems, changeItemQuantity, addDiscountCode };
 };
 export default useCart;

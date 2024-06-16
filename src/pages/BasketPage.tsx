@@ -77,7 +77,7 @@ const BasketPage = () => {
           <Divider flexItem />
         </Grid>
         <Grid xs={6} alignSelf="center">
-          <CartPromoCodeBox />
+          <CartPromoCodeBox cart={cart} />
         </Grid>
         <Grid xs={3} />
         <Grid xs={3} textAlign="end">
