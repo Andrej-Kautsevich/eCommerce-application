@@ -22,19 +22,21 @@ const TeamMemberCardComponent = ({ name, role, bio, photo, profile }: TeamMember
           <Photo image={photo} />
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <Typography variant="h5" fontFamily="Orbitron">
+          <Typography variant="h5" fontFamily="Orbitron" color="text.primary">
             {name}
           </Typography>
           <Link href={profile} underline="hover">
             GitHub {/* profile.split('/').slice(3).join() */}
           </Link>
-          <Typography variant="h6" component="h6" fontFamily="Orbitron">
+          <Typography variant="h6" component="h6" fontFamily="Orbitron" color="text.primary">
             {role}
           </Typography>
         </Box>
       </Box>
 
-      <Typography align="justify">{bio}</Typography>
+      <Typography align="justify" color="text.primary">
+        {bio}
+      </Typography>
     </Box>
   );
 };

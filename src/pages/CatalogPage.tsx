@@ -102,10 +102,7 @@ const CatalogPage = () => {
     <MainLayout>
       <PageTitle title="Catalog">
         <Box>
-          {/* <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            Catalog */}
           <CatalogBreadcrumbs />
-          {/* </Typography> */}
         </Box>
       </PageTitle>
       <CatalogCategoriesSelect />

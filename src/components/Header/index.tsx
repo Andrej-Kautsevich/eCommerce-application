@@ -7,7 +7,7 @@ import LoginLogoutButtons from './LoginLogoutButtons';
 import useBasketButton from './useBasketButton';
 import HeaderLink from '../../shared/ui/HeaderLink';
 import { RoutePaths } from '../../shared/types/enum';
-import ThemeButton from './ThemeButton2';
+import ThemeButton from './ThemeButton';
 
 const Header = () => {
   const basketButton = useBasketButton();
@@ -18,7 +18,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ boxShadow: 0 }} color="inherit">
+    <AppBar position="static" sx={{ boxShadow: 0 }} color="transparent" enableColorOnDark>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
           <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">

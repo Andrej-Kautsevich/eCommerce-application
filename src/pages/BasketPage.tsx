@@ -20,13 +20,9 @@ const BasketPage = () => {
         <PageTitle title="Your Cart">
           <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
             <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
-              <Typography variant="body1" color="secondary">
-                Main
-              </Typography>
+              <Typography variant="body1">Main</Typography>
             </LinkRouter>
-            <Typography variant="body1" color="secondary">
-              Cart
-            </Typography>
+            <Typography variant="body1">Cart</Typography>
           </Breadcrumbs>
         </PageTitle>
         <Box display="flex" flexDirection="column" alignItems="center">
@@ -41,7 +37,9 @@ const BasketPage = () => {
               padding: '1.5em 0',
             }}
           />
-          <Typography variant="h5">Your Cart is Empty</Typography>
+          <Typography variant="h5" color="text.primary">
+            Your Cart is Empty
+          </Typography>
           <LinkRouter to={RoutePaths.WATCHES}>
             <Button variant="contained" sx={{ mt: 2 }}>
               Continue shopping

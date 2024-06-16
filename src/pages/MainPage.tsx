@@ -14,6 +14,7 @@ const MainPage = () => {
             component="h1"
             fontFamily="Orbitron"
             width="100%"
+            color="text.primary"
             sx={{ pt: 15, pl: 8 }}
           >
             Find your dream watch

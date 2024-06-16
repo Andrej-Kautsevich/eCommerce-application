@@ -29,17 +29,17 @@ const AboutUs = () => {
         </Grid>
 
         <Grid item xs={1} sm={5} md={9}>
-          <Typography variant="body1" component="p" align="justify" sx={{ mb: 2 }}>
+          <Typography variant="body1" component="p" align="justify" sx={{ mb: 2, color: 'text.primary' }}>
             {introduction}
           </Typography>
         </Grid>
       </Grid>
 
       <TeamCards />
-      <Typography variant="body1" component="p" align="justify" sx={{ mb: 3, mt: 5 }}>
+      <Typography variant="body1" component="p" align="justify" sx={{ mb: 3, mt: 5, color: 'text.primary' }}>
         {mainText}
       </Typography>
-      <Typography variant="body1" component="p" align="justify" sx={{ mb: 5, mt: 2 }}>
+      <Typography variant="body1" component="p" align="justify" sx={{ mb: 5, mt: 2, color: 'text.primary' }}>
         {finalText}
       </Typography>
     </>

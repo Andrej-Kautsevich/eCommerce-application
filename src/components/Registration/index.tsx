@@ -156,7 +156,7 @@ export default function Registration() {
         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" color="text.primary">
           Sign up
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
@@ -194,7 +194,7 @@ export default function Registration() {
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+              <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
                 Shipping address
               </Typography>
               <Box sx={{ minWidth: 120 }}>
@@ -252,6 +252,7 @@ export default function Registration() {
                 label="Set as default shipping address"
                 name="defaultShippingAddress"
                 control={control}
+                labelProps={{ sx: { color: 'text.primary' } }}
               />
               <FormControlLabel
                 control={<Checkbox />}
@@ -259,12 +260,13 @@ export default function Registration() {
                   setBilling(!showBilling);
                 }}
                 label="My billing address is not the same as my shipping address."
+                sx={{ color: 'text.primary' }}
               />
             </Grid>
             {showBilling && (
               <>
                 <Grid item xs={12}>
-                  <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+                  <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
                     Billing address
                   </Typography>
                   <Box sx={{ minWidth: 120 }}>
@@ -322,12 +324,13 @@ export default function Registration() {
                     label="Set as default billing address"
                     name="defaultBillingAddress"
                     control={control}
+                    labelProps={{ sx: { color: 'text.primary' } }}
                   />
                 </Grid>
               </>
             )}
             <Grid item xs={12}>
-              <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+              <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
                 Email & Password
               </Typography>
               <TextFieldElement
@@ -356,7 +359,7 @@ export default function Registration() {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
-          <Typography>
+          <Typography color="text.primary">
             If you have an account,
             <Box
               component={Link}
