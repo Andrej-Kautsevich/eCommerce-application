@@ -101,7 +101,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <AddCartBtn productID={productID!} />
+          <AddCartBtn productID={productID} />
         </CardActions>
       </Card>
     </Box>

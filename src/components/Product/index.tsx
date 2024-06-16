@@ -1,20 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ProductProjection } from '@commercetools/platform-sdk';
-import { Alert, AlertTitle, Box, CircularProgress, Skeleton, Slide, Snackbar, Typography } from '@mui/material';
+import { Cart, ProductProjection } from '@commercetools/platform-sdk';
+import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import PageTitle from '../PageTitle';
 import AddCartBtn from '../AddCartBtn';
 import DeleteCartBtn from '../DeleteCartBtn';
-// import { useCustomer } from '../../api/hooks';
-import {
-  // setCurrencyProductCount,
-  // setCurrencyItemCartId,
-  // setCartId,
-  setCartUpdate,
-} from '../../shared/store/auth/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 
 const Product = () => {
@@ -23,56 +16,50 @@ const Product = () => {
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
-  // const { getCart } = useCustomer();
   const dispatch = useAppDispatch();
-  const currencyProductCount = useAppSelector((state) => state.cart.currencyProductCount);
-  const cartUpdate = useAppSelector((state) => state.cart.cartUpdate);
-
-  // const fetchCart = async () => {
-  //   const response = await getCart();
-  //   const itemList = response.body.results[0].lineItems;
-
-  //   dispatch(setCartId(response.body.results[0].id));
-  //   for (let i = 0; i < itemList.length; i += 1) {
-  //     if (itemList[i].productId === productID) {
-  //       dispatch(setCurrencyItemCartId(itemList[i].id));
-  //       dispatch(setCurrencyProductCount(itemList[i].quantity));
-  //     }
-  //   }
-  // };
-  // // eslint-disable-next-line no-console
-  // fetchCart().catch((error) => console.log(error));
+  const cart = useAppSelector((state) => state.cart.cart);
+  const [itemID, setItemID] = useState('');
+  const [itemQuantity, setItemQuantity] = useState(0);
 
   useEffect(() => {
+    function containsProduct(cartOfItems: Cart, productId: string): boolean {
+      return cartOfItems.lineItems.some((obj) => obj.productId === productId);
+    }
     const fetchProduct = async () => {
-      try {
-        const response = await getProduct(productID);
-        setProduct(response.body);
-        if (response.body.masterVariant.prices![0].value.centAmount) {
-          setPrice(response.body.masterVariant.prices![0].value.centAmount);
+      if (cart) {
+        if (containsProduct(cart, productID)) {
+          cart.lineItems.forEach((item) => {
+            if (item.productId === productID) {
+              setItemQuantity(item.quantity);
+              setItemID(item.id);
+            }
+          });
+        } else {
+          setItemQuantity(0);
+          setItemID('');
         }
-        if (response.body.masterVariant.prices![0].discounted?.value.centAmount) {
-          setDiscount(response.body.masterVariant.prices![0].discounted?.value.centAmount);
+
+        try {
+          const response = await getProduct(productID);
+          setProduct(response.body);
+          if (response.body.masterVariant.prices![0].value.centAmount) {
+            setPrice(response.body.masterVariant.prices![0].value.centAmount);
+          }
+          if (response.body.masterVariant.prices![0].discounted?.value.centAmount) {
+            setDiscount(response.body.masterVariant.prices![0].discounted?.value.centAmount);
+          }
+        } catch (error) {
+          // TODO solve the problem with ESLINT
+          // eslint-disable-next-line no-console
+          console.error('Error fetching product:', error);
         }
-      } catch (error) {
-        // TODO solve the problem with ESLINT
-        // eslint-disable-next-line no-console
-        console.error('Error fetching product:', error);
       }
     };
 
     // TODO solve the problem with ESLINT
     // eslint-disable-next-line no-console
     fetchProduct().catch((error) => console.log(error));
-  }, [getProduct, productID, currencyProductCount]);
-
-  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    event?.preventDefault();
-    if (reason === 'clickaway') {
-      return;
-    }
-    dispatch(setCartUpdate({ status: false }));
-  };
+  }, [getProduct, productID, cart?.lineItems, dispatch, cart]);
 
   if (!product) {
     return (
@@ -148,20 +135,10 @@ const Product = () => {
                 mb: 3,
               }}
             >
-              {currencyProductCount}
+              {itemQuantity}
             </Typography>
             <AddCartBtn productID={productID} />
-            <DeleteCartBtn />
-            {cartUpdate.status && (
-              <Slide in={cartUpdate.status} direction="right">
-                <Snackbar open={cartUpdate.status} autoHideDuration={2000} onClose={handleSnackBarClose}>
-                  <Alert sx={{ width: '100%' }} severity="success" onClose={handleSnackBarClose}>
-                    <AlertTitle>Success!</AlertTitle>
-                    {cartUpdate.message}
-                  </Alert>
-                </Snackbar>
-              </Slide>
-            )}
+            <DeleteCartBtn productID={productID} itemID={itemID} quantity={itemQuantity} />
           </Box>
         </Grid>
       </Grid>

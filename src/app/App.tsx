@@ -45,7 +45,7 @@ const App = () => {
         // eslint-disable-next-line no-console
         fetchCategories().catch((error) => console.log(error));
       }
-
+      // eslint-disable-next-line no-console
       fetchCart().catch((error) => console.log(error));
     }
   }, [

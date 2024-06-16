@@ -18,7 +18,7 @@ const Header = () => {
 
   return (
     <AppBar position="static" sx={{ boxShadow: 0 }} color="secondary">
-      <Toolbar>
+      <Toolbar sx={{ pl: { xs: 2, sm: 1, md: 0 }, pr: { xs: 2, sm: 1, md: 0 } }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
           <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">
             Volcano Watch
@@ -38,7 +38,14 @@ const Header = () => {
           </IconButton>
           <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }}>
             <Box sx={{ minWidth: '60dvw', p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <MenuItem>
+              <MenuItem
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'column' },
+                  gap: 3,
+                  alignItems: 'center',
+                }}
+              >
                 <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
                   Watches
                 </HeaderLink>
@@ -54,7 +61,7 @@ const Header = () => {
         </Box>
 
         {/* Desktop view */}
-        <Box sx={{ display: { xs: 'none', sm: 'flex', gap: 30 }, alignItems: 'center' }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 1, md: 5 } }}>
           <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
             Watches
           </HeaderLink>

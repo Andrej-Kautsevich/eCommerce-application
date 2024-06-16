@@ -113,9 +113,9 @@ const Carousel = ({ product }: CarouselProps) => {
           sx={{
             width: {
               xs: '70vw',
-              sm: '65vw',
-              md: '50vw',
-              lg: '50vw',
+              sm: '70vw',
+              md: '40vw',
+              lg: '40vw',
             },
             overflow: 'hidden',
             display: 'flex',
