@@ -12,7 +12,7 @@ function AddCartBtn({ productID }: ProductIDCartBtnProps) {
   const addProduct = () => async () => {
     if (cart) {
       try {
-        await addItem(cart.version, productID);
+        await addItem(cart.version, productID!);
         await fetchCart();
       } catch (error) {
         // eslint-disable-next-line no-console
