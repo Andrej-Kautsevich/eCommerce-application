@@ -1,21 +1,20 @@
 import { Box, Link, Typography } from '@mui/material';
-import responsiveTheme from '../../shared/ui/theme';
 import { TeamMemberCard } from '../../shared/types/type';
 import Photo from './Photo';
 
 const TeamMemberCardComponent = ({ name, role, bio, photo, profile }: TeamMemberCard) => {
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         borderRadius: '12px',
-        boxShadow: `0px 4px 8px ${responsiveTheme.palette.primary.main}`,
+        boxShadow: `0px 4px 8px ${theme.palette.primary.main}`,
         padding: 3,
         mt: 2,
         height: '100%',
-      }}
+      })}
     >
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>

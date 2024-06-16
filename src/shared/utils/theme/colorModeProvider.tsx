@@ -1,6 +1,6 @@
 import { PaletteMode, ThemeProvider, useMediaQuery } from '@mui/material';
 import { ReactNode, createContext, useMemo, useState } from 'react';
-import { getTheme } from '../../ui/theme';
+import getTheme from '../../ui/theme';
 
 type ColorModeContextType = {
   toggleColorMode: () => void;

@@ -57,12 +57,10 @@ const darkTheme: Theme = createTheme({
   },
 });
 
-export const getTheme = (mode: PaletteMode) => {
+const getTheme = (mode: PaletteMode) => {
   const theme = mode === 'light' ? lightTheme : darkTheme;
   const responsiveTheme = responsiveFontSizes(theme);
   return responsiveTheme;
 };
 
-const responsiveTheme = responsiveFontSizes(lightTheme);
-
-export default responsiveTheme;
+export default getTheme;
