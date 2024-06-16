@@ -17,7 +17,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ boxShadow: 0 }} color="secondary">
+    <AppBar position="static" sx={{ boxShadow: 0 }} color="inherit">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
           <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">

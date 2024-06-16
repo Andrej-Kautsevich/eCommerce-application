@@ -17,10 +17,7 @@ const BasketPage = () => {
   if (!cart || cart.lineItems.length === 0)
     return (
       <MainLayout>
-        <PageTitle>
-          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            Your Cart
-          </Typography>
+        <PageTitle title="Your Cart">
           <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
             <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
               <Typography variant="body1" color="secondary">
@@ -56,17 +53,14 @@ const BasketPage = () => {
 
   return (
     <MainLayout>
-      <PageTitle>
-        <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-          Your Cart
-        </Typography>
+      <PageTitle title="Your Cart">
         <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
           <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
-            <Typography variant="body1" color="secondary">
+            <Typography variant="body1" color="primary.contrastText">
               Main
             </Typography>
           </LinkRouter>
-          <Typography variant="body1" color="secondary">
+          <Typography variant="body1" color="primary.contrastText">
             Cart
           </Typography>
         </Breadcrumbs>
