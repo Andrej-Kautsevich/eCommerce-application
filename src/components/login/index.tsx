@@ -36,7 +36,11 @@ export default function LoginTab() {
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-    const customer: MyCustomerSignin = data;
+    const customer: MyCustomerSignin = {
+      email: data.email,
+      password: data.password,
+      activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
 
     try {
       const response = await customerLogin(customer);
