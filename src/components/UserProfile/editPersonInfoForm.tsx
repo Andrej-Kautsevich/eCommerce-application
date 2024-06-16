@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Alert, AlertTitle, Box, Button, Slide, Snackbar, Typography } from '@mui/material';
+import { useEffect } from 'react';
+import { Box, Button, Typography } from '@mui/material';
 import { SubmitHandler, TextFieldElement, useForm } from 'react-hook-form-mui';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import * as yup from 'yup';
 import {
+  ClientResponse,
+  ErrorObject,
   MyCustomerChangeEmailAction,
   MyCustomerSetDateOfBirthAction,
   MyCustomerSetFirstNameAction,
   MyCustomerSetLastNameAction,
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import { EditPersonalInfo } from '../Registration/types';
 import schemaName from '../../shared/validation/nameValidation';
 import schemaBirthDate from '../../shared/validation/validationBirthDate';
@@ -20,6 +23,7 @@ import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { useCustomer } from '../../api/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 import formatDate from '../../shared/utils/formatDate';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 interface EditInfoProps {
   onSuccess: () => void;
@@ -28,6 +32,7 @@ interface EditInfoProps {
 export default function EditInfo({ onSuccess }: EditInfoProps) {
   const { customer } = useAppSelector((state) => state.customer);
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const { customerUpdate } = useCustomer();
 
   const schema = yup.object().shape({
@@ -40,18 +45,6 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-
-  const [showAlert, setShowAlert] = useState(false); // Close error alert
-  const [changeError, setChangeError] = useState('');
-
-  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    event?.preventDefault();
-    if (reason === 'clickaway') {
-      return;
-    }
-    setShowAlert(false);
-    setChangeError('');
-  };
 
   useEffect(() => {
     if (customer) {
@@ -91,6 +84,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
 
         if (response) {
           dispatch(setCustomer(response.body));
+          enqueueSnackbar(SnackbarMessages.CUSTOMER_INFO_CHANGE_SUCCESS, { variant: 'success' });
           onSuccess();
           reset({
             firstName: '',
@@ -98,9 +92,9 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
             email: '',
           });
         }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
+      } catch (e) {
+        const error = e as ClientResponse<ErrorObject>;
+        enqueueSnackbar(error.body.message, { variant: 'error' });
       }
     }
   };
@@ -159,16 +153,6 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           Save Changes
         </Button>
       </Box>
-      {changeError && (
-        <Slide in={showAlert} direction="right">
-          <Snackbar open={showAlert} autoHideDuration={2000} onClose={handleSnackBarClose}>
-            <Alert sx={{ width: '100%' }} severity="error" onClose={handleSnackBarClose}>
-              <AlertTitle>Error!</AlertTitle>
-              {changeError}
-            </Alert>
-          </Snackbar>
-        </Slide>
-      )}
     </Box>
   );
 }

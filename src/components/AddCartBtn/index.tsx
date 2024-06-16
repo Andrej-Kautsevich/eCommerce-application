@@ -1,21 +1,19 @@
 import { useLocation } from 'react-router-dom';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
 import { useCustomer } from '../../api/hooks';
 import useCart from '../../api/hooks/useCart';
 import { useAppDispatch } from '../../shared/store/hooks';
-import {
-  setCartUpdate,
-  setCurrencyProductCount,
-  setProductList,
-  setTotalProducts,
-} from '../../shared/store/auth/cartSlice';
-import { Status } from '../../shared/types/enum';
+import { setCurrencyProductCount, setProductList, setTotalProducts } from '../../shared/store/auth/cartSlice';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 export default function AddCartBtn() {
   const { getCart } = useCustomer();
   const { addItem } = useCart();
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const productID = useLocation().pathname.split('/').slice(2).join();
 
   const addProduct = (productId: string) => async () => {
@@ -37,13 +35,14 @@ export default function AddCartBtn() {
             dispatch(setCurrencyProductCount(itemList[i].quantity));
           }
         }
-        dispatch(setCartUpdate({ status: true, message: Status.ADD }));
+        enqueueSnackbar(SnackbarMessages.ADD_ITEM_SUCCESS, { variant: 'success' });
       };
-      // eslint-disable-next-line no-console
-      fetchAddItem().catch((error) => console.log(error));
+      fetchAddItem().catch((e) => {
+        const error = e as ClientResponse<ErrorObject>;
+        enqueueSnackbar(error.body.message, { variant: 'error' });
+      });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error adding item to cart:', error);
+      enqueueSnackbar(SnackbarMessages.ADD_ITEM_FETCH_ERROR, { variant: 'error' });
     }
   };
 
