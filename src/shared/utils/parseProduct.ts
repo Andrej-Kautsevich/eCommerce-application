@@ -12,7 +12,7 @@ type ParsedProduct = {
 
 const defaultProduct = {
   description: PRODUCT_DESCRIPTION_PLACEHOLDER,
-  images: PRODUCT_IMAGE_PLACEHOLDER,
+  images: [PRODUCT_IMAGE_PLACEHOLDER],
   price: 'product unavailable',
 };
 
