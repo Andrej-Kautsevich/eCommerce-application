@@ -1,29 +1,30 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, CircularProgress } from '@mui/material';
+import { FormControl, MenuItem, Select, SelectChangeEvent, CircularProgress } from '@mui/material';
 import { Translate } from '@mui/icons-material';
 import { useState } from 'react';
 import i18n from '../../shared/i18n/i18n';
 import { LanguagesKeys } from '../../shared/types/enum';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { setLanguage } from '../../shared/store/auth/localizationSlice';
 
 const LanguageSwitcher = () => {
-  const [language, setLanguage] = useState<LanguagesKeys>(LanguagesKeys.EN);
+  const { language } = useAppSelector((state) => state.localization);
+  const dispatch = useAppDispatch();
+
   const [loading, setLoading] = useState(false);
 
   const handleChange = async (event: SelectChangeEvent) => {
     setLoading(true);
     const newLanguage = event.target.value as LanguagesKeys;
-    setLanguage(newLanguage);
+    dispatch(setLanguage(newLanguage));
     await i18n.changeLanguage(newLanguage);
     setLoading(false);
   };
 
   return (
     <FormControl>
-      <InputLabel id="choose-language-label">Choose language</InputLabel>
       <Select
         size="small"
-        labelId="choose-language-label"
         value={language}
-        label="Choose language"
         onChange={handleChange}
         startAdornment={<Translate />}
         endAdornment={
@@ -41,7 +42,7 @@ const LanguageSwitcher = () => {
         }
       >
         <MenuItem value={LanguagesKeys.EN}>English</MenuItem>
-        <MenuItem value={LanguagesKeys.RU}>Russian</MenuItem>
+        <MenuItem value={LanguagesKeys.RU}>Русский</MenuItem>
       </Select>
     </FormControl>
   );
