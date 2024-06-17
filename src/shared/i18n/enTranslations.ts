@@ -12,6 +12,10 @@ const enTranslations = {
     // Catalog Page
     'Reset All Filters': 'Reset All Filters',
 
+    // 404 Page
+    'Oops, Something Went Wrong': 'Oops, Something Went Wrong',
+    'Return to Homepage': 'Return to Homepage',
+
     // Authentication Pages
     'Sign in': 'Sign in',
     'Sign Up': 'Sign Up',
