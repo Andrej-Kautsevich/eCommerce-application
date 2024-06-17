@@ -96,6 +96,7 @@ const enTranslations = {
     'Remove from Cart': 'Remove from Cart',
     'Save new password': 'Save new password',
     'Remove all': 'Remove all',
+    'Loading…': 'Loading…',
 
     // enums
     GENERAL_ERROR: 'Something wrong, please try later!',
