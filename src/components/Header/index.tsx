@@ -7,6 +7,7 @@ import HeaderLink from '../../shared/ui/HeaderLink';
 import { RoutePaths } from '../../shared/types/enum';
 import BasketButton from './BasketButton';
 import LanguageSwitcher from './LanguageSwitcher';
+import ThemeButton from './ThemeButton';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -16,7 +17,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ boxShadow: 0 }} color="secondary">
+    <AppBar position="static" sx={{ boxShadow: 0 }} color="transparent" enableColorOnDark>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
           <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">
@@ -49,6 +50,7 @@ const Header = () => {
                 <LoginLogoutButtons />
               </MenuItem>
               <BasketButton />
+              <ThemeButton />
             </Box>
           </Drawer>
         </Box>
@@ -63,6 +65,7 @@ const Header = () => {
           </HeaderLink>
           <LoginLogoutButtons />
           <BasketButton />
+          <ThemeButton />
           <LanguageSwitcher />
         </Box>
       </Toolbar>

@@ -17,7 +17,7 @@ const CatalogBreadcrumbs = () => {
   return (
     <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
       <LinkRouter underline="hover" color="inherit" to={RoutePaths.MAIN}>
-        <Typography variant="body1" color="secondary">
+        <Typography variant="body1" color="primary.contrastText">
           {t('Main')}
         </Typography>
       </LinkRouter>
@@ -26,12 +26,12 @@ const CatalogBreadcrumbs = () => {
         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
 
         return last ? (
-          <Typography variant="body1" color="secondary" key={to}>
+          <Typography variant="body1" color="primary.contrastText" key={to}>
             {breadcrumbNameMap[to]}{' '}
           </Typography>
         ) : (
           <LinkRouter underline="hover" to={to} key={to}>
-            <Typography variant="body1" color="secondary">
+            <Typography variant="body1" color="primary.contrastText">
               {breadcrumbNameMap[to]}
             </Typography>
           </LinkRouter>

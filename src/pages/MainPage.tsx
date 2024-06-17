@@ -3,6 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../shared/ui/MainLayout';
 import mainImageBackground from '../shared/assets/images/backgroundMainPage.jpg';
+import mainImageBackgroundDark from '../shared/assets/images/backgroundMainPageDark.png';
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ const MainPage = () => {
             component="h1"
             fontFamily="Orbitron"
             width="100%"
+            color="text.primary"
             sx={{ pt: 15, pl: 8 }}
           >
             {t('Find your dream watch')}
@@ -26,11 +28,12 @@ const MainPage = () => {
           minHeight={200}
           xs={12}
           sm={6}
-          sx={{
-            backgroundImage: `url(${mainImageBackground})`,
+          sx={(theme) => ({
+            backgroundImage:
+              theme.palette.mode === 'light' ? `url(${mainImageBackground})` : `url(${mainImageBackgroundDark})`, // check theme mode and change to dark version of image
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
-          }}
+          })}
         />
       </Grid>
     </MainLayout>

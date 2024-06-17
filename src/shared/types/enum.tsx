@@ -45,6 +45,7 @@ export enum SnackbarMessages {
   CUSTOMER_INFO_CHANGE_SUCCESS = 'Successfully updated',
   ADD_ITEM_SUCCESS = 'successful addition',
   REMOVE_ITEM_SUCCESS = 'successful removal',
+  DISCOUNT_SUCCESS = 'successfully applied',
 }
 
 export enum LanguagesKeys {

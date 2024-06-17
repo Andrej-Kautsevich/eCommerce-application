@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, CardMedia, ImageList, ImageListItem } from '@mui/material';
 import { ProductProjection, Image } from '@commercetools/platform-sdk';
-import responsiveTheme from '../../shared/ui/theme';
 import emptyImage from '../../shared/assets/images/empty-img.png';
 import MainImage from './MainImage';
 import ListOfThumbnails from './ListOfThumbnails';
@@ -110,7 +109,7 @@ const Carousel = ({ product }: CarouselProps) => {
         </Box>
         <ImageListItem
           component="div"
-          sx={{
+          sx={(theme) => ({
             width: {
               xs: '70vw',
               sm: '65vw',
@@ -122,8 +121,8 @@ const Carousel = ({ product }: CarouselProps) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: '12px',
-            boxShadow: `0px 4px 8px ${responsiveTheme.palette.primary.main}`,
-          }}
+            boxShadow: `0px 4px 8px ${theme.palette.primary.main}`,
+          })}
           onClick={handleOpen}
         >
           <MainImage image={images[step]} />
@@ -145,7 +144,7 @@ const Carousel = ({ product }: CarouselProps) => {
         />
         <ImageListItem
           component="div"
-          style={{
+          sx={(theme) => ({
             width: 470,
             height: 470,
             overflow: 'hidden',
@@ -153,8 +152,8 @@ const Carousel = ({ product }: CarouselProps) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: '12px',
-            boxShadow: `0px 4px 8px ${responsiveTheme.palette.primary.main}`,
-          }}
+            boxShadow: `0px 4px 8px ${theme.palette.primary.main}`,
+          })}
           onClick={handleOpen}
         >
           <MainImage image={images[step]} />

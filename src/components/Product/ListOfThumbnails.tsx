@@ -1,6 +1,5 @@
 import { Box, ImageListItem } from '@mui/material';
 import { Image } from '@commercetools/platform-sdk';
-import responsiveTheme from '../../shared/ui/theme';
 import MainImage from './MainImage';
 
 interface ListOfThumbnailsProps {
@@ -14,13 +13,13 @@ interface ListOfThumbnailsProps {
 const ListOfThumbnails = ({ images, image, index, step, func }: ListOfThumbnailsProps) => {
   return (
     <ImageListItem
-      style={{
+      sx={(theme) => ({
         width: 60,
         height: 60,
         overflow: 'hidden',
         borderRadius: '5px',
-        border: index === step ? `2px solid ${responsiveTheme.palette.primary.main}` : 'none',
-      }}
+        border: index === step ? `2px solid ${theme.palette.primary.main}` : 'none',
+      })}
       key={image.label ?? image.url}
     >
       <Box

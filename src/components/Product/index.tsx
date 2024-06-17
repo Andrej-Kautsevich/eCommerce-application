@@ -79,13 +79,7 @@ const Product = () => {
 
   return (
     <Grid container style={{ display: 'flex', flexDirection: 'column' }}>
-      <PageTitle>
-        <Box>
-          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            {product.name.en}
-          </Typography>
-        </Box>
-      </PageTitle>
+      <PageTitle title={product.name.en} />
 
       <Grid
         container

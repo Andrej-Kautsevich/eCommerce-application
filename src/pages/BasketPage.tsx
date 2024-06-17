@@ -19,19 +19,12 @@ const BasketPage = () => {
   if (!cart || cart.lineItems.length === 0)
     return (
       <MainLayout>
-        <PageTitle>
-          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            {t('Your Cart')}
-          </Typography>
+        <PageTitle title="{t('Your Cart')}">
           <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
             <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
-              <Typography variant="body1" color="secondary">
-                {t('Main')}
-              </Typography>
+              <Typography variant="body1">{t('Main')}</Typography>
             </LinkRouter>
-            <Typography variant="body1" color="secondary">
-              {t('Cart')}
-            </Typography>
+            <Typography variant="body1">{t('Cart')}</Typography>
           </Breadcrumbs>
         </PageTitle>
         <Box display="flex" flexDirection="column" alignItems="center">
@@ -46,7 +39,9 @@ const BasketPage = () => {
               padding: '1.5em 0',
             }}
           />
-          <Typography variant="h5">{t('Your Cart is Empty')}</Typography>
+          <Typography variant="h5" color="text.primary">
+            {t('Your Cart is Empty')}
+          </Typography>
           <LinkRouter to={RoutePaths.WATCHES}>
             <Button variant="contained" sx={{ mt: 2 }}>
               {t('Continue shopping')}
@@ -58,17 +53,14 @@ const BasketPage = () => {
 
   return (
     <MainLayout>
-      <PageTitle>
-        <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-          {t('Your Cart')}
-        </Typography>
+      <PageTitle title="{t('Your Cart')}">
         <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
           <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
-            <Typography variant="body1" color="secondary">
+            <Typography variant="body1" color="primary.contrastText">
               {t('Main')}
             </Typography>
           </LinkRouter>
-          <Typography variant="body1" color="secondary">
+          <Typography variant="body1" color="primary.contrastText">
             {t('Cart')}
           </Typography>
         </Breadcrumbs>
@@ -79,11 +71,11 @@ const BasketPage = () => {
           <Divider flexItem />
         </Grid>
         <Grid xs={6} alignSelf="center">
-          <CartPromoCodeBox />
+          <CartPromoCodeBox cart={cart} />
         </Grid>
         <Grid xs={3} />
         <Grid xs={3} textAlign="end">
-          <CartTotalPrice totalPrice={cart.totalPrice} />
+          <CartTotalPrice cart={cart} />
           <CartRemoveAllItems />
         </Grid>
       </Grid>

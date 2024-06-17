@@ -1,6 +1,6 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
-import { Box, Pagination, Typography } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
@@ -106,12 +106,9 @@ const CatalogPage = () => {
 
   return (
     <MainLayout>
-      <PageTitle>
+      <PageTitle title={t('Catalog')}>
         <Box>
-          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            {t('Catalog')}
-            <CatalogBreadcrumbs />
-          </Typography>
+          <CatalogBreadcrumbs />
         </Box>
       </PageTitle>
       <CatalogCategoriesSelect />
