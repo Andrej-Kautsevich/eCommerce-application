@@ -83,7 +83,9 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
 
   return (
     <Box>
-      <Typography variant="h5">Change Password:</Typography>
+      <Typography variant="h5" color="text.primary">
+        Change Password:
+      </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
         <PasswordElement
           margin="normal"

@@ -23,8 +23,10 @@ const CartTotalPrice = ({ cart }: CartTotalPriceProps) => {
     <Box display="flex" flexDirection="column">
       {discountPriceFormatted && (
         <Box>
-          <Typography variant="h5">Sum: {sumPriceFormatted}</Typography>
-          <Typography variant="h5" mt={1}>
+          <Typography variant="h5" color="text.primary">
+            Sum: {sumPriceFormatted}
+          </Typography>
+          <Typography variant="h5" mt={1} color="text.primary">
             Discount: {discountPriceFormatted}
           </Typography>
           <Divider />

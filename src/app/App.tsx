@@ -1,7 +1,7 @@
 import '../shared/ui/main.scss';
 import { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { SnackbarProvider, useSnackbar } from 'notistack';
@@ -9,10 +9,10 @@ import { useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
-import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
 import useCart from '../api/hooks/useCart';
 import { SnackbarMessages } from '../shared/types/enum';
+import ColorModeProvider from '../shared/utils/theme/colorModeProvider';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -69,13 +69,13 @@ const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
-      <ThemeProvider theme={theme}>
+      <ColorModeProvider>
         <SnackbarProvider maxSnack={3} preventDuplicate>
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>
         </SnackbarProvider>
-      </ThemeProvider>
+      </ColorModeProvider>
     </LocalizationProvider>
   );
 };
