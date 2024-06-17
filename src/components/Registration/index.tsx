@@ -159,7 +159,7 @@ export default function Registration() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          {t('Sign up')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -197,7 +197,7 @@ export default function Registration() {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-                Shipping address
+                {t('Shipping address')}
               </Typography>
               <Box sx={{ minWidth: 120 }}>
                 <SelectElement
@@ -267,7 +267,7 @@ export default function Registration() {
               <>
                 <Grid item xs={12}>
                   <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-                    Billing address
+                    {t('Billing address')}
                   </Typography>
                   <Box sx={{ minWidth: 120 }}>
                     <SelectElement

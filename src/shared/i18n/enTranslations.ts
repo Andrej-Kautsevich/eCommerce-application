@@ -16,12 +16,26 @@ const enTranslations = {
     'Oops, Something Went Wrong': 'Oops, Something Went Wrong',
     'Return to Homepage': 'Return to Homepage',
 
-    // Product page
+    // Product Page
     'Description:': 'Description:',
     'Something is wrong': 'Something is wrong',
     'Price:': 'Price:',
     'SALE PRICE:': 'SALE PRICE:',
     'Items in cart:': 'Items in cart:',
+    'Date of birth': 'Date of birth',
+
+    // Profile Page
+    Hey: 'Hey',
+    'Welcome to your profile, your one-stop-shop for all your recent Volcano Watch account activity.':
+      'Welcome to your profile, your one-stop-shop for all your recent Volcano Watch account activity.',
+    'My info': 'My info',
+    Name: 'Name',
+    Email: 'Email',
+    'Manage Info': 'Manage Info',
+    Addresses: 'Addresses',
+    'Default shipping:': 'Default shipping:',
+    'Default billing:': 'Default billing:',
+    'Change Personal Info': 'Change Personal Info',
 
     // Authentication Pages
     'Sign in': 'Sign in',
@@ -43,7 +57,9 @@ const enTranslations = {
     City: 'City',
     Street: 'Street',
     'Postal code': 'Postal code',
+    'Billing address': 'Billing address',
 
+    'Shipping address': 'Shipping address',
     'Set as default shipping address': 'Set as default shipping address',
     'My billing address is not the same as my shipping address.':
       'My billing address is not the same as my shipping address.',
@@ -65,6 +81,7 @@ const enTranslations = {
     // Buttons
     Apply: 'Apply',
     'Order Watch': 'Order Watch',
+    'Save Changes': 'Save Changes',
   },
 };
 
