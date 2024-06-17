@@ -8,6 +8,8 @@ const ruTranslations = {
     'Continue shopping': 'Продолжить покупки',
     'Have a promo code? Type it here:': 'Есть промокод? Введите его здесь:',
     Total: 'Итого',
+    Sum: 'Сумма',
+    Discount: 'Скидка',
 
     // Catalog Page
     'Reset All Filters': 'Сбросить все фильтры',

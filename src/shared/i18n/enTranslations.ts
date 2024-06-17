@@ -8,6 +8,8 @@ const enTranslations = {
     'Continue shopping': 'Continue shopping',
     'Have a promo code? Type it here:': 'Have a promo code? Type it here:',
     Total: 'Total',
+    Sum: 'Sum',
+    Discount: 'Discount',
 
     // Catalog Page
     'Reset All Filters': 'Reset All Filters',

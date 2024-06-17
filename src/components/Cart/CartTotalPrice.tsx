@@ -27,10 +27,10 @@ const CartTotalPrice = ({ cart }: CartTotalPriceProps) => {
       {discountPriceFormatted && (
         <Box>
           <Typography variant="h5" color="text.primary">
-            Sum: {sumPriceFormatted}
+            {t('Sum')}: {sumPriceFormatted}
           </Typography>
           <Typography variant="h5" mt={1} color="text.primary">
-            Discount: {discountPriceFormatted}
+            {t('Discount')}: {discountPriceFormatted}
           </Typography>
           <Divider />
         </Box>
