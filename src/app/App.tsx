@@ -77,7 +77,7 @@ const App = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
       <ColorModeProvider>
-        <SnackbarProvider maxSnack={3} preventDuplicate>
+        <SnackbarProvider maxSnack={3}>
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>
