@@ -359,7 +359,8 @@ export default function Registration() {
             {t('Sign Up')}
           </Button>
           <Typography>
-            {t('If you have an account,')}
+            {t('If you have an account')}
+            {', '}
             <Box
               component={Link}
               to={RoutePaths.LOGIN}

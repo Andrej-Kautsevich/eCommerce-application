@@ -3,6 +3,7 @@ import { ShoppingCartOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import { useCustomer } from '../../api/hooks';
 import useCart from '../../api/hooks/useCart';
 import { useAppDispatch } from '../../shared/store/hooks';
@@ -10,6 +11,7 @@ import { setCurrencyProductCount, setProductList, setTotalProducts } from '../..
 import { SnackbarMessages } from '../../shared/types/enum';
 
 export default function AddCartBtn() {
+  const { t } = useTranslation();
   const { getCart } = useCustomer();
   const { addItem } = useCart();
   const dispatch = useAppDispatch();
@@ -48,7 +50,7 @@ export default function AddCartBtn() {
 
   return (
     <Button variant="contained" onClick={addProduct(productID)} sx={{ mb: 3, height: '50px', width: 200 }}>
-      Add to Cart
+      {t('Add to Cart')}
       <ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText', ml: 1 }} />
     </Button>
   );

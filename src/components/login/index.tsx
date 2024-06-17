@@ -96,13 +96,13 @@ export default function LoginTab() {
           {t('Sign In')}
         </Button>
         <Typography>
-          {t('Don’t have an account, ')}
+          {t('Don’t have an account ')},{'? '}
           <Box
             component={Link}
             to={RoutePaths.REGISTRATION}
             sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
           >
-            {t('create one')}
+            {t('Create one')}
           </Box>
         </Typography>
         {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}

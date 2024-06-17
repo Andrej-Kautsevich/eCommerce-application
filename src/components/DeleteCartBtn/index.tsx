@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import { useCustomer } from '../../api/hooks';
 import useCart from '../../api/hooks/useCart';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
@@ -9,6 +10,7 @@ import { setCurrencyProductCount } from '../../shared/store/auth/cartSlice';
 import { SnackbarMessages } from '../../shared/types/enum';
 
 const DeleteCartBtn = () => {
+  const { t } = useTranslation();
   const { getCart } = useCustomer();
   const { deleteItem } = useCart();
   const dispatch = useAppDispatch();
@@ -58,7 +60,7 @@ const DeleteCartBtn = () => {
       sx={{ mb: 3, height: '50px', width: 200 }}
       disabled={currencyProductCount === 0}
     >
-      Remove from Cart
+      {t('Remove from Cart')}
     </Button>
   );
 };

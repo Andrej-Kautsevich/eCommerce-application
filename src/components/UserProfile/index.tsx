@@ -107,7 +107,7 @@ export default function UserProfile() {
               {t('Street')}: {info.streetName}
             </Typography>
             <Typography variant="h6" component="div">
-              {t('Postal Code')}: {info.postalCode}
+              {t('Postal')}: {info.postalCode}
             </Typography>
             <Button variant="contained">{t('Manage Info')}</Button>
           </Box>

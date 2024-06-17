@@ -7,7 +7,7 @@ const enTranslations = {
     'Your Cart is Empty': 'Your Cart is Empty',
     'Continue shopping': 'Continue shopping',
     'Have a promo code? Type it here:': 'Have a promo code? Type it here:',
-    'Total: ': 'Total: ',
+    Total: 'Total',
 
     // Catalog Page
     'Reset All Filters': 'Reset All Filters',
@@ -19,9 +19,9 @@ const enTranslations = {
     // Product Page
     'Description:': 'Description:',
     'Something is wrong': 'Something is wrong',
-    'Price:': 'Price:',
-    'SALE PRICE:': 'SALE PRICE:',
-    'Items in cart:': 'Items in cart:',
+    Price: 'Price',
+    'SALE PRICE': 'SALE PRICE',
+    'Items in cart': 'Items in cart',
     'Date of birth': 'Date of birth',
 
     // Profile Page
@@ -36,6 +36,10 @@ const enTranslations = {
     'Default shipping:': 'Default shipping:',
     'Default billing:': 'Default billing:',
     'Change Personal Info': 'Change Personal Info',
+    'Current Password': 'Current Password',
+    'Change Password': 'Change Password',
+    'New Password': 'New Password',
+    'Repeat New Password': 'Repeat New Password',
 
     // Authentication Pages
     'Sign in': 'Sign in',
@@ -45,9 +49,9 @@ const enTranslations = {
     'Email Address': 'Email Address',
 
     'Don’t have an account ': 'Don’t have an account ',
-    'create one': 'create one',
+    'Create one': 'create one',
 
-    'If you have an account,': 'If you have an account,',
+    'If you have an account': 'If you have an account',
 
     Welcome: 'Welcome',
     'First Name': 'First Name',
@@ -56,7 +60,7 @@ const enTranslations = {
     Country: 'Country',
     City: 'City',
     Street: 'Street',
-    'Postal code': 'Postal code',
+    Postal: 'Postal code',
     'Billing address': 'Billing address',
 
     'Shipping address': 'Shipping address',
@@ -69,6 +73,8 @@ const enTranslations = {
     // Schemas messages
     'Last name is required': 'Last name is required',
     'Country is required': 'Country is required',
+    'Passwords must match': 'Passwords must match',
+    'Repeat Password is required': 'Repeat Password is required',
 
     // Breadcrumbs
     Main: 'Main',
@@ -82,6 +88,10 @@ const enTranslations = {
     Apply: 'Apply',
     'Order Watch': 'Order Watch',
     'Save Changes': 'Save Changes',
+    'Add to Cart': 'Add to Cart',
+    'Remove from Cart': 'Remove from Cart',
+    'Save new password': 'Save new password',
+    'Remove all': 'Remove all',
   },
 };
 

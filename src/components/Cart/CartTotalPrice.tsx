@@ -14,7 +14,8 @@ const CartTotalPrice = ({ totalPrice }: CartTotalPriceProps) => {
 
   return (
     <Typography variant="h5" component="div">
-      {t('Total: ')}
+      {t('Total')}
+      {': '}
       <Typography variant="h4" component="span">
         {total}
       </Typography>

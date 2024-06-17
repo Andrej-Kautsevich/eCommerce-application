@@ -103,7 +103,8 @@ const Product = () => {
               {product ? product.description?.en : t('Something is wrong')}
             </Typography>
             <Typography component="p" fontFamily="Poppins" color="text.secondary">
-              {t('Price:')}
+              {t('Price')}
+              {': '}
             </Typography>
             <Typography
               component="p"
@@ -119,7 +120,8 @@ const Product = () => {
             {discount > 0 && (
               <Box>
                 <Typography component="p" fontFamily="Poppins" color="text.secondary">
-                  {t('SALE PRICE:')}
+                  {t('SALE PRICE')}
+                  {': '}
                 </Typography>
                 <Typography component="p" fontFamily="Poppins" color="red" sx={{ mb: 3, fontSize: 36 }}>
                   {`$${(discount / 100).toFixed(2)}`}
@@ -127,7 +129,8 @@ const Product = () => {
               </Box>
             )}
             <Typography component="p" fontFamily="Poppins" color="text.secondary">
-              {t('Items in cart:')}
+              {t('Items in cart')}
+              {': '}
             </Typography>
             <Typography
               component="p"

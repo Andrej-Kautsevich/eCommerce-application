@@ -12,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { DevTool } from '@hookform/devtools';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import schemaPass from '../../shared/validation/passValidation';
 import { useApiClient, useCustomer } from '../../api/hooks';
 import tokenCache from '../../shared/utils/tokenCache';
@@ -30,6 +31,7 @@ type ChangePasswordForm = {
 };
 
 const ChangePassword = ({ customer }: ChangePasswordProps) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -38,8 +40,8 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
     newPassword: schemaPass,
     repeatNewPassword: yup
       .string()
-      .oneOf([yup.ref('newPassword'), undefined], 'Passwords must match')
-      .required('Repeat Password is required'),
+      .oneOf([yup.ref('newPassword'), undefined], t('Passwords must match'))
+      .required(t('Repeat Password is required')),
   });
 
   const { control, handleSubmit, reset } = useForm<ChangePasswordForm>({
@@ -83,14 +85,14 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
 
   return (
     <Box>
-      <Typography variant="h5">Change Password:</Typography>
+      <Typography variant="h5">{t('Change Password')}:</Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
         <PasswordElement
           margin="normal"
           required
           fullWidth
           name="currentPassword"
-          label="Current Password"
+          label={t('Current Password')}
           id="currentPassword"
           autoComplete="new-password"
           control={control}
@@ -100,7 +102,7 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
           required
           fullWidth
           id="email"
-          label="New Password"
+          label={t('New Password')}
           name="newPassword"
           autoComplete="new-password"
           control={control}
@@ -110,13 +112,13 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
           required
           fullWidth
           id="repeatNewPassword"
-          label="Repeat New Password"
+          label={t('Repeat New Password')}
           name="repeatNewPassword"
           autoComplete="email"
           control={control}
         />
         <Button type="submit" variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-          Save new password
+          {t('Save new password')}
         </Button>
         {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
       </Box>
