@@ -21,12 +21,12 @@ const useCustomer = () => {
     }
     return apiRoot.me().carts().get().execute();
   };
-  const getPromoCodes = () => {
+  const getPromoCodes = useCallback(() => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
     return apiRoot.discountCodes().get().execute();
-  };
+  }, [apiRoot]);
 
   /**
    *

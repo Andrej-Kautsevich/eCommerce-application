@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../shared/store/hooks';
 import { setSubmitSuccess } from '../shared/store/auth/authSlice';
 import MainLayout from '../shared/ui/MainLayout';
 import mainImageBackground from '../shared/assets/images/backgroundMainPage.jpg';
+import PromoCode from '../components/PromoCode';
 
 const MainPage = () => {
   const { submitSuccess } = useAppSelector((state) => state.auth);
@@ -45,7 +46,6 @@ const MainPage = () => {
           }}
         />
       </Grid>
-
       {submitSuccess.status && (
         <Slide in={openSnackBar} direction="right">
           <Snackbar open={openSnackBar} autoHideDuration={2000} onClose={handleSnackBarClose}>
@@ -56,6 +56,7 @@ const MainPage = () => {
           </Snackbar>
         </Slide>
       )}
+      <PromoCode />
     </MainLayout>
   );
 };
