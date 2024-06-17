@@ -29,9 +29,6 @@ export default function PromoCode() {
         {promoCode.map((item) => (
           <Box bgcolor="primary.main" sx={{ borderRadius: 1, color: 'white', p: 1 }}>
             {item.code}
-            <Typography variant="h6" component="div" sx={{ textAlign: 'center' }}>
-              50%
-            </Typography>
           </Box>
         ))}
       </Box>

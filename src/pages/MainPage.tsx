@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import MainLayout from '../shared/ui/MainLayout';
 import mainImageBackground from '../shared/assets/images/backgroundMainPage.jpg';
-// import PromoCode from '../components/PromoCode';
+import PromoCode from '../components/PromoCode';
 
 const MainPage = () => {
   return (
@@ -31,6 +31,7 @@ const MainPage = () => {
           }}
         />
       </Grid>
+      <PromoCode />
     </MainLayout>
   );
 };
