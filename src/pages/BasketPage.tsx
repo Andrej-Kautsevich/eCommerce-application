@@ -1,5 +1,6 @@
 import { Box, Breadcrumbs, Button, Divider, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { useTranslation } from 'react-i18next';
 import PageTitle from '../components/PageTitle';
 import MainLayout from '../shared/ui/MainLayout';
 import CartItems from '../components/Cart/CartItems';
@@ -12,6 +13,7 @@ import emptyCartImg from '../shared/assets/images/cart.png';
 import { useAppSelector } from '../shared/store/hooks';
 
 const BasketPage = () => {
+  const { t } = useTranslation();
   const { cart } = useAppSelector((state) => state.cart);
 
   if (!cart || cart.lineItems.length === 0)
@@ -19,16 +21,16 @@ const BasketPage = () => {
       <MainLayout>
         <PageTitle>
           <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            Your Cart
+            {t('Your Cart')}
           </Typography>
           <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
             <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
               <Typography variant="body1" color="secondary">
-                Main
+                {t('Main')}
               </Typography>
             </LinkRouter>
             <Typography variant="body1" color="secondary">
-              Cart
+              {t('Cart')}
             </Typography>
           </Breadcrumbs>
         </PageTitle>
@@ -44,10 +46,10 @@ const BasketPage = () => {
               padding: '1.5em 0',
             }}
           />
-          <Typography variant="h5">Your Cart is Empty</Typography>
+          <Typography variant="h5">{t('Your Cart is Empty')}</Typography>
           <LinkRouter to={RoutePaths.WATCHES}>
             <Button variant="contained" sx={{ mt: 2 }}>
-              Continue shopping
+              {t('Continue shopping')}
             </Button>
           </LinkRouter>
         </Box>
@@ -58,16 +60,16 @@ const BasketPage = () => {
     <MainLayout>
       <PageTitle>
         <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-          Your Cart
+          {t('Your Cart')}
         </Typography>
         <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
           <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
             <Typography variant="body1" color="secondary">
-              Main
+              {t('Main')}
             </Typography>
           </LinkRouter>
           <Typography variant="body1" color="secondary">
-            Cart
+            {t('Cart')}
           </Typography>
         </Breadcrumbs>
       </PageTitle>
