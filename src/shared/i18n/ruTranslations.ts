@@ -92,6 +92,16 @@ const ruTranslations = {
     'Remove from Cart': 'Удалить',
     'Save new password': 'Сохранить пароль',
     'Remove all': 'Удалить всё',
+
+    // enums
+    GENERAL_ERROR: 'Что-то не так, попробуйте позже',
+    CART_FETCH_ERROR: 'Ошибка при получении корзины, попробуйте позже',
+    ADD_ITEM_FETCH_ERROR: 'Ошибка при добавлении товара',
+    DELETE_ITEM_FETCH_ERROR: 'Ошибка при удалении товара',
+    PASSWORD_CHANGE_SUCCESS: 'Пароль успешно изменён',
+    CUSTOMER_INFO_CHANGE_SUCCESS: 'Информация обновлена',
+    ADD_ITEM_SUCCESS: 'Добавлено',
+    REMOVE_ITEM_SUCCESS: 'Удалено',
   },
 };
 

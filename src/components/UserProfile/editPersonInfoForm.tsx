@@ -25,6 +25,7 @@ import { useCustomer } from '../../api/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 import formatDate from '../../shared/utils/formatDate';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 interface EditInfoProps {
   onSuccess: () => void;
@@ -86,7 +87,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
 
         if (response) {
           dispatch(setCustomer(response.body));
-          enqueueSnackbar(SnackbarMessages.CUSTOMER_INFO_CHANGE_SUCCESS, { variant: 'success' });
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CUSTOMER_INFO_CHANGE_SUCCESS, t), { variant: 'success' });
           onSuccess();
           reset({
             firstName: '',

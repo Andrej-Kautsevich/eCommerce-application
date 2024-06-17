@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import CatalogFilterPanel from './CatalogFilterPanel';
 import { setFilterParams } from '../../shared/store/auth/productsSlice';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 const CatalogSideBar = () => {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ const CatalogSideBar = () => {
           const error = e as ClientResponse<ErrorObject>;
           enqueueSnackbar(error.body.message, { variant: 'error' });
         } else {
-          enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' });
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' });
         }
       });
 
@@ -39,7 +40,7 @@ const CatalogSideBar = () => {
         return filterParam[key] !== undefined;
       }),
     );
-  }, [attributes, filterParams, dispatch, getAttributes, enqueueSnackbar]);
+  }, [attributes, filterParams, dispatch, getAttributes, enqueueSnackbar, t]);
 
   const handleReset = () => {
     attributes.forEach((attribute) => {

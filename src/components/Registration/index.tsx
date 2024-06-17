@@ -39,6 +39,7 @@ import schemaPostalCodeBelarus from '../../shared/validation/postalCodeOfCountri
 import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
 import schemaPostalCodeUkraine from '../../shared/validation/postalCodeOfCountriesVal/ukrainePostalShema';
 import useCart from '../../api/hooks/useCart';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 export default function Registration() {
   const { t } = useTranslation();
@@ -131,10 +132,10 @@ export default function Registration() {
             : signUpResult.body.customer.addresses[0].id,
       };
       customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() =>
-        enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }),
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
       );
       fetchCart().catch(() => {
-        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CART_FETCH_ERROR, t), { variant: 'error' });
       });
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;

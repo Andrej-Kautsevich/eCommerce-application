@@ -14,6 +14,7 @@ import { useCustomer } from '../../api/hooks';
 import { setCurrencyProductCount, setCurrencyItemCartId, setCartId } from '../../shared/store/auth/cartSlice';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 const Product = () => {
   const { t } = useTranslation();
@@ -40,7 +41,7 @@ const Product = () => {
     }
   };
   fetchCart().catch(() => {
-    enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
+    enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CART_FETCH_ERROR, t), { variant: 'error' });
   });
 
   useEffect(() => {
@@ -60,8 +61,10 @@ const Product = () => {
       }
     };
 
-    fetchProduct().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
-  }, [getProduct, productID, currencyProductCount, enqueueSnackbar]);
+    fetchProduct().catch(() =>
+      enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
+    );
+  }, [getProduct, productID, currencyProductCount, enqueueSnackbar, t]);
 
   if (!product) {
     return (

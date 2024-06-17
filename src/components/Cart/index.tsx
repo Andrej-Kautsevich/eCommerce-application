@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import { useCustomer } from '../../api/hooks';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setTotalProducts, setProductList } from '../../shared/store/auth/cartSlice';
 import useCart from '../../api/hooks/useCart';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 const Cart = () => {
+  const { t } = useTranslation();
   const { getCart } = useCustomer();
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -29,15 +32,17 @@ const Cart = () => {
 
         dispatch(setProductList(itemList));
       } catch (error) {
-        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CART_FETCH_ERROR, t), { variant: 'error' });
       }
     };
 
     if (initialFetch) {
-      fetchCart().catch(() => enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' }));
+      fetchCart().catch(() =>
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CART_FETCH_ERROR, t), { variant: 'error' }),
+      );
       setInitialFetch(false);
     }
-  }, [getCart, dispatch, initialFetch, enqueueSnackbar]);
+  }, [getCart, dispatch, initialFetch, enqueueSnackbar, t]);
 
   const deleteProduct = (itemId: string) => async () => {
     try {
@@ -54,9 +59,11 @@ const Cart = () => {
         }));
         dispatch(setProductList(itemList));
       };
-      fetchAddItem().catch(() => enqueueSnackbar(SnackbarMessages.ADD_ITEM_FETCH_ERROR, { variant: 'error' }));
+      fetchAddItem().catch(() =>
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.ADD_ITEM_FETCH_ERROR, t), { variant: 'error' }),
+      );
     } catch (error) {
-      enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' });
+      enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' });
     }
   };
 

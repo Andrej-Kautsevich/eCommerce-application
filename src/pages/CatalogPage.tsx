@@ -14,6 +14,7 @@ import parseFilterParams from '../shared/utils/parseFilterParams';
 import PageTitle from '../components/PageTitle';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
 import { SnackbarMessages, FilterCategories } from '../shared/types/enum';
+import getSnackbarMessage from '../shared/utils/getSnackbarMessage';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 6;
@@ -87,7 +88,9 @@ const CatalogPage = () => {
       setProducts([...result]);
     };
 
-    fetchProducts().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
+    fetchProducts().catch(() =>
+      enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
+    );
   }, [
     getProducts,
     filterParams,
@@ -98,6 +101,7 @@ const CatalogPage = () => {
     searchString,
     offsetValue,
     enqueueSnackbar,
+    t,
   ]);
 
   return (

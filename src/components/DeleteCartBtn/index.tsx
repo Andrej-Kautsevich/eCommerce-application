@@ -8,6 +8,7 @@ import useCart from '../../api/hooks/useCart';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setCurrencyProductCount } from '../../shared/store/auth/cartSlice';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 const DeleteCartBtn = () => {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ const DeleteCartBtn = () => {
             dispatch(setCurrencyProductCount(0));
           }
         }
-        enqueueSnackbar(SnackbarMessages.REMOVE_ITEM_SUCCESS, { variant: 'success' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
       };
 
       fetchDeleteItem().catch((e) => {
@@ -49,7 +50,7 @@ const DeleteCartBtn = () => {
         enqueueSnackbar(error.body.message, { variant: 'error' });
       });
     } catch (error) {
-      enqueueSnackbar(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, { variant: 'error' });
+      enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
     }
   };
 

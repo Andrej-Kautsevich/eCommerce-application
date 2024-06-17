@@ -9,6 +9,7 @@ import useCart from '../../api/hooks/useCart';
 import { useAppDispatch } from '../../shared/store/hooks';
 import { setCurrencyProductCount, setProductList, setTotalProducts } from '../../shared/store/auth/cartSlice';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 export default function AddCartBtn() {
   const { t } = useTranslation();
@@ -37,14 +38,14 @@ export default function AddCartBtn() {
             dispatch(setCurrencyProductCount(itemList[i].quantity));
           }
         }
-        enqueueSnackbar(SnackbarMessages.ADD_ITEM_SUCCESS, { variant: 'success' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.ADD_ITEM_SUCCESS, t), { variant: 'success' });
       };
       fetchAddItem().catch((e) => {
         const error = e as ClientResponse<ErrorObject>;
         enqueueSnackbar(error.body.message, { variant: 'error' });
       });
     } catch (error) {
-      enqueueSnackbar(SnackbarMessages.ADD_ITEM_FETCH_ERROR, { variant: 'error' });
+      enqueueSnackbar(getSnackbarMessage(SnackbarMessages.ADD_ITEM_FETCH_ERROR, t), { variant: 'error' });
     }
   };
 

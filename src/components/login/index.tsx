@@ -18,6 +18,7 @@ import schemaPass from '../../shared/validation/passValidation';
 import { useCustomerAuth } from '../../api/hooks';
 import { SnackbarMessages, RoutePaths } from '../../shared/types/enum';
 import useCart from '../../api/hooks/useCart';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 type LoginForm = {
   email: string;
@@ -46,7 +47,7 @@ export default function LoginTab() {
       const greetingMessage = `Welcome back, ${response.body.customer.firstName}`;
       enqueueSnackbar(greetingMessage, { variant: 'success' });
       fetchCart().catch(() => {
-        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CART_FETCH_ERROR, t), { variant: 'error' });
       });
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;

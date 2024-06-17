@@ -92,6 +92,16 @@ const enTranslations = {
     'Remove from Cart': 'Remove from Cart',
     'Save new password': 'Save new password',
     'Remove all': 'Remove all',
+
+    // enums
+    GENERAL_ERROR: 'Something wrong, please try later!',
+    CART_FETCH_ERROR: 'Failed to fetch cart, please try later!',
+    ADD_ITEM_FETCH_ERROR: 'Error adding item to cart',
+    DELETE_ITEM_FETCH_ERROR: 'Error deleting item from cart',
+    PASSWORD_CHANGE_SUCCESS: 'Password has been successfully changed.',
+    CUSTOMER_INFO_CHANGE_SUCCESS: 'Successfully updated',
+    ADD_ITEM_SUCCESS: 'successful addition',
+    REMOVE_ITEM_SUCCESS: 'successful removal',
   },
 };
 

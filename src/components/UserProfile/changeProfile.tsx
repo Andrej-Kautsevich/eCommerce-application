@@ -19,6 +19,7 @@ import tokenCache from '../../shared/utils/tokenCache';
 import { useAppDispatch } from '../../shared/store/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 interface ChangePasswordProps {
   customer: Customer;
@@ -69,7 +70,7 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
           tokenCache.remove();
           const newCustomer = (await setPasswordFlow({ email: customer.email, password: data.newPassword })).body;
           dispatch(setCustomer(newCustomer));
-          enqueueSnackbar(SnackbarMessages.PASSWORD_CHANGE_SUCCESS, { variant: 'success' });
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.PASSWORD_CHANGE_SUCCESS, t), { variant: 'success' });
           reset({
             currentPassword: '',
             newPassword: '',
