@@ -7,22 +7,25 @@ interface CartTotalPriceProps {
 
 const CartTotalPrice = ({ cart }: CartTotalPriceProps) => {
   const { totalPrice, discountOnTotalPrice } = cart;
-  const total = `$${totalPrice.centAmount / 100}`;
-  let discountAmount;
-  let sum;
+  const total = totalPrice.centAmount / 100;
+  const totalFormatted = `$${total}`;
+  let discountPriceFormatted;
+  let sumPriceFormatted;
 
   if (discountOnTotalPrice) {
-    discountAmount = `$${discountOnTotalPrice.discountedAmount.centAmount / 100}`;
-    sum = `$${(discountOnTotalPrice.discountedAmount.centAmount + totalPrice.centAmount) / 100}`;
+    const discountPrice = discountOnTotalPrice.discountedAmount.centAmount / 100;
+    discountPriceFormatted = `$${discountPrice}`;
+    const sum = discountPrice + total;
+    sumPriceFormatted = `$${sum}`;
   }
 
   return (
     <Box display="flex" flexDirection="column">
-      {discountAmount && (
+      {discountPriceFormatted && (
         <Box>
-          <Typography variant="h5">Sum: {sum}</Typography>
+          <Typography variant="h5">Sum: {sumPriceFormatted}</Typography>
           <Typography variant="h5" mt={1}>
-            Discount: {discountAmount}
+            Discount: {discountPriceFormatted}
           </Typography>
           <Divider />
         </Box>
@@ -30,7 +33,7 @@ const CartTotalPrice = ({ cart }: CartTotalPriceProps) => {
       <Typography variant="h5" component="div" mt={1} color="text.primary">
         Total:{' '}
         <Typography variant="h4" component="span" color="text.primary">
-          {total}
+          {totalFormatted}
         </Typography>
       </Typography>
     </Box>
