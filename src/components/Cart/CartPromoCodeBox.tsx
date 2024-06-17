@@ -3,6 +3,7 @@ import { Cart, ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
 import { Box, Button, OutlinedInput, Typography } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import useCart from '../../api/hooks/useCart';
+import { SnackbarMessages } from '../../shared/types/enum';
 
 type CartPromoCodeBoxProps = {
   cart: Cart;
@@ -20,6 +21,7 @@ const CartPromoCodeBox = ({ cart }: CartPromoCodeBoxProps) => {
     event.preventDefault();
     try {
       await addDiscountCode(cart.version, promoCode);
+      enqueueSnackbar(SnackbarMessages.DISCOUNT_SUCCESS, { variant: 'success' });
     } catch (e) {
       const error = e as ClientResponse<ErrorObject>;
       enqueueSnackbar(error.body.message, { variant: 'error' });

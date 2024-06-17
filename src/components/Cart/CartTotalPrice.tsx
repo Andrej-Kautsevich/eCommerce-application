@@ -27,9 +27,9 @@ const CartTotalPrice = ({ cart }: CartTotalPriceProps) => {
           <Divider />
         </Box>
       )}
-      <Typography variant="h5" component="div" mt={1}>
+      <Typography variant="h5" component="div" mt={1} color="text.primary">
         Total:{' '}
-        <Typography variant="h4" component="span">
+        <Typography variant="h4" component="span" color="text.primary">
           {total}
         </Typography>
       </Typography>
