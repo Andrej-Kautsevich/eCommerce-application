@@ -4,6 +4,7 @@ import { Box, Pagination, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
@@ -26,6 +27,7 @@ const GRID_SPACING_MD = 3;
 const ITEMS_PER_PAGE = 6;
 
 const CatalogPage = () => {
+  const { t } = useTranslation();
   const { categorySlug } = useParams();
   const { getProducts } = useProduct();
   const { categories } = useAppSelector((state) => state.products);
@@ -103,7 +105,7 @@ const CatalogPage = () => {
       <PageTitle>
         <Box>
           <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            Catalog
+            {t('Catalog')}
             <CatalogBreadcrumbs />
           </Typography>
         </Box>

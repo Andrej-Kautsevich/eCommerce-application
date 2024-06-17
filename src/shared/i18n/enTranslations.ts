@@ -9,6 +9,9 @@ const enTranslations = {
     'Have a promo code? Type it here:': 'Have a promo code? Type it here:',
     'Total: ': 'Total: ',
 
+    // Catalog Page
+    'Reset All Filters': 'Reset All Filters',
+
     // Authentication Pages
     'Sign in': 'Sign in',
     'Sign Up': 'Sign Up',
@@ -46,9 +49,11 @@ const enTranslations = {
 
     // Page titles
     'Your Cart': 'Your Cart',
+    Catalog: 'Catalog',
 
     // Buttons
     Apply: 'Apply',
+    'Order Watch': 'Order Watch',
   },
 };
 
