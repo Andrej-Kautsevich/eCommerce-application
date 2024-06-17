@@ -15,12 +15,13 @@ const useCustomer = () => {
       .then((response) => response.body);
   }, [apiRoot]);
 
-  const getCart = () => {
+  const getCart = useCallback(() => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
     }
+    // return apiRoot.me().activeCart().get().execute();
     return apiRoot.me().carts().get().execute();
-  };
+  }, [apiRoot]);
   const getPromoCodes = useCallback(() => {
     if (!apiRoot) {
       throw new Error('ApiRoot is not defined');
@@ -39,9 +40,6 @@ const useCustomer = () => {
    * ```jsx
    * {
    * "action": "changeEmail",
-   * "email": "email@example.com"
-   * }
-   * ```
    */
   const customerUpdate = (version: number, actions: MyCustomerUpdateAction[]) => {
     if (!apiRoot) {

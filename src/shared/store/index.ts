@@ -20,7 +20,7 @@ const rootPersistConfig = {
   blacklist: ['auth', 'products', 'customer', 'cart'],
 };
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authSlice),
   products: productsSlice,
   customer: customerSlice,

@@ -3,6 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import { Box, Pagination, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
@@ -11,7 +12,7 @@ import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
 import PageTitle from '../components/PageTitle';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
-import { FilterCategories } from '../shared/types/enum';
+import { SnackbarMessages, FilterCategories } from '../shared/types/enum';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 6;
@@ -29,6 +30,7 @@ const CatalogPage = () => {
   const { getProducts } = useProduct();
   const { categories } = useAppSelector((state) => state.products);
   const location = useLocation();
+  const { enqueueSnackbar } = useSnackbar();
   const { filterParams, sortParam, searchParam: searchString } = useAppSelector((state) => state.products);
   const [isProductsFetching, setIsProductsFetching] = useState(true);
   const [totalProducts, setTotalProducts] = useState<number | undefined>(0);
@@ -82,9 +84,19 @@ const CatalogPage = () => {
       });
       setProducts([...result]);
     };
-    // eslint-disable-next-line no-console
-    fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname, searchString, offsetValue]);
+
+    fetchProducts().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
+  }, [
+    getProducts,
+    filterParams,
+    sortParam,
+    categorySlug,
+    categories,
+    location.pathname,
+    searchString,
+    offsetValue,
+    enqueueSnackbar,
+  ]);
 
   return (
     <MainLayout>

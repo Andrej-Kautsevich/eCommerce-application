@@ -5,16 +5,26 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import store from '../shared/store';
 import ApiClientProvider from '../api/ApiClientProvider';
+import createTestStore from './test-store';
 
 interface WrapperProps {
   children: ReactNode;
 }
 
-const customRender = (ui: React.ReactElement, { ...renderOptions }: RenderOptions = {}): RenderResult => {
+interface CustomRenderOptions extends RenderOptions {
+  initialState?: Record<string, unknown>;
+}
+
+const customRender = (
+  ui: React.ReactElement,
+  { initialState, ...renderOptions }: CustomRenderOptions = {},
+): RenderResult => {
   const Wrapper: FC<WrapperProps> = ({ children }) => {
+    const testStore = createTestStore(initialState);
+
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
-        <Provider store={store}>
+        <Provider store={initialState ? testStore : store}>
           <ApiClientProvider>{children}</ApiClientProvider>
         </Provider>
       </LocalizationProvider>
