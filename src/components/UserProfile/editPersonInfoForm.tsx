@@ -102,7 +102,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
   return (
     <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Typography variant="h5" component="div" sx={{ mb: 1 }}>
+        <Typography variant="h5" component="div" color="text.primary" sx={{ mb: 1 }}>
           Change Personal Info
         </Typography>
         <TextFieldElement
@@ -136,7 +136,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           defaultValue={customer?.dateOfBirth ? dayjs(customer.dateOfBirth) : undefined}
           control={control}
         />
-        <Typography variant="h6" component="div" sx={{ mb: 1 }}>
+        <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
           Email
         </Typography>
         <TextFieldElement

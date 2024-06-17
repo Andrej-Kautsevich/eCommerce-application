@@ -35,6 +35,7 @@ module.exports = {
         html: true,
       },
     ],
+    "react/require-default-props": 'off',
     '@typescript-eslint/no-misused-promises': [
       2,
       {

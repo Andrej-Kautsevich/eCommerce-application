@@ -10,9 +10,9 @@ const CartTotalPrice = ({ totalPrice }: CartTotalPriceProps) => {
   const total = `$${centAmount / 100}`;
 
   return (
-    <Typography variant="h5" component="div">
+    <Typography variant="h5" component="div" color="text.primary">
       Total:{' '}
-      <Typography variant="h4" component="span">
+      <Typography variant="h4" component="span" color="text.primary">
         {total}
       </Typography>
     </Typography>
