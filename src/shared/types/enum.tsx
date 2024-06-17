@@ -46,3 +46,8 @@ export enum SnackbarMessages {
   ADD_ITEM_SUCCESS = 'successful addition',
   REMOVE_ITEM_SUCCESS = 'successful removal',
 }
+
+export enum LanguagesKeys {
+  EN = 'en',
+  RU = 'ru',
+}
