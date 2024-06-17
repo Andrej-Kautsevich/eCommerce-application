@@ -1,6 +1,7 @@
 import { TFunction } from 'i18next';
 import { SnackbarMessages } from '../types/enum';
 
+// Get translated message from enum keys
 const getSnackbarMessage = (message: SnackbarMessages, t: TFunction): string => {
   const messageMap = {
     [SnackbarMessages.GENERAL_ERROR]: t('GENERAL_ERROR'),
