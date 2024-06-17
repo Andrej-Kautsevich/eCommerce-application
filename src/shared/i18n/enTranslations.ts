@@ -16,6 +16,13 @@ const enTranslations = {
     'Oops, Something Went Wrong': 'Oops, Something Went Wrong',
     'Return to Homepage': 'Return to Homepage',
 
+    // Product page
+    'Description:': 'Description:',
+    'Something is wrong': 'Something is wrong',
+    'Price:': 'Price:',
+    'SALE PRICE:': 'SALE PRICE:',
+    'Items in cart:': 'Items in cart:',
+
     // Authentication Pages
     'Sign in': 'Sign in',
     'Sign Up': 'Sign Up',

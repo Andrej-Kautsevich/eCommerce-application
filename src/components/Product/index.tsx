@@ -4,6 +4,7 @@ import { ClientResponse, ErrorObject, ProductProjection } from '@commercetools/p
 import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import useProduct from '../../api/hooks/useProduct';
 import Carousel from './Carousel';
 import PageTitle from '../PageTitle';
@@ -15,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { SnackbarMessages } from '../../shared/types/enum';
 
 const Product = () => {
+  const { t } = useTranslation();
   const productID = useLocation().pathname.split('/').slice(2).join(); // delete /product/ path
   const { getProduct } = useProduct();
   const [product, setProduct] = useState<ProductProjection | undefined>(undefined);
@@ -95,13 +97,13 @@ const Product = () => {
         <Grid xs={4} sm={8} md={4} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Box style={{ maxWidth: '390px' }}>
             <Typography component="p" fontFamily="Poppins" color="text.secondary">
-              Description:
+              {t('Description:')}
             </Typography>
             <Typography component="p" fontFamily="Poppins" color="text.primary" sx={{ mb: 3 }}>
-              {product ? product.description?.en : 'Something is wrong'}
+              {product ? product.description?.en : t('Something is wrong')}
             </Typography>
             <Typography component="p" fontFamily="Poppins" color="text.secondary">
-              Price:
+              {t('Price:')}
             </Typography>
             <Typography
               component="p"
@@ -117,7 +119,7 @@ const Product = () => {
             {discount > 0 && (
               <Box>
                 <Typography component="p" fontFamily="Poppins" color="text.secondary">
-                  SALE PRICE:
+                  {t('SALE PRICE:')}
                 </Typography>
                 <Typography component="p" fontFamily="Poppins" color="red" sx={{ mb: 3, fontSize: 36 }}>
                   {`$${(discount / 100).toFixed(2)}`}
@@ -125,7 +127,7 @@ const Product = () => {
               </Box>
             )}
             <Typography component="p" fontFamily="Poppins" color="text.secondary">
-              Items in cart:
+              {t('Items in cart:')}
             </Typography>
             <Typography
               component="p"
