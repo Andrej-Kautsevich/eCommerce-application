@@ -1,6 +1,5 @@
 import { useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useCustomer } from '../../api/hooks';
@@ -45,9 +44,8 @@ const DeleteCartBtn = () => {
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
       };
 
-      fetchDeleteItem().catch((e) => {
-        const error = e as ClientResponse<ErrorObject>;
-        enqueueSnackbar(error.body.message, { variant: 'error' });
+      fetchDeleteItem().catch(() => {
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
       });
     } catch (error) {
       enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });

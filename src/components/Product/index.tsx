@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ClientResponse, ErrorObject, ProductProjection } from '@commercetools/platform-sdk';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
@@ -56,8 +56,7 @@ const Product = () => {
           setDiscount(response.body.masterVariant.prices![0].discounted?.value.centAmount);
         }
       } catch (e) {
-        const error = e as ClientResponse<ErrorObject>;
-        enqueueSnackbar(error.body.message, { variant: 'error' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' });
       }
     };
 

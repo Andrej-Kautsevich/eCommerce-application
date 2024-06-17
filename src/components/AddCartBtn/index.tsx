@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useCustomer } from '../../api/hooks';
@@ -40,9 +39,8 @@ export default function AddCartBtn() {
         }
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.ADD_ITEM_SUCCESS, t), { variant: 'success' });
       };
-      fetchAddItem().catch((e) => {
-        const error = e as ClientResponse<ErrorObject>;
-        enqueueSnackbar(error.body.message, { variant: 'error' });
+      fetchAddItem().catch(() => {
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.ADD_ITEM_FETCH_ERROR, t), { variant: 'error' });
       });
     } catch (error) {
       enqueueSnackbar(getSnackbarMessage(SnackbarMessages.ADD_ITEM_FETCH_ERROR, t), { variant: 'error' });
