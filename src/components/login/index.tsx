@@ -9,6 +9,7 @@ import { DevTool } from '@hookform/devtools';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PasswordElement, TextFieldElement } from 'react-hook-form-mui';
+import { useTranslation } from 'react-i18next';
 import { AuthErrorResponse, ClientResponse, MyCustomerSignin } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
@@ -23,6 +24,7 @@ type LoginForm = {
   password: string;
 };
 export default function LoginTab() {
+  const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
 
   const schema = yup.object().shape({
@@ -66,7 +68,7 @@ export default function LoginTab() {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Sign in
+        {t('Sign in')}
       </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
         <TextFieldElement
@@ -74,7 +76,7 @@ export default function LoginTab() {
           required
           fullWidth
           id="email"
-          label="Email Address"
+          label={t('Email Address')}
           name="email"
           autoComplete="email"
           autoFocus
@@ -85,22 +87,22 @@ export default function LoginTab() {
           required
           fullWidth
           name="password"
-          label="Password"
+          label={t('Password')}
           id="password"
           autoComplete="new-password"
           control={control}
         />
         <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-          Sign In
+          {t('Sign In')}
         </Button>
         <Typography>
-          Don’t have an account,
+          {t('Don’t have an account, ')}
           <Box
             component={Link}
             to={RoutePaths.REGISTRATION}
             sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
           >
-            create one
+            {t('create one')}
           </Box>
         </Typography>
         {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
