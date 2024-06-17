@@ -81,7 +81,7 @@ const BasketPage = () => {
         </Grid>
         <Grid xs={3} />
         <Grid xs={3} textAlign="end">
-          <CartTotalPrice totalPrice={cart.totalPrice} />
+          <CartTotalPrice cart={cart} />
           <CartRemoveAllItems />
         </Grid>
       </Grid>
