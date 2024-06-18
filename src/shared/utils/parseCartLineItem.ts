@@ -38,13 +38,10 @@ const parseLineItem = (item: LineItem): ParsedLineItem => {
     const totalFullPriceAmount = item.price.value.centAmount * item.quantity;
 
     // check if discount code reduce total price
-    // debugger;
     if (totalFullPriceAmount !== totalDiscountedPriceAmount) {
       totalDiscountedPrice = `$${totalDiscountedPriceAmount / 100}`;
       totalFullPrice = `$${totalFullPriceAmount / 100}`;
     }
-
-    // debugger;
   }
 
   if (item.variant.images) {
