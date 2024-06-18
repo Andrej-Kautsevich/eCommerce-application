@@ -59,7 +59,7 @@ const ProductCarousel = () => {
 
   return (
     /* disable indicators on xs screen */
-    <Carousel indicators={!isExtraSmallScreen} duration={1000}>
+    <Carousel indicators={!isExtraSmallScreen} duration={1000} sx={{ pt: 2, pb: 2 }}>
       {(isProductsFetching ? emptyArray : chunkProducts(products, chunkSize)).map((productChunk, index) => (
         <Grid container spacing={2} key={productChunk[index]?.id ?? index} sx={{ pl: 1, pr: 1 }}>
           {productChunk.map((product) => (
