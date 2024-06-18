@@ -96,6 +96,7 @@ const ruTranslations = {
     'Remove from Cart': 'Удалить',
     'Save new password': 'Сохранить пароль',
     'Remove all': 'Удалить всё',
+    'Loading…': 'Подождите...',
 
     // enums
     GENERAL_ERROR: 'Что-то не так, попробуйте позже',

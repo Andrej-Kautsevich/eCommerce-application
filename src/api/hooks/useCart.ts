@@ -175,6 +175,6 @@ const useCart = () => {
     }
   };
 
-  return { createCart, addItem, fetchCart, deleteItem, deleteAllItems, changeItemQuantity, addDiscountCode };
+  return { createCart, addItem, fetchCart, deleteItem, deleteAllItems, changeItemQuantity, addDiscountCode, getCart };
 };
 export default useCart;

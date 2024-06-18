@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { SubmitHandler, TextFieldElement, useForm } from 'react-hook-form-mui';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -37,6 +38,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { customerUpdate } = useCustomer();
+  const [loading, setLoading] = useState(false);
 
   const schema = yup.object().shape({
     firstName: schemaName,
@@ -83,6 +85,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
       const updateAction: MyCustomerUpdateAction[] = [firstNameAction, lastNameAction, dateOfBirthAction, emailAction];
 
       try {
+        setLoading(true);
         const response = await customerUpdate(customer.version, updateAction);
 
         if (response) {
@@ -98,6 +101,8 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
       } catch (e) {
         const error = e as ClientResponse<ErrorObject>;
         enqueueSnackbar(error.body.message, { variant: 'error' });
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -152,9 +157,9 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           value={customer?.email}
           control={control}
         />
-        <Button type="submit" variant="contained" sx={{ mt: 1, mb: 3 }}>
-          {t('Save Changes')}
-        </Button>
+        <LoadingButton loading={loading} type="submit" variant="contained" sx={{ mt: 1, mb: 3 }}>
+          <span>{t('Save Changes')}</span>
+        </LoadingButton>
       </Box>
     </Box>
   );

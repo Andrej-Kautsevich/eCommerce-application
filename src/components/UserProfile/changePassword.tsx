@@ -1,4 +1,6 @@
-import { Box, Button, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { PasswordElement, TextFieldElement } from 'react-hook-form-mui';
 import {
@@ -35,6 +37,7 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
   const schema = yup.object().shape({
     currentPassword: schemaPass,
@@ -61,6 +64,7 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
         newPassword: data.newPassword,
       };
       try {
+        setLoading(true);
         const response = await changePassword(changePasswordData).catch(
           (error: ClientResponse<InvalidCurrentPasswordError>) => {
             enqueueSnackbar(error.body.message, { variant: 'error' });
@@ -80,6 +84,8 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
       } catch (e) {
         const error = e as ClientResponse<ErrorObject>;
         enqueueSnackbar(error.body.message, { variant: 'error' });
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -120,9 +126,9 @@ const ChangePassword = ({ customer }: ChangePasswordProps) => {
           autoComplete="email"
           control={control}
         />
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-          {t('Save new password')}
-        </Button>
+        <LoadingButton loading={loading} type="submit" variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
+          <span>{t('Save new password')}</span>
+        </LoadingButton>
         {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}
       </Box>
     </Box>

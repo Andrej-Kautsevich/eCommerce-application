@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useCustomer } from '../../api/hooks';
 import { AddressesFields } from '../../shared/types/type';
 import EditInfo from './editPersonInfoForm';
-import ChangePassword from './changeProfile';
+import ChangePassword from './changePassword';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 
