@@ -2,6 +2,7 @@ const ruTranslations = {
   translation: {
     // Main Page
     'Find your dream watch': 'Найди часы своей мечты',
+    'Active Promo Codes': 'Активные промо коды',
 
     // Basket Page
     'Your Cart is Empty': 'Ваша корзина пуста',
@@ -50,10 +51,11 @@ const ruTranslations = {
     Password: 'Пароль',
     'Email Address': 'Адрес электронной почты',
 
-    'Don’t have an account ': 'Нет аккаунта ',
+    'Don’t have an account? ': 'Нет аккаунта? ',
     'Create one': 'Зарегистрироваться',
 
     'If you have an account': 'Если у вас есть аккаунт',
+    Login: 'Войти',
 
     Welcome: 'Добро пожаловать',
     'First Name': 'Имя',
