@@ -50,6 +50,7 @@ function AddCartBtn({ productID }: ProductIDCartBtnProps) {
         fullWidth
         variant="contained"
         onClick={addProduct()}
+        disabled={!productID}
         loadingPosition="end"
         endIcon={<ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText' }} />}
       >

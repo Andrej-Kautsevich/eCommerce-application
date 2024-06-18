@@ -5,6 +5,7 @@ import MainLayout from '../shared/ui/MainLayout';
 import mainImageBackground from '../shared/assets/images/backgroundMainPage.jpg';
 import PromoCode from '../components/PromoCode';
 import mainImageBackgroundDark from '../shared/assets/images/backgroundMainPageDark.png';
+import ProductCarousel from '../components/ProductsCarousel/ProductCarousel';
 
 const MainPage = () => {
   const { t } = useTranslation();
@@ -38,6 +39,7 @@ const MainPage = () => {
         />
       </Grid>
       <PromoCode />
+      <ProductCarousel />
     </MainLayout>
   );
 };

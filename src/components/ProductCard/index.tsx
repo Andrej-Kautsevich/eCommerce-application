@@ -14,14 +14,7 @@ import {
   productCardSx,
 } from './productCardStyles';
 import { RoutePaths } from '../../shared/types/enum';
-import {
-  CARD_IMG_MD_HEIGHT,
-  CARD_IMG_SM_HEIGHT,
-  CARD_IMG_XS_HEIGHT,
-  CARD_MD_HEIGHT,
-  CARD_SM_HEIGHT,
-  CARD_XS_HEIGHT,
-} from './constants';
+import { CARD_MD_HEIGHT, CARD_SM_HEIGHT, CARD_XS_HEIGHT } from './constants';
 import AddCartBtn from '../AddCartBtn';
 
 interface ProductCardProps {
@@ -67,7 +60,6 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                   ...productCardMediaSx,
                   display: imageLoaded ? 'block' : 'none',
                   mr: '10',
-                  height: { xs: CARD_IMG_XS_HEIGHT, sm: CARD_IMG_SM_HEIGHT, md: CARD_IMG_MD_HEIGHT },
                 }}
                 onLoad={handleImageLoad}
                 onError={(e) => {
