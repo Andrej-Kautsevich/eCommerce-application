@@ -7,16 +7,22 @@ import {
   MyCartUpdate,
 } from '@commercetools/platform-sdk';
 import useApiClient from './useApiClient';
-import useCustomer from './useCustomer';
+// import useCustomer from './useCustomer';
 import { Currency } from '../../shared/types/enum';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { setCart } from '../../shared/store/auth/cartSlice';
 
 const useCart = () => {
   const { apiRoot } = useApiClient();
-  const { getCart } = useCustomer();
   const cartId = useAppSelector((state) => state.cart.cartId);
   const dispatch = useAppDispatch();
+
+  const getCart = () => {
+    if (!apiRoot) {
+      throw new Error('ApiRoot is not defined');
+    }
+    return apiRoot.me().carts().get().execute();
+  };
 
   const createCart = () => {
     if (!apiRoot) {

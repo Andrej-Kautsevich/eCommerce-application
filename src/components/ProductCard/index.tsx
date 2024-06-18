@@ -1,5 +1,5 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
-import { Box, Card, CardActionArea, CardContent, CardMedia, Skeleton, Typography } from '@mui/material';
+import { Box, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Typography } from '@mui/material';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,14 @@ import {
   productCardSx,
 } from './productCardStyles';
 import { RoutePaths } from '../../shared/types/enum';
-import { CARD_MD_HEIGHT, CARD_SM_HEIGHT, CARD_XS_HEIGHT } from './constants';
+import {
+  CARD_IMG_MD_HEIGHT,
+  CARD_IMG_SM_HEIGHT,
+  CARD_IMG_XS_HEIGHT,
+  CARD_MD_HEIGHT,
+  CARD_SM_HEIGHT,
+  CARD_XS_HEIGHT,
+} from './constants';
 import AddCartBtn from '../AddCartBtn';
 
 interface ProductCardProps {
@@ -35,6 +42,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const productDescription = parsedProduct?.description;
   const productPrice = parsedProduct?.price;
   const productDiscountPrice = parsedProduct?.discountPrice;
+  const productID = parsedProduct?.id;
 
   return (
     <Box height={{ xs: CARD_XS_HEIGHT, sm: CARD_SM_HEIGHT, md: CARD_MD_HEIGHT }}>
@@ -55,14 +63,18 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
                 component="img"
                 image={parsedProduct.images.at(0)?.url}
                 alt={parsedProduct.name}
-                sx={productCardMediaSx}
+                sx={{
+                  ...productCardMediaSx,
+                  display: imageLoaded ? 'block' : 'none',
+                  mr: '10',
+                  height: { xs: CARD_IMG_XS_HEIGHT, sm: CARD_IMG_SM_HEIGHT, md: CARD_IMG_MD_HEIGHT },
+                }}
                 onLoad={handleImageLoad}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.onerror = null;
                   target.src = emptyImage;
                 }}
-                style={{ display: imageLoaded ? 'block' : 'none' }}
               />
             </>
           ) : (
@@ -89,8 +101,10 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
               </Typography>
             )}
           </CardContent>
-          <AddCartBtn />
         </CardActionArea>
+        <CardActions>
+          <AddCartBtn productID={productID} />
+        </CardActions>
       </Card>
     </Box>
   );

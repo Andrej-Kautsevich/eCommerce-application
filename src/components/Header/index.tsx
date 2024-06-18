@@ -38,7 +38,14 @@ const Header = () => {
           </IconButton>
           <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }}>
             <Box sx={{ minWidth: '60dvw', p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <MenuItem>
+              <MenuItem
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'column' },
+                  gap: 3,
+                  alignItems: 'center',
+                }}
+              >
                 <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
                   Watches
                 </HeaderLink>
@@ -56,7 +63,7 @@ const Header = () => {
         </Box>
 
         {/* Desktop view */}
-        <Box sx={{ display: { xs: 'none', sm: 'flex', gap: 30 }, alignItems: 'center' }}>
+        <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 1, md: 5 } }}>
           <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
             Watches
           </HeaderLink>

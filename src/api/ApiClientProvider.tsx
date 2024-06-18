@@ -46,8 +46,6 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
     const clientBuilder = defaultClientBuilder.withAnonymousSessionFlow(anonymousAuthMiddlewareOptions);
     const newApiRoot = getApiRoot(clientBuilder);
     setApiRoot(newApiRoot);
-    // need to get token immediately
-    await newApiRoot.me().carts().get().execute();
   }, [defaultClientBuilder, getApiRoot]);
 
   const setPasswordFlow = useCallback(
@@ -68,8 +66,6 @@ const ApiClientProvider = ({ children }: ApiClientProviderProps) => {
       const clientBuilder = defaultClientBuilder.withRefreshTokenFlow(refreshAuthMiddlewareOptions);
       const newApiRoot = getApiRoot(clientBuilder);
       setApiRoot(newApiRoot);
-      // need to get token immediately
-      await newApiRoot.me().carts().get().execute();
     },
     [getApiRoot, defaultClientBuilder],
   );
