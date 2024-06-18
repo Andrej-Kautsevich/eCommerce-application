@@ -43,31 +43,31 @@ export default function UserProfile() {
 
   return (
     <Box sx={{ paddingTop: '50px' }}>
-      <Typography variant="h3" component="div" sx={{ textAlign: 'center' }}>
+      <Typography variant="h3" component="div" color="text.primary" sx={{ textAlign: 'center' }}>
         Hey, {getUserName} {getUserLastName}
       </Typography>
       <Typography
         variant="h6"
         component="p"
-        sx={{ textAlign: 'center', fontSize: '14px', fontWeight: '300', color: '#939393', margin: '21px 0' }}
+        sx={{ textAlign: 'center', fontSize: '14px', fontWeight: '300', color: 'text.secondary', margin: '21px 0' }}
       >
         Welcome to your profile, your one-stop-shop for all your recent Volcano Watch account activity.
       </Typography>
       {!showEditMode && (
         <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
-          <Typography variant="h6" component="div" sx={{ color: '#939393' }}>
+          <Typography variant="h6" component="div" sx={{ color: 'text.secondary' }}>
             My info
           </Typography>
-          <Typography variant="h6" component="div">
+          <Typography variant="h6" component="div" color="text.primary">
             Name: {getUserName} {getUserLastName}
           </Typography>
-          <Typography variant="h6" component="div">
+          <Typography variant="h6" component="div" color="text.primary">
             Date of birth: {getUserBirth.split('-').reverse().join('-')}
           </Typography>
-          <Typography variant="h6" component="div">
+          <Typography variant="h6" component="div" color="text.primary">
             Email: {userEmail}
           </Typography>
-          <Button variant="contained" onClick={() => setShowEditMode(true)}>
+          <Button variant="contained" sx={{ mt: 1 }} onClick={() => setShowEditMode(true)}>
             Manage Info
           </Button>
         </Box>
@@ -78,7 +78,7 @@ export default function UserProfile() {
           <ChangePassword customer={customer} />
         </Box>
       )}
-      <Typography variant="h5" component="div" sx={{ marginTop: '50px' }}>
+      <Typography variant="h5" component="div" color="text.primary" sx={{ marginTop: '50px' }}>
         Addresses ({userAddresses.length}):
       </Typography>
       <Box
@@ -92,22 +92,24 @@ export default function UserProfile() {
       >
         {userAddresses.map((info: AddressesFields) => (
           <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3 }}>
-            <Typography variant="h6" component="div" sx={{ color: '#939393' }}>
+            <Typography variant="h6" component="div" sx={{ color: 'text.secondary' }}>
               {getUserDefaultShip === info.id ? 'Default shipping:' : 'Default billing:'}
             </Typography>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="div" color="text.primary">
               City: {info.city}
             </Typography>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="div" color="text.primary">
               Country: {info.country}
             </Typography>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="div" color="text.primary">
               Street: {info.streetName}
             </Typography>
-            <Typography variant="h6" component="div">
+            <Typography variant="h6" component="div" color="text.primary">
               Postal Code: {info.postalCode}
             </Typography>
-            <Button variant="contained">Manage Info</Button>
+            <Button variant="contained" sx={{ mt: 1 }}>
+              Manage Info
+            </Button>
           </Box>
         ))}
       </Box>

@@ -6,6 +6,7 @@ import LoginLogoutButtons from './LoginLogoutButtons';
 import HeaderLink from '../../shared/ui/HeaderLink';
 import { RoutePaths } from '../../shared/types/enum';
 import BasketButton from './BasketButton';
+import ThemeButton from './ThemeButton';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -15,8 +16,8 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ boxShadow: 0 }} color="secondary">
-      <Toolbar sx={{ pl: { xs: 2, sm: 0, md: 0 }, pr: { xs: 2, sm: 0, md: 0 } }}>
+    <AppBar position="static" sx={{ boxShadow: 0 }} color="transparent" enableColorOnDark>
+      <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontFamily="Orbitron">
           <Link component={RouterLink} to={RoutePaths.MAIN} underline="none" color="text.primary">
             Volcano Watch
@@ -55,6 +56,7 @@ const Header = () => {
                 <LoginLogoutButtons />
               </MenuItem>
               <BasketButton />
+              <ThemeButton />
             </Box>
           </Drawer>
         </Box>
@@ -69,6 +71,7 @@ const Header = () => {
           </HeaderLink>
           <LoginLogoutButtons />
           <BasketButton />
+          <ThemeButton />
         </Box>
       </Toolbar>
     </AppBar>

@@ -37,7 +37,11 @@ export default function LoginTab() {
 
   const { control, handleSubmit } = useForm<LoginForm>({ mode: 'onChange', resolver: yupResolver(schema) });
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
-    const customer: MyCustomerSignin = data;
+    const customer: MyCustomerSignin = {
+      email: data.email,
+      password: data.password,
+      activeCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
 
     try {
       const response = await customerLogin(customer);
@@ -66,7 +70,7 @@ export default function LoginTab() {
       <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
         <LockOutlinedIcon />
       </Avatar>
-      <Typography component="h1" variant="h5">
+      <Typography component="h1" variant="h5" color="text.primary">
         Sign in
       </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
@@ -94,7 +98,7 @@ export default function LoginTab() {
         <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
           Sign In
         </Button>
-        <Typography>
+        <Typography sx={{ color: 'text.primary' }}>
           Don’t have an account,
           <Box
             component={Link}
