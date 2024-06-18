@@ -20,9 +20,9 @@ const CartRemoveAllItems = () => {
         setLoading(true);
         await deleteAllItems(cart);
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
-        setLoading(false);
       } catch (error) {
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
+      } finally {
         setLoading(false);
       }
     }

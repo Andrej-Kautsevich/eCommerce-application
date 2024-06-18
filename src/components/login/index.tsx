@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Link, useNavigate } from 'react-router-dom';
 import { DevTool } from '@hookform/devtools';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -28,6 +29,7 @@ type LoginForm = {
 export default function LoginTab() {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
 
   const schema = yup.object().shape({
     email: schemaEmail,
@@ -47,6 +49,7 @@ export default function LoginTab() {
     };
 
     try {
+      setLoading(true);
       const response = await customerLogin(customer);
       navigate(RoutePaths.MAIN);
       const greetingMessage = `Welcome back, ${response.body.customer.firstName}`;
@@ -57,6 +60,8 @@ export default function LoginTab() {
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       enqueueSnackbar(error.body.message, { variant: 'error' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,9 +103,16 @@ export default function LoginTab() {
           autoComplete="new-password"
           control={control}
         />
-        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
-          {t('Sign In')}
-        </Button>
+        <LoadingButton
+          loading={loading}
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          <span>{t('Sign In')}</span>
+        </LoadingButton>
         <Typography sx={{ color: 'text.primary' }}>
           {t('Don’t have an account? ')}
           <Box

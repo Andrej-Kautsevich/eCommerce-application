@@ -27,10 +27,10 @@ const CartPromoCodeBox = ({ cart }: CartPromoCodeBoxProps) => {
       setLoading(true);
       await addDiscountCode(cart.version, promoCode);
       enqueueSnackbar(SnackbarMessages.DISCOUNT_SUCCESS, { variant: 'success' });
-      setLoading(false);
     } catch (e) {
       const error = e as ClientResponse<ErrorObject>;
       enqueueSnackbar(error.body.message, { variant: 'error' });
+    } finally {
       setLoading(false);
     }
   };

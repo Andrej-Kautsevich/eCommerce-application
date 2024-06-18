@@ -26,12 +26,12 @@ function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
         } else {
           await deleteItem(cart.version, itemID!);
         }
-        setLoading(false);
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
 
         await fetchCart();
       } catch (error) {
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
+      } finally {
         setLoading(false);
       }
     }

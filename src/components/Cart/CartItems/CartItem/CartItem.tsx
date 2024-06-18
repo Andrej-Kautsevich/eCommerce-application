@@ -35,10 +35,10 @@ const CartItem = ({ item }: CartItemProps) => {
       try {
         setLoading(true);
         await deleteItem(cart.version, id);
-        setLoading(false);
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
       } catch (error) {
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
+      } finally {
         setLoading(false);
       }
     }
