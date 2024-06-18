@@ -1,4 +1,5 @@
 import { Button } from '@mui/material';
+import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import useCart from '../../api/hooks/useCart';
@@ -25,9 +26,12 @@ function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
         }
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
 
-        await fetchCart();
+        await fetchCart().catch((e) => {
+          const error = e as ClientResponse<ErrorObject>;
+          enqueueSnackbar(error.body.message, { variant: 'error' });
+        });
       } catch (error) {
-        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
+        enqueueSnackbar(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, { variant: 'error' });
       }
     }
   };
