@@ -10,6 +10,7 @@ import { ProductIDCartBtnProps } from '../../shared/types/interface';
 import { SnackbarMessages } from '../../shared/types/enum';
 import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
+// Change size to small on xs breakpoint
 const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   [theme.breakpoints.down('xs')]: {
     size: 'small',
