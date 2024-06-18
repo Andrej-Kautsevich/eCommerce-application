@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, MenuItem, Box, Drawer, Link } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Box, Drawer, Link } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link as RouterLink } from 'react-router-dom';
 import LoginLogoutButtons from './LoginLogoutButtons';
@@ -25,37 +25,22 @@ const Header = () => {
           </Link>
         </Typography>
         {/* Mobile view */}
-        <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
-          <IconButton
-            onClick={handleDrawerToggle}
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
+        <Box sx={{ display: { sm: 'flex', md: 'none' } }}>
+          <IconButton onClick={handleDrawerToggle} size="large" edge="start" aria-label="menu" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
           <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }}>
-            <Box sx={{ minWidth: '60dvw', p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <MenuItem
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'column', sm: 'column' },
-                  gap: 3,
-                  alignItems: 'center',
-                }}
-              >
-                <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
-                  Watches
-                </HeaderLink>
-                <HeaderLink component={RouterLink} underline="none" to={RoutePaths.ABOUT}>
-                  About Us
-                </HeaderLink>
-              </MenuItem>
-              <MenuItem>
-                <LoginLogoutButtons />
-              </MenuItem>
+            <Box
+              sx={{ minWidth: '60dvw', p: 2, display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}
+            >
+              <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
+                Watches
+              </HeaderLink>
+              <HeaderLink component={RouterLink} underline="none" to={RoutePaths.ABOUT}>
+                About Us
+              </HeaderLink>
+
+              <LoginLogoutButtons />
               <BasketButton />
               <ThemeButton />
             </Box>
@@ -63,7 +48,7 @@ const Header = () => {
         </Box>
 
         {/* Desktop view */}
-        <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 1, md: 5 } }}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 1, md: 5 } }}>
           <HeaderLink component={RouterLink} underline="none" to={RoutePaths.WATCHES}>
             Watches
           </HeaderLink>
