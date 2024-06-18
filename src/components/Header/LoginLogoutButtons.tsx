@@ -11,7 +11,7 @@ const style = {
   flexDirection: { xs: 'column', sm: 'row' },
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '10px',
+  gap: { xs: 3, sm: 0, md: 0 },
 };
 
 const LoginLogoutButtons = () => {
@@ -21,11 +21,19 @@ const LoginLogoutButtons = () => {
 
   return !isAuthCustomer ? (
     <Box sx={style}>
-      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.LOGIN)}>
+      <Button
+        variant="contained"
+        sx={{ mr: 1, fontSize: { xs: 16, sm: 12, md: 16 } }}
+        onClick={() => navigate(RoutePaths.LOGIN)}
+      >
         Login
       </Button>
 
-      <Button variant="contained" sx={{ mr: 1, ml: 1 }} onClick={() => navigate(RoutePaths.REGISTRATION)}>
+      <Button
+        variant="contained"
+        sx={{ fontSize: { xs: 16, sm: 12, md: 16 } }}
+        onClick={() => navigate(RoutePaths.REGISTRATION)}
+      >
         Register
       </Button>
     </Box>

@@ -24,6 +24,7 @@ type LoginForm = {
   email: string;
   password: string;
 };
+
 export default function LoginTab() {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();

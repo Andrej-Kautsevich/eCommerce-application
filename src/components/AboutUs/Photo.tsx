@@ -15,11 +15,12 @@ const Photo = ({ image }: { image: string }) => {
           target.src = emptyImage;
         }}
         style={{
-          width: 'auto',
-          height: 'auto',
+          width: '80%',
+          height: '80%',
           objectFit: 'cover',
           display: 'block',
           margin: 'auto',
+          borderRadius: '50%',
         }}
       />
     </Box>
