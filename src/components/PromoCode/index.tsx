@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { DiscountCode } from '@commercetools/platform-sdk';
 import { useCustomer } from '../../api/hooks';
-import responsiveTheme from '../../shared/ui/theme';
 
 export default function PromoCode() {
   const [promoCode, setPromoCode] = useState<DiscountCode[]>([]);
@@ -15,12 +14,12 @@ export default function PromoCode() {
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         borderRadius: '10px',
         p: 3,
         mt: 3,
-        boxShadow: `0px 4px 8px ${responsiveTheme.palette.primary.main}`,
-      }}
+        boxShadow: `0px 4px 8px ${theme.palette.primary.main}`,
+      })}
     >
       <Typography variant="h6" component="div">
         Active Promo Codes

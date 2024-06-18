@@ -63,13 +63,13 @@ const CartItem = ({ item }: CartItemProps) => {
           <IconButton sx={cartItemRemoveSx} onClick={handleItemDelete}>
             <Delete />
           </IconButton>
-          <Typography variant="body1" component="div">
+          <Typography variant="body1" component="div" color="text.primary">
             {name}
           </Typography>
           <Typography variant="caption" component="div" color="text.secondary">
             {`Article: ${productId}`}
           </Typography>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" color="text.primary">
             {prices.discountPrice && (
               <Typography variant="body1" component="div" color="error.light" mr={1}>
                 {prices.discountPrice}
@@ -86,7 +86,7 @@ const CartItem = ({ item }: CartItemProps) => {
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <NumberInput onChange={(_, newValue) => handleItemQuantityChange(newValue)} min={1} defaultValue={quantity} />
-          <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div" color="text.primary">
             {prices.totalPrice}
           </Typography>
         </Box>
