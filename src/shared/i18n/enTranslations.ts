@@ -2,6 +2,7 @@ const enTranslations = {
   translation: {
     // Main Page
     'Find your dream watch': 'Find your dream watch',
+    'Active Promo Codes': 'Active Promo Codes',
 
     // Basket Page
     'Your Cart is Empty': 'Your Cart is Empty',
@@ -50,10 +51,11 @@ const enTranslations = {
     Password: 'Password',
     'Email Address': 'Email Address',
 
-    'Don’t have an account ': 'Don’t have an account ',
+    'Don’t have an account? ': 'Don’t have an account? ',
     'Create one': 'create one',
 
     'If you have an account': 'If you have an account',
+    Login: 'Login',
 
     Welcome: 'Welcome',
     'First Name': 'First Name',

@@ -160,7 +160,7 @@ export default function Registration() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5" color="text.primary">
-          {t('Sign up')}
+          {t('Sign Up')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -245,7 +245,7 @@ export default function Registration() {
                 fullWidth
                 id="postal"
                 name="shippingAddress.postalCode"
-                label={t('Postal code')}
+                label={t('Postal')}
                 autoComplete="shipping postal-code"
                 control={control}
               />

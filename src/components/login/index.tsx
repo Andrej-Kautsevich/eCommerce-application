@@ -102,7 +102,7 @@ export default function LoginTab() {
           {t('Sign In')}
         </Button>
         <Typography sx={{ color: 'text.primary' }}>
-          {t('Don’t have an account ')},{'? '}
+          {t('Don’t have an account? ')}
           <Box
             component={Link}
             to={RoutePaths.REGISTRATION}

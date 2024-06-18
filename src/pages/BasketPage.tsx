@@ -22,9 +22,13 @@ const BasketPage = () => {
         <PageTitle title={t('Your Cart')}>
           <Breadcrumbs sx={{ pt: 1 }} aria-label="breadcrumbs">
             <LinkRouter underline="none" color="inherit" to={RoutePaths.MAIN}>
-              <Typography variant="body1">{t('Main')}</Typography>
+              <Typography variant="body1" color="primary.contrastText">
+                {t('Main')}
+              </Typography>
             </LinkRouter>
-            <Typography variant="body1">{t('Cart')}</Typography>
+            <Typography variant="body1" color="primary.contrastText">
+              {t('Cart')}
+            </Typography>
           </Breadcrumbs>
         </PageTitle>
         <Box display="flex" flexDirection="column" alignItems="center">

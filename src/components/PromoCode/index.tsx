@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { DiscountCode } from '@commercetools/platform-sdk';
 import { useCustomer } from '../../api/hooks';
 
 export default function PromoCode() {
+  const { t } = useTranslation();
   const [promoCode, setPromoCode] = useState<DiscountCode[]>([]);
   const { getPromoCodes } = useCustomer();
   useEffect(() => {
@@ -21,8 +23,8 @@ export default function PromoCode() {
         boxShadow: `0px 4px 8px ${theme.palette.primary.main}`,
       })}
     >
-      <Typography variant="h6" component="div">
-        Active Promo Codes
+      <Typography variant="h6" component="div" color="text.primary">
+        {t('Active Promo Codes')}
       </Typography>
       <Box sx={{ display: 'flex', gap: '5px' }}>
         {promoCode.map((item) => (
