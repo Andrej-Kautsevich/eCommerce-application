@@ -1,12 +1,14 @@
 import { Button } from '@mui/material';
-import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import useCart from '../../api/hooks/useCart';
 import { useAppSelector } from '../../shared/store/hooks';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 import { ProductIDCartBtnProps } from '../../shared/types/interface';
 
 function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
+  const { t } = useTranslation();
   const { changeItemQuantity, deleteItem } = useCart();
   const cart = useAppSelector((state) => state.cart.cart);
   const { fetchCart } = useCart();
@@ -21,13 +23,11 @@ function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
         } else {
           await deleteItem(cart.version, itemID!);
         }
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
 
-        await fetchCart().catch((e) => {
-          const error = e as ClientResponse<ErrorObject>;
-          enqueueSnackbar(error.body.message, { variant: 'error' });
-        });
+        await fetchCart();
       } catch (error) {
-        enqueueSnackbar(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, { variant: 'error' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
       }
     }
   };
@@ -39,7 +39,7 @@ function DeleteCartBtn({ itemID, quantity }: ProductIDCartBtnProps) {
       disabled={quantity! < 1}
       sx={{ mb: 3, height: '50px', width: 200 }}
     >
-      Remove from Cart
+      {t('Remove from Cart')}
     </Button>
   );
 }

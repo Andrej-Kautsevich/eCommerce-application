@@ -6,6 +6,7 @@ import LoginLogoutButtons from './LoginLogoutButtons';
 import HeaderLink from '../../shared/ui/HeaderLink';
 import { RoutePaths } from '../../shared/types/enum';
 import BasketButton from './BasketButton';
+import LanguageSwitcher from './LanguageSwitcher';
 import ThemeButton from './ThemeButton';
 
 const Header = () => {
@@ -72,6 +73,7 @@ const Header = () => {
           <LoginLogoutButtons />
           <BasketButton />
           <ThemeButton />
+          <LanguageSwitcher />
         </Box>
       </Toolbar>
     </AppBar>

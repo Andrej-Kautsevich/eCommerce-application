@@ -2,14 +2,17 @@ import { useEffect, useState } from 'react';
 import { Button, List, Toolbar } from '@mui/material';
 import { FilterListOff } from '@mui/icons-material';
 import { ClientResponse, ErrorObject } from '@commercetools/platform-sdk';
+import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 import useProduct from '../../api/hooks/useProduct';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import CatalogFilterPanel from './CatalogFilterPanel';
 import { setFilterParams } from '../../shared/store/auth/productsSlice';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 const CatalogSideBar = () => {
+  const { t } = useTranslation();
   const { getAttributes } = useProduct();
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -26,7 +29,7 @@ const CatalogSideBar = () => {
           const error = e as ClientResponse<ErrorObject>;
           enqueueSnackbar(error.body.message, { variant: 'error' });
         } else {
-          enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' });
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' });
         }
       });
 
@@ -37,7 +40,7 @@ const CatalogSideBar = () => {
         return filterParam[key] !== undefined;
       }),
     );
-  }, [attributes, filterParams, dispatch, getAttributes, enqueueSnackbar]);
+  }, [attributes, filterParams, dispatch, getAttributes, enqueueSnackbar, t]);
 
   const handleReset = () => {
     attributes.forEach((attribute) => {
@@ -58,7 +61,7 @@ const CatalogSideBar = () => {
           onClick={handleReset}
           endIcon={<FilterListOff />}
         >
-          Reset All Filters
+          {t('Reset All Filters')}
         </Button>
       </List>
     </Toolbar>

@@ -47,3 +47,8 @@ export enum SnackbarMessages {
   REMOVE_ITEM_SUCCESS = 'successful removal',
   DISCOUNT_SUCCESS = 'successfully applied',
 }
+
+export enum LanguagesKeys {
+  EN = 'en',
+  RU = 'ru',
+}

@@ -24,6 +24,7 @@ import {
   MyCustomerDraft,
 } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import schemaPass from '../../shared/validation/passValidation';
 import schemaEmail from '../../shared/validation/emailValidation';
 import schemaName from '../../shared/validation/nameValidation';
@@ -38,8 +39,10 @@ import schemaPostalCodeBelarus from '../../shared/validation/postalCodeOfCountri
 import schemaPostalCodeKazakhstan from '../../shared/validation/postalCodeOfCountriesVal/kazakhstanPostalSchema';
 import schemaPostalCodeUkraine from '../../shared/validation/postalCodeOfCountriesVal/ukrainePostalShema';
 import useCart from '../../api/hooks/useCart';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 export default function Registration() {
+  const { t } = useTranslation();
   const [showBilling, setBilling] = useState(false);
   // state for getting value from country and set logit validation
   const [countryFieldValue, setCountryFieldValue] = useState('');
@@ -55,10 +58,10 @@ export default function Registration() {
 
   let schema = yup.object().shape({
     firstName: schemaName,
-    lastName: schemaName.required('Last name is required'),
+    lastName: schemaName.required(t('Last name is required')),
     dateOfBirth: schemaBirthDate,
     shippingAddress: yup.object().shape({
-      country: yup.string().oneOf(Object.values(StoreCountries)).required('Country is required'),
+      country: yup.string().oneOf(Object.values(StoreCountries)).required(t('Country is required')),
       city: schemaCity,
       streetName: schemaStreet,
       postalCode: checkValueForCountry(countryFieldValue),
@@ -115,7 +118,7 @@ export default function Registration() {
     try {
       const signUpResult = await customerSignUp(customer);
       navigate(RoutePaths.MAIN);
-      const greetingMessage = `Welcome, ${customer.firstName}!`;
+      const greetingMessage = `${t('Welcome')}, ${customer.firstName}!`;
       enqueueSnackbar(greetingMessage, { variant: 'success' });
       const shippingAddressUpdate: MyCustomerAddShippingAddressIdAction = {
         action: 'addShippingAddressId',
@@ -129,10 +132,10 @@ export default function Registration() {
             : signUpResult.body.customer.addresses[0].id,
       };
       customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() =>
-        enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }),
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
       );
       fetchCart().catch(() => {
-        enqueueSnackbar(SnackbarMessages.CART_FETCH_ERROR, { variant: 'error' });
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CART_FETCH_ERROR, t), { variant: 'error' });
       });
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
@@ -157,7 +160,7 @@ export default function Registration() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5" color="text.primary">
-          Sign up
+          {t('Sign Up')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -167,7 +170,7 @@ export default function Registration() {
                 required
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label={t('First Name')}
                 autoFocus
                 autoComplete="given-name"
                 control={control}
@@ -178,7 +181,7 @@ export default function Registration() {
                 required
                 fullWidth
                 id="lastName"
-                label="Last Name"
+                label={t('Last Name')}
                 name="lastName"
                 autoComplete="family-name"
                 control={control}
@@ -188,20 +191,20 @@ export default function Registration() {
               <DatePickerElement
                 inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
                 required
-                helperText="You must be at least 18 years old to visit site"
+                helperText={t('You must be at least 18 years old to visit site')}
                 name="dateOfBirth"
                 control={control}
               />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
-                Shipping address
+                {t('Shipping address')}
               </Typography>
               <Box sx={{ minWidth: 120 }}>
                 <SelectElement
                   fullWidth
                   name="shippingAddress.country"
-                  label="Country"
+                  label={t('Country')}
                   required
                   options={countryOptions}
                   control={control}
@@ -217,7 +220,7 @@ export default function Registration() {
                 required
                 fullWidth
                 id="city"
-                label="City"
+                label={t('City')}
                 name="shippingAddress.city"
                 autoComplete="shipping address-level1"
                 control={control}
@@ -230,7 +233,7 @@ export default function Registration() {
                 fullWidth
                 id="street"
                 name="shippingAddress.streetName"
-                label="Street"
+                label={t('Street')}
                 autoComplete="shipping address-line1"
                 control={control}
               />
@@ -242,14 +245,14 @@ export default function Registration() {
                 fullWidth
                 id="postal"
                 name="shippingAddress.postalCode"
-                label="Postal code"
+                label={t('Postal')}
                 autoComplete="shipping postal-code"
                 control={control}
               />
             </Grid>
             <Grid item xs={12}>
               <CheckboxElement
-                label="Set as default shipping address"
+                label={t('Set as default shipping address')}
                 name="defaultShippingAddress"
                 control={control}
                 labelProps={{ sx: { color: 'text.primary' } }}
@@ -259,7 +262,7 @@ export default function Registration() {
                 onChange={() => {
                   setBilling(!showBilling);
                 }}
-                label="My billing address is not the same as my shipping address."
+                label={t('My billing address is not the same as my shipping address.')}
                 sx={{ color: 'text.primary' }}
               />
             </Grid>
@@ -267,13 +270,13 @@ export default function Registration() {
               <>
                 <Grid item xs={12}>
                   <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
-                    Billing address
+                    {t('Billing address')}
                   </Typography>
                   <Box sx={{ minWidth: 120 }}>
                     <SelectElement
                       fullWidth
                       name="billingAddress.country"
-                      label="Country"
+                      label={t('Country')}
                       required
                       options={countryOptions}
                       control={control}
@@ -289,7 +292,7 @@ export default function Registration() {
                     required
                     fullWidth
                     id="cityBilling"
-                    label="City"
+                    label={t('City')}
                     name="billingAddress.city"
                     autoComplete="billing address-level1"
                     control={control}
@@ -302,7 +305,7 @@ export default function Registration() {
                     fullWidth
                     id="streetBilling"
                     name="billingAddress.streetName"
-                    label="Street"
+                    label={t('Street')}
                     autoComplete="billing address-line1"
                     control={control}
                   />
@@ -314,14 +317,14 @@ export default function Registration() {
                     fullWidth
                     id="postal"
                     name="billingAddress.postalCode"
-                    label="Postal code"
+                    label={t('Postal code')}
                     autoComplete="billing postal-code"
                     control={control}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <CheckboxElement
-                    label="Set as default billing address"
+                    label={t('Set as default billing address')}
                     name="defaultBillingAddress"
                     control={control}
                     labelProps={{ sx: { color: 'text.primary' } }}
@@ -331,13 +334,13 @@ export default function Registration() {
             )}
             <Grid item xs={12}>
               <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
-                Email & Password
+                {t('Email & Password')}
               </Typography>
               <TextFieldElement
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label={t('Email Address')}
                 name="email"
                 autoComplete="email"
                 control={control}
@@ -348,7 +351,7 @@ export default function Registration() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label={t('Password')}
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -357,16 +360,17 @@ export default function Registration() {
             </Grid>
           </Grid>
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign Up
+            {t('Sign Up')}
           </Button>
           <Typography color="text.primary">
-            If you have an account,
+            {t('If you have an account')}
+            {', '}
             <Box
               component={Link}
               to={RoutePaths.LOGIN}
               sx={{ textDecoration: 'none', mr: 1, ml: 1, color: 'primary.main' }}
             >
-              Login
+              {t('Login')}
             </Box>
           </Typography>
           {import.meta.env.DEV && <DevTool control={control} />} {/* Include react-hook-form devtool in dev mode */}

@@ -2,6 +2,7 @@ import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Typography } from '@mui/material';
 import { ShoppingCartOutlined } from '@mui/icons-material';
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import parseProduct from '../../shared/utils/parseProduct';
 import emptyImage from '../../shared/assets/images/empty-img.png';
@@ -28,6 +29,7 @@ interface ProductCardProps {
 }
 
 const ProductCard: FC<ProductCardProps> = ({ product }) => {
+  const { t } = useTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
   const parsedProduct = product ? parseProduct(product) : undefined;
 
@@ -50,7 +52,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
             <HoverBox>
               <ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText', mb: 1 }} />
               <Typography variant="body2" color="primary.contrastText">
-                Order Watch
+                {t('Order Watch')}
               </Typography>
             </HoverBox>
           )}

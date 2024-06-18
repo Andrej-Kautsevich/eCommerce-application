@@ -1,11 +1,14 @@
 import { Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { useTranslation } from 'react-i18next';
 import MainLayout from '../shared/ui/MainLayout';
 import mainImageBackground from '../shared/assets/images/backgroundMainPage.jpg';
 import PromoCode from '../components/PromoCode';
 import mainImageBackgroundDark from '../shared/assets/images/backgroundMainPageDark.png';
 
 const MainPage = () => {
+  const { t } = useTranslation();
+
   return (
     <MainLayout>
       <Grid container sx={{ padding: 0 }}>
@@ -19,7 +22,7 @@ const MainPage = () => {
             color="text.primary"
             sx={{ pt: 15, pl: 8 }}
           >
-            Find your dream watch
+            {t('Find your dream watch')}
           </Typography>
         </Grid>
         <Grid

@@ -4,6 +4,7 @@ import { Box, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
@@ -13,6 +14,7 @@ import parseFilterParams from '../shared/utils/parseFilterParams';
 import PageTitle from '../components/PageTitle';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
 import { SnackbarMessages, FilterCategories } from '../shared/types/enum';
+import getSnackbarMessage from '../shared/utils/getSnackbarMessage';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 6;
@@ -26,6 +28,7 @@ const GRID_SPACING_MD = 3;
 const ITEMS_PER_PAGE = 6;
 
 const CatalogPage = () => {
+  const { t } = useTranslation();
   const { categorySlug } = useParams();
   const { getProducts } = useProduct();
   const { categories } = useAppSelector((state) => state.products);
@@ -85,7 +88,9 @@ const CatalogPage = () => {
       setProducts([...result]);
     };
 
-    fetchProducts().catch(() => enqueueSnackbar(SnackbarMessages.GENERAL_ERROR, { variant: 'error' }));
+    fetchProducts().catch(() =>
+      enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
+    );
   }, [
     getProducts,
     filterParams,
@@ -96,11 +101,12 @@ const CatalogPage = () => {
     searchString,
     offsetValue,
     enqueueSnackbar,
+    t,
   ]);
 
   return (
     <MainLayout>
-      <PageTitle title="Catalog">
+      <PageTitle title={t('Catalog')}>
         <Box>
           <CatalogBreadcrumbs />
         </Box>

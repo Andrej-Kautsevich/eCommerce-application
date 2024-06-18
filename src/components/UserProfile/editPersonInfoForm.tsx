@@ -15,6 +15,7 @@ import {
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import { EditPersonalInfo } from '../Registration/types';
 import schemaName from '../../shared/validation/nameValidation';
 import schemaBirthDate from '../../shared/validation/validationBirthDate';
@@ -24,12 +25,14 @@ import { useCustomer } from '../../api/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 import formatDate from '../../shared/utils/formatDate';
 import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 interface EditInfoProps {
   onSuccess: () => void;
 }
 
 export default function EditInfo({ onSuccess }: EditInfoProps) {
+  const { t } = useTranslation();
   const { customer } = useAppSelector((state) => state.customer);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -37,7 +40,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
 
   const schema = yup.object().shape({
     firstName: schemaName,
-    lastName: schemaName.required('Last name is required'),
+    lastName: schemaName.required(t('Last name is required')),
     dateOfBirth: schemaBirthDate,
     email: schemaEmail,
   });
@@ -84,7 +87,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
 
         if (response) {
           dispatch(setCustomer(response.body));
-          enqueueSnackbar(SnackbarMessages.CUSTOMER_INFO_CHANGE_SUCCESS, { variant: 'success' });
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CUSTOMER_INFO_CHANGE_SUCCESS, t), { variant: 'success' });
           onSuccess();
           reset({
             firstName: '',
@@ -103,7 +106,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
     <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
         <Typography variant="h5" component="div" color="text.primary" sx={{ mb: 1 }}>
-          Change Personal Info
+          {t('Change Personal Info')}
         </Typography>
         <TextFieldElement
           sx={{ mb: 1 }}
@@ -111,7 +114,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           required
           fullWidth
           id="firstName"
-          label="First Name"
+          label={t('First Name')}
           autoComplete="given-name"
           value={customer?.firstName}
           control={control}
@@ -121,7 +124,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           required
           fullWidth
           id="lastName"
-          label="Last Name"
+          label={t('Last Name')}
           name="lastName"
           autoComplete="family-name"
           value={customer?.lastName}
@@ -131,26 +134,26 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           sx={{ mb: 1 }}
           inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
           required
-          helperText="You must be at least 18 years old to visit site"
+          helperText={t('You must be at least 18 years old to visit site')}
           name="dateOfBirth"
           defaultValue={customer?.dateOfBirth ? dayjs(customer.dateOfBirth) : undefined}
           control={control}
         />
         <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
-          Email
+          {t('Email')}
         </Typography>
         <TextFieldElement
           required
           fullWidth
           id="email"
-          label="Email Address"
+          label={t('Email Address')}
           name="email"
           autoComplete="email"
           value={customer?.email}
           control={control}
         />
         <Button type="submit" variant="contained" sx={{ mt: 1, mb: 3 }}>
-          Save Changes
+          {t('Save Changes')}
         </Button>
       </Box>
     </Box>

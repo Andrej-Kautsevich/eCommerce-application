@@ -7,6 +7,7 @@ import authSlice from './auth/authSlice';
 import productsSlice from './auth/productsSlice';
 import customerSlice from './auth/customerSlice';
 import cartSlice from './auth/cartSlice';
+import localizationSlice from './auth/localizationSlice';
 
 const authPersistConfig = {
   key: 'auth',
@@ -17,7 +18,7 @@ const authPersistConfig = {
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['auth', 'products', 'customer', 'cart'],
+  blacklist: ['auth', 'products', 'customer', 'cart', 'localization'],
 };
 
 export const rootReducer = combineReducers({
@@ -25,6 +26,7 @@ export const rootReducer = combineReducers({
   products: productsSlice,
   customer: customerSlice,
   cart: cartSlice,
+  localization: localizationSlice,
 });
 
 export const persistedReducer = persistReducer(rootPersistConfig, rootReducer);

@@ -1,21 +1,25 @@
 import { LineItem } from '@commercetools/platform-sdk';
 import { Box, CardMedia, IconButton, Typography } from '@mui/material';
 import { Delete } from '@mui/icons-material';
+import { enqueueSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import emptyImage from '../../../../shared/assets/images/empty-img.png';
 import { cartItemInfoSx, cartItemMediaSx, cartItemRemoveSx, cartItemSx } from './CartItemStyles';
 import parseLineItem from '../../../../shared/utils/parseCartLineItem';
 import { ITEM_HEIGHT_XS } from '../../constants';
 import LinkRouter from '../../../CatalogBreadcrumbs/LinkRouter';
-import { RoutePaths } from '../../../../shared/types/enum';
+import { RoutePaths, SnackbarMessages } from '../../../../shared/types/enum';
 import NumberInput from '../../../../shared/ui/NumberInput';
 import useCart from '../../../../api/hooks/useCart';
 import { useAppSelector } from '../../../../shared/store/hooks';
+import getSnackbarMessage from '../../../../shared/utils/getSnackbarMessage';
 
 interface CartItemProps {
   item: LineItem;
 }
 
 const CartItem = ({ item }: CartItemProps) => {
+  const { t } = useTranslation();
   const { changeItemQuantity, deleteItem } = useCart();
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -25,16 +29,18 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const handleItemDelete = async () => {
     if (cart) {
-      // eslint-disable-next-line no-console
-      await deleteItem(cart.version, id).catch((error) => console.log(error));
+      await deleteItem(cart.version, id).catch(() =>
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' }),
+      );
     }
   };
 
   const handleItemQuantityChange = async (value: number | null) => {
     if (cart) {
       if (value) {
-        // eslint-disable-next-line no-console
-        await changeItemQuantity(cart.version, id, value).catch((error) => console.log(error));
+        await changeItemQuantity(cart.version, id, value).catch(() =>
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
+        );
       } else {
         // if input is empty delete product completely
         await handleItemDelete();
