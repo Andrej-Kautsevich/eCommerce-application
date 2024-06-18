@@ -7,9 +7,10 @@ type ParsedLineItem = {
   name: string;
   images: Image[];
   prices: {
-    price: string;
-    discountPrice: string | undefined;
-    totalPrice: string;
+    price: string; // one item full price
+    discountPrice: string | undefined; // one item discount price. Applied directly without discount codes
+    totalFullPrice: string; // total price * quantity
+    totalDiscountedPrice: string | undefined; // total price with applied discount codes
   };
   quantity: number;
 };
@@ -22,9 +23,28 @@ const parseLineItem = (item: LineItem): ParsedLineItem => {
   let { images } = defaultLineItem;
   let discountPrice;
   const price = `$${item.price.value.centAmount / 100}`;
-  const totalPrice = `$${item.totalPrice.centAmount / 100}`;
+  let totalFullPrice = `$${item.totalPrice.centAmount / 100}`;
   if (item.price.discounted) {
     discountPrice = `$${item.price.discounted.value.centAmount / 100}`;
+  }
+
+  let totalDiscountedPrice;
+  if (item.discountedPricePerQuantity.length) {
+    const totalDiscountedPriceAmount = item.discountedPricePerQuantity.reduce(
+      (acc, discountedItemPrice) =>
+        acc + discountedItemPrice.discountedPrice.value.centAmount * discountedItemPrice.quantity,
+      0,
+    );
+    const totalFullPriceAmount = item.price.value.centAmount * item.quantity;
+
+    // check if discount code reduce total price
+    // debugger;
+    if (totalFullPriceAmount !== totalDiscountedPriceAmount) {
+      totalDiscountedPrice = `$${totalDiscountedPriceAmount / 100}`;
+      totalFullPrice = `$${totalFullPriceAmount / 100}`;
+    }
+
+    // debugger;
   }
 
   if (item.variant.images) {
@@ -39,7 +59,8 @@ const parseLineItem = (item: LineItem): ParsedLineItem => {
     prices: {
       price,
       discountPrice,
-      totalPrice,
+      totalDiscountedPrice,
+      totalFullPrice,
     },
     quantity: item.quantity,
   };
