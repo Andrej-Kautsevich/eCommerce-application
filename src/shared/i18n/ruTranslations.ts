@@ -111,7 +111,8 @@ const ruTranslations = {
     CUSTOMER_INFO_CHANGE_SUCCESS: 'Информация обновлена',
     ADD_ITEM_SUCCESS: 'Добавлено',
     REMOVE_ITEM_SUCCESS: 'Удалено',
-    DISCOUNT_SUCCESS: 'Код применен',
+    DISCOUNT_SUCCESS: 'Код применён',
+    DISCOUNT_INFO: 'Промокод уже применён',
   },
 };
 

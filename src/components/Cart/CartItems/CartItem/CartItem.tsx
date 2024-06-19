@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import emptyImage from '../../../../shared/assets/images/empty-img.png';
 import parseLineItem from '../../../../shared/utils/parseCartLineItem';
 import { cartItemInfoSx, cartItemMediaSx, cartItemRemoveSx, cartItemSx } from './CartItemStyles';
-import { ITEM_HEIGHT_XS } from '../../constants';
+import { ITEM_HEIGHT_SM, ITEM_HEIGHT_XS } from '../../constants';
 import LinkRouter from '../../../CatalogBreadcrumbs/LinkRouter';
 import { RoutePaths, SnackbarMessages } from '../../../../shared/types/enum';
 import NumberInput from '../../../../shared/ui/NumberInput';
@@ -63,7 +63,7 @@ const CartItem = ({ item }: CartItemProps) => {
   };
 
   return (
-    <Box sx={cartItemSx} height={{ xs: ITEM_HEIGHT_XS }}>
+    <Box sx={cartItemSx} height={{ xs: ITEM_HEIGHT_XS, sm: ITEM_HEIGHT_SM }}>
       <LinkRouter to={productLink} mr={5}>
         <CardMedia
           sx={cartItemMediaSx}
@@ -80,7 +80,11 @@ const CartItem = ({ item }: CartItemProps) => {
       </LinkRouter>
       <Box width="100%" display="flex" justifyContent="space-between" flexDirection="column">
         <Box sx={cartItemInfoSx}>
-          <IconButton sx={cartItemRemoveSx} disabled={loading} onClick={handleItemDelete}>
+          <IconButton
+            sx={{ ...cartItemRemoveSx, display: { xs: 'none', sm: 'block' } }}
+            disabled={loading}
+            onClick={handleItemDelete}
+          >
             {loading ? (
               <CircularProgress
                 size="small"
@@ -114,15 +118,29 @@ const CartItem = ({ item }: CartItemProps) => {
           </Box>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <NumberInput
-            onChange={(_, newValue) => handleItemQuantityChange(newValue)}
-            min={1}
-            defaultValue={quantity}
-            slotProps={{
-              incrementButton: { disabled: quantityLoading },
-              decrementButton: { disabled: quantityLoading },
-            }}
-          />
+          <Box display="flex">
+            <NumberInput
+              onChange={(_, newValue) => handleItemQuantityChange(newValue)}
+              min={1}
+              defaultValue={quantity}
+              slotProps={{
+                incrementButton: { disabled: quantityLoading },
+                decrementButton: { disabled: quantityLoading },
+              }}
+            />
+            <IconButton sx={{ display: { xs: 'block', sm: 'none' } }} disabled={loading} onClick={handleItemDelete}>
+              {loading ? (
+                <CircularProgress
+                  size="small"
+                  sx={{
+                    width: '24px',
+                  }}
+                />
+              ) : (
+                <Delete />
+              )}
+            </IconButton>
+          </Box>
           <Box>
             <Typography
               variant={prices.totalDiscountedPrice ? 'caption' : 'body1'}

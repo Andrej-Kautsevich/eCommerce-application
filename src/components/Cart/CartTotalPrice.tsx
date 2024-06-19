@@ -23,7 +23,7 @@ const CartTotalPrice = ({ cart }: CartTotalPriceProps) => {
   }
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" pb={1} pt={1}>
       {discountPriceFormatted && (
         <Box>
           <Typography variant="h5" color="text.primary">

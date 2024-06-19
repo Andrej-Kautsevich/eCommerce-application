@@ -74,11 +74,11 @@ const BasketPage = () => {
           <CartItems items={cart.lineItems} />
           <Divider flexItem />
         </Grid>
-        <Grid xs={6} alignSelf="center">
+        <Grid xs={12} sm={6} order={{ xs: 2, sm: 0 }} alignSelf="center">
           <CartPromoCodeBox cart={cart} />
         </Grid>
-        <Grid xs={3} />
-        <Grid xs={3} textAlign="end">
+        <Grid xs={6} sm={2} />
+        <Grid xs={6} sm={4} textAlign="end">
           <CartTotalPrice cart={cart} />
           <CartRemoveAllItems />
         </Grid>

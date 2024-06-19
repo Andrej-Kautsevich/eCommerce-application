@@ -112,6 +112,7 @@ const enTranslations = {
     ADD_ITEM_SUCCESS: 'successful addition',
     REMOVE_ITEM_SUCCESS: 'successful removal',
     DISCOUNT_SUCCESS: 'successfully applied',
+    DISCOUNT_INFO: 'The promo code has already been applied',
   },
 };
 
