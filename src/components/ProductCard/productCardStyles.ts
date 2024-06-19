@@ -1,4 +1,5 @@
 import { Box, SxProps, Theme, alpha, styled } from '@mui/material';
+import { CARD_IMG_MD_HEIGHT, CARD_IMG_SM_HEIGHT, CARD_IMG_XS_HEIGHT } from './constants';
 
 export const productCardSx: SxProps<Theme> = {
   height: '100%',
@@ -9,6 +10,7 @@ export const productCardSx: SxProps<Theme> = {
 
 export const productCardMediaSx: SxProps<Theme> = {
   width: '100%',
+  height: { xs: CARD_IMG_XS_HEIGHT, sm: CARD_IMG_SM_HEIGHT, md: CARD_IMG_MD_HEIGHT },
 };
 
 export const productCardContentSx: SxProps<Theme> = {
