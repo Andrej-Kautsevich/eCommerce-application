@@ -3,6 +3,10 @@ const enTranslations = {
     // Main Page
     'Find your dream watch': 'Find your dream watch',
     'Active Promo Codes': 'Active Promo Codes',
+    'Try this cool discount code: ': 'Try this cool discount code: ',
+    'Discount expired in': 'Discount expired in',
+    'Discount code expired': 'Discount code expired',
+    'Hurry Up!': 'Hurry Up!',
 
     // Basket Page
     'Your Cart is Empty': 'Your Cart is Empty',
@@ -107,6 +111,7 @@ const enTranslations = {
     CUSTOMER_INFO_CHANGE_SUCCESS: 'Successfully updated',
     ADD_ITEM_SUCCESS: 'successful addition',
     REMOVE_ITEM_SUCCESS: 'successful removal',
+    DISCOUNT_SUCCESS: 'successfully applied',
   },
 };
 

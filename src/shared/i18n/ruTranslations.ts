@@ -3,6 +3,10 @@ const ruTranslations = {
     // Main Page
     'Find your dream watch': 'Найди часы своей мечты',
     'Active Promo Codes': 'Активные промо коды',
+    'Try this cool discount code: ': 'Попробуйте наши промокоды: ',
+    'Discount expired in': 'распродажа закончится через',
+    'Discount code expired': 'код истёк',
+    'Hurry Up!': 'Поторопись',
 
     // Basket Page
     'Your Cart is Empty': 'Ваша корзина пуста',
@@ -107,6 +111,7 @@ const ruTranslations = {
     CUSTOMER_INFO_CHANGE_SUCCESS: 'Информация обновлена',
     ADD_ITEM_SUCCESS: 'Добавлено',
     REMOVE_ITEM_SUCCESS: 'Удалено',
+    DISCOUNT_SUCCESS: 'Код применен',
   },
 };
 

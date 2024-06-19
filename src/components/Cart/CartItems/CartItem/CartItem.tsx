@@ -123,9 +123,21 @@ const CartItem = ({ item }: CartItemProps) => {
               decrementButton: { disabled: quantityLoading },
             }}
           />
-          <Typography variant="h5" component="div" color="text.primary">
-            {prices.totalPrice}
-          </Typography>
+          <Box>
+            <Typography
+              variant={prices.totalDiscountedPrice ? 'caption' : 'body1'}
+              component="div"
+              sx={prices.totalDiscountedPrice ? { textDecoration: 'line-through' } : null}
+              color="text.primary"
+            >
+              {prices.totalFullPrice}
+            </Typography>
+            {prices.totalDiscountedPrice && (
+              <Typography variant="body1" component="div" color="error.light">
+                {prices.totalDiscountedPrice}
+              </Typography>
+            )}
+          </Box>
         </Box>
       </Box>
     </Box>
