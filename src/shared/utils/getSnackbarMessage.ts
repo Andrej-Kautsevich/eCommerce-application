@@ -13,6 +13,7 @@ const getSnackbarMessage = (message: SnackbarMessages, t: TFunction): string => 
     [SnackbarMessages.ADD_ITEM_SUCCESS]: t('ADD_ITEM_SUCCESS'),
     [SnackbarMessages.REMOVE_ITEM_SUCCESS]: t('REMOVE_ITEM_SUCCESS'),
     [SnackbarMessages.DISCOUNT_SUCCESS]: t('DISCOUNT_SUCCESS'),
+    [SnackbarMessages.DISCOUNT_INFO]: t('DISCOUNT_INFO'),
   };
 
   return messageMap[message] || message;
