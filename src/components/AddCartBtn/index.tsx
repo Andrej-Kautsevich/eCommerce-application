@@ -20,7 +20,7 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   },
 }));
 
-function AddCartBtn({ productID }: ProductIDCartBtnProps) {
+function AddCartBtn({ productID, quantity }: ProductIDCartBtnProps) {
   const { t } = useTranslation();
   const { addItem } = useCart();
   const cart = useAppSelector((state) => state.cart.cart);
@@ -50,7 +50,7 @@ function AddCartBtn({ productID }: ProductIDCartBtnProps) {
         fullWidth
         variant="contained"
         onClick={addProduct()}
-        disabled={!productID}
+        disabled={quantity! > 0}
         loadingPosition="end"
         endIcon={<ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText' }} />}
       >

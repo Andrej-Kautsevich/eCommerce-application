@@ -1,7 +1,7 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Typography } from '@mui/material';
 import { ShoppingCartOutlined } from '@mui/icons-material';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import parseProduct from '../../shared/utils/parseProduct';
@@ -16,6 +16,8 @@ import {
 import { RoutePaths } from '../../shared/types/enum';
 import { CARD_MD_HEIGHT, CARD_SM_HEIGHT, CARD_XS_HEIGHT } from './constants';
 import AddCartBtn from '../AddCartBtn';
+import { useAppSelector } from '../../shared/store/hooks';
+import containsProduct from '../../shared/utils/containsProduct';
 
 interface ProductCardProps {
   product: ProductProjection | undefined;
@@ -36,6 +38,22 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const productPrice = parsedProduct?.price;
   const productDiscountPrice = parsedProduct?.discountPrice;
   const productID = parsedProduct?.id;
+  const cart = useAppSelector((state) => state.cart.cart);
+  const [itemQuantity, setItemQuantity] = useState(0);
+
+  useEffect(() => {
+    if (cart && productID) {
+      if (containsProduct(cart, productID)) {
+        cart.lineItems.forEach((item) => {
+          if (item.productId === productID) {
+            setItemQuantity(item.quantity);
+          }
+        });
+      } else {
+        setItemQuantity(0);
+      }
+    }
+  }, [cart, productID]);
 
   return (
     <Box height={{ xs: CARD_XS_HEIGHT, sm: CARD_SM_HEIGHT, md: CARD_MD_HEIGHT }}>
@@ -95,7 +113,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <AddCartBtn productID={productID} />
+          <AddCartBtn productID={productID} quantity={itemQuantity} />
         </CardActions>
       </Card>
     </Box>
