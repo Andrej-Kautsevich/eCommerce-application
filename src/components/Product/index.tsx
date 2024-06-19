@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Cart, ProductProjection } from '@commercetools/platform-sdk';
+import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, CircularProgress, Skeleton, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useSnackbar } from 'notistack';
@@ -13,6 +13,7 @@ import DeleteCartBtn from '../DeleteCartBtn';
 import { useAppSelector } from '../../shared/store/hooks';
 import { SnackbarMessages } from '../../shared/types/enum';
 import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
+import containsProduct from '../../shared/utils/containsProduct';
 
 const Product = () => {
   const { t } = useTranslation();
@@ -27,9 +28,6 @@ const Product = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    function containsProduct(cartOfItems: Cart, productId: string): boolean {
-      return cartOfItems.lineItems.some((obj) => obj.productId === productId);
-    }
     const fetchProduct = async () => {
       if (cart) {
         if (containsProduct(cart, productID)) {
@@ -123,11 +121,11 @@ const Product = () => {
                 </Typography>
               </Box>
             )}
-            <Typography component="p" fontFamily="Poppins" color="text.secondary">
+            {/* <Typography component="p" fontFamily="Poppins" color="text.secondary">
               {t('Items in cart')}
               {': '}
-            </Typography>
-            <Typography
+            </Typography> */}
+            {/* <Typography
               component="p"
               fontFamily="Poppins"
               color="text.primary"
@@ -136,9 +134,9 @@ const Product = () => {
               }}
             >
               {itemQuantity}
-            </Typography>
+            </Typography> */}
 
-            <AddCartBtn productID={productID} />
+            <AddCartBtn productID={productID} quantity={itemQuantity} />
             <DeleteCartBtn productID={productID} itemID={itemID} quantity={itemQuantity} />
           </Box>
         </Grid>
