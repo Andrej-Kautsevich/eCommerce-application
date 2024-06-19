@@ -1,7 +1,7 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import { Box, Card, CardActionArea, CardActions, CardContent, CardMedia, Skeleton, Typography } from '@mui/material';
 import { ShoppingCartOutlined } from '@mui/icons-material';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import parseProduct from '../../shared/utils/parseProduct';
@@ -23,6 +23,7 @@ import {
   CARD_XS_HEIGHT,
 } from './constants';
 import AddCartBtn from '../AddCartBtn';
+import { useAppSelector } from '../../shared/store/hooks';
 
 interface ProductCardProps {
   product: ProductProjection | undefined;
@@ -31,7 +32,9 @@ interface ProductCardProps {
 const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const { t } = useTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [alreadyExist, setAlreadyExist] = useState(false);
   const parsedProduct = product ? parseProduct(product) : undefined;
+  const cart = useAppSelector((state) => state.cart.cart);
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -43,6 +46,13 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const productPrice = parsedProduct?.price;
   const productDiscountPrice = parsedProduct?.discountPrice;
   const productID = parsedProduct?.id;
+
+  useEffect(() => {
+    cart?.lineItems.some((item) => {
+      if (item.productId === productID) setAlreadyExist(true);
+      return item.productId === productID;
+    });
+  });
 
   return (
     <Box height={{ xs: CARD_XS_HEIGHT, sm: CARD_SM_HEIGHT, md: CARD_MD_HEIGHT }}>
@@ -102,8 +112,9 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
             )}
           </CardContent>
         </CardActionArea>
-        <CardActions>
+        <CardActions sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <AddCartBtn productID={productID} />
+          {alreadyExist ? <Typography sx={{ fontSize: '12px' }}>Moved to Cart</Typography> : false}
         </CardActions>
       </Card>
     </Box>

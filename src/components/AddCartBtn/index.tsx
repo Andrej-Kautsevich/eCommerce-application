@@ -28,7 +28,7 @@ function AddCartBtn({ productID }: ProductIDCartBtnProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mb: 3 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', mb: 1 }}>
       <Button variant="contained" onClick={addProduct()} sx={{ height: '50px', width: 200 }}>
         {t('Add to Cart')}
         <ShoppingCartOutlined fontSize="large" sx={{ color: 'primary.contrastText', ml: 1 }} />
