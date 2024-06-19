@@ -36,7 +36,7 @@ const CartPromoCodeBox = ({ cart }: CartPromoCodeBoxProps) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit}>
+    <Box component="form" onSubmit={handleSubmit} pt={1} pb={1}>
       <Typography color="text.primary">{t('Have a promo code? Type it here:')}</Typography>
       <Box display="flex">
         <OutlinedInput size="small" placeholder="promo code" value={promoCode} onChange={handleChange} />
