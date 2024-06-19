@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { LineItem } from '@commercetools/platform-sdk';
-import { Box, CardMedia, IconButton, Typography } from '@mui/material';
+import { Box, CardMedia, CircularProgress, IconButton, Typography } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { enqueueSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import emptyImage from '../../../../shared/assets/images/empty-img.png';
-import { cartItemInfoSx, cartItemMediaSx, cartItemRemoveSx, cartItemSx } from './CartItemStyles';
 import parseLineItem from '../../../../shared/utils/parseCartLineItem';
+import { cartItemInfoSx, cartItemMediaSx, cartItemRemoveSx, cartItemSx } from './CartItemStyles';
 import { ITEM_HEIGHT_XS } from '../../constants';
 import LinkRouter from '../../../CatalogBreadcrumbs/LinkRouter';
 import { RoutePaths, SnackbarMessages } from '../../../../shared/types/enum';
@@ -22,6 +23,8 @@ const CartItem = ({ item }: CartItemProps) => {
   const { t } = useTranslation();
   const { changeItemQuantity, deleteItem } = useCart();
   const { cart } = useAppSelector((state) => state.cart);
+  const [loading, setLoading] = useState(false);
+  const [quantityLoading, setQuantityLoading] = useState(false);
 
   const parsedItem = parseLineItem(item);
   const { images, name, productId, prices, quantity, id } = parsedItem;
@@ -29,18 +32,29 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const handleItemDelete = async () => {
     if (cart) {
-      await deleteItem(cart.version, id).catch(() =>
-        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' }),
-      );
+      try {
+        setLoading(true);
+        await deleteItem(cart.version, id);
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.REMOVE_ITEM_SUCCESS, t), { variant: 'success' });
+      } catch (error) {
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.DELETE_ITEM_FETCH_ERROR, t), { variant: 'error' });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   const handleItemQuantityChange = async (value: number | null) => {
     if (cart) {
       if (value) {
-        await changeItemQuantity(cart.version, id, value).catch(() =>
-          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
-        );
+        try {
+          setQuantityLoading(true);
+          await changeItemQuantity(cart.version, id, value);
+          setQuantityLoading(false);
+        } catch (error) {
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' });
+          setQuantityLoading(false);
+        }
       } else {
         // if input is empty delete product completely
         await handleItemDelete();
@@ -66,8 +80,17 @@ const CartItem = ({ item }: CartItemProps) => {
       </LinkRouter>
       <Box width="100%" display="flex" justifyContent="space-between" flexDirection="column">
         <Box sx={cartItemInfoSx}>
-          <IconButton sx={cartItemRemoveSx} onClick={handleItemDelete}>
-            <Delete />
+          <IconButton sx={cartItemRemoveSx} disabled={loading} onClick={handleItemDelete}>
+            {loading ? (
+              <CircularProgress
+                size="small"
+                sx={{
+                  width: '24px',
+                }}
+              />
+            ) : (
+              <Delete />
+            )}
           </IconButton>
           <Typography variant="body1" component="div" color="text.primary">
             {name}
@@ -91,7 +114,15 @@ const CartItem = ({ item }: CartItemProps) => {
           </Box>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <NumberInput onChange={(_, newValue) => handleItemQuantityChange(newValue)} min={1} defaultValue={quantity} />
+          <NumberInput
+            onChange={(_, newValue) => handleItemQuantityChange(newValue)}
+            min={1}
+            defaultValue={quantity}
+            slotProps={{
+              incrementButton: { disabled: quantityLoading },
+              decrementButton: { disabled: quantityLoading },
+            }}
+          />
           <Typography variant="h5" component="div" color="text.primary">
             {prices.totalPrice}
           </Typography>

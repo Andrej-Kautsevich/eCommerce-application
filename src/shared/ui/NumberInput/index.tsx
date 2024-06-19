@@ -16,16 +16,16 @@ interface ButtonProps {
   onClick: () => void;
 }
 
-const IncrementButton = styled(({ onClick, ...props }: ButtonProps) => (
-  <IconButton {...props} onClick={onClick}>
+const IncrementButton = styled(({ onClick, disabled, ...props }: ButtonProps & { disabled?: boolean }) => (
+  <IconButton {...props} onClick={onClick} disabled={disabled}>
     <Add fontSize="small" />
   </IconButton>
 ))({
   order: 3,
 });
 
-const DecrementButton = styled(({ onClick, ...props }: ButtonProps) => (
-  <IconButton {...props} onClick={onClick}>
+const DecrementButton = styled(({ onClick, disabled, ...props }: ButtonProps & { disabled?: boolean }) => (
+  <IconButton {...props} onClick={onClick} disabled={disabled}>
     <Remove fontSize="small" />
   </IconButton>
 ))({

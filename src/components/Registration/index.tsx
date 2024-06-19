@@ -1,5 +1,4 @@
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -7,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { DevTool } from '@hookform/devtools';
 import { useState } from 'react';
@@ -47,6 +47,7 @@ export default function Registration() {
   // state for getting value from country and set logit validation
   const [countryFieldValue, setCountryFieldValue] = useState('');
   const [countryFieldValueBilling, setCountryFieldValueBilling] = useState('');
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   const checkValueForCountry = (nameOfState: string) => {
@@ -116,6 +117,7 @@ export default function Registration() {
     };
 
     try {
+      setLoading(true);
       const signUpResult = await customerSignUp(customer);
       navigate(RoutePaths.MAIN);
       const greetingMessage = `${t('Welcome')}, ${customer.firstName}!`;
@@ -131,15 +133,17 @@ export default function Registration() {
             ? signUpResult.body.customer.addresses[1].id
             : signUpResult.body.customer.addresses[0].id,
       };
-      customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() =>
-        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
-      );
+      customerUpdate(1, [shippingAddressUpdate, billingAddressUpdate]).catch(() => {
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' });
+      });
       fetchCart().catch(() => {
         enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CART_FETCH_ERROR, t), { variant: 'error' });
       });
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       enqueueSnackbar(error.body.message, { variant: 'error' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -359,9 +363,9 @@ export default function Registration() {
               />
             </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            {t('Sign Up')}
-          </Button>
+          <LoadingButton loading={loading} type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <span>{t('Sign Up')}</span>
+          </LoadingButton>
           <Typography color="text.primary">
             {t('If you have an account')}
             {', '}
