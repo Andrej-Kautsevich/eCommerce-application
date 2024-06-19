@@ -54,15 +54,20 @@ const CatalogFilterPanel = ({ attribute }: CatalogFilterPanelProps) => {
       {attribute.type.name === 'enum' && (
         <Box>
           <ListItemButton onClick={handleClick}>
-            <ListItemText primary={attribute.label.en} />
-            {open ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText sx={{ color: 'text.primary' }} primary={attribute.label.en} />
+            {open ? (
+              <ExpandLess sx={{ color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black') }} />
+            ) : (
+              <ExpandMore sx={{ color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black') }} />
+            )}
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="ul">
+            <List component="ul" sx={{ color: 'text.primary' }}>
               {attribute.type.values.map((value) => (
                 <FormControlLabel
                   key={value.key}
                   label={value.label}
+                  sx={{ color: 'text.primary' }}
                   control={
                     <Checkbox
                       onChange={(e) => handleChange(e, value.key)}

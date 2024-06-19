@@ -1,15 +1,21 @@
 import '../shared/ui/main.scss';
 import { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+import '../shared/i18n/i18n';
+import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../shared/store/hooks';
 import AppRoutes from '../shared/router/AppRoutes';
 import tokenCache from '../shared/utils/tokenCache';
 import { useApiClient } from '../api/hooks';
-import theme from '../shared/ui/theme';
 import useProduct from '../api/hooks/useProduct';
+import useCart from '../api/hooks/useCart';
+import { SnackbarMessages } from '../shared/types/enum';
+import getSnackbarMessage from '../shared/utils/getSnackbarMessage';
+import ColorModeProvider from '../shared/utils/theme/colorModeProvider';
 
 const App = () => {
   const isAuthCustomer = useAppSelector((state) => state.auth.isLoggedIn);
@@ -17,10 +23,14 @@ const App = () => {
   const { apiRoot, setAnonymousFlow, setTokenFlow } = useApiClient();
   const [isLoading, setIsLoading] = useState(true);
   const { getCategories } = useProduct();
+  const { fetchCart } = useCart();
+  const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!apiRoot) {
       const refreshToken = tokenCache.get().token;
+
       // if user has authorization
       // TODO handle anonymous refresh token
       if (isAuthCustomer && refreshToken) {
@@ -38,11 +48,26 @@ const App = () => {
       };
 
       if (!categories.length) {
-        // eslint-disable-next-line no-console
-        fetchCategories().catch((error) => console.log(error));
+        fetchCategories().catch(() =>
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
+        );
       }
+      fetchCart().catch(() => {
+        enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' });
+      });
     }
-  }, [apiRoot, setAnonymousFlow, setTokenFlow, isAuthCustomer, categories.length, getCategories, isLoading]);
+  }, [
+    apiRoot,
+    setAnonymousFlow,
+    setTokenFlow,
+    isAuthCustomer,
+    categories.length,
+    getCategories,
+    isLoading,
+    fetchCart,
+    enqueueSnackbar,
+    t,
+  ]);
 
   if (isLoading) {
     return <div>Loading...</div>; // TODO add loading spinner
@@ -51,11 +76,13 @@ const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en">
       <CssBaseline />
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </ThemeProvider>
+      <ColorModeProvider>
+        <SnackbarProvider maxSnack={3}>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </SnackbarProvider>
+      </ColorModeProvider>
     </LocalizationProvider>
   );
 };

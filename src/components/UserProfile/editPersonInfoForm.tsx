@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Alert, AlertTitle, Box, Button, Slide, Snackbar, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { SubmitHandler, TextFieldElement, useForm } from 'react-hook-form-mui';
 import { DatePickerElement } from 'react-hook-form-mui/date-pickers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import * as yup from 'yup';
 import {
+  ClientResponse,
+  ErrorObject,
   MyCustomerChangeEmailAction,
   MyCustomerSetDateOfBirthAction,
   MyCustomerSetFirstNameAction,
   MyCustomerSetLastNameAction,
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk';
+import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import { EditPersonalInfo } from '../Registration/types';
 import schemaName from '../../shared/validation/nameValidation';
 import schemaBirthDate from '../../shared/validation/validationBirthDate';
@@ -20,19 +25,24 @@ import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { useCustomer } from '../../api/hooks';
 import { setCustomer } from '../../shared/store/auth/customerSlice';
 import formatDate from '../../shared/utils/formatDate';
+import { SnackbarMessages } from '../../shared/types/enum';
+import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 
 interface EditInfoProps {
   onSuccess: () => void;
 }
 
 export default function EditInfo({ onSuccess }: EditInfoProps) {
+  const { t } = useTranslation();
   const { customer } = useAppSelector((state) => state.customer);
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const { customerUpdate } = useCustomer();
+  const [loading, setLoading] = useState(false);
 
   const schema = yup.object().shape({
     firstName: schemaName,
-    lastName: schemaName.required('Last name is required'),
+    lastName: schemaName.required(t('Last name is required')),
     dateOfBirth: schemaBirthDate,
     email: schemaEmail,
   });
@@ -40,18 +50,6 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
     mode: 'onChange',
     resolver: yupResolver(schema),
   });
-
-  const [showAlert, setShowAlert] = useState(false); // Close error alert
-  const [changeError, setChangeError] = useState('');
-
-  const handleSnackBarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    event?.preventDefault();
-    if (reason === 'clickaway') {
-      return;
-    }
-    setShowAlert(false);
-    setChangeError('');
-  };
 
   useEffect(() => {
     if (customer) {
@@ -87,10 +85,12 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
       const updateAction: MyCustomerUpdateAction[] = [firstNameAction, lastNameAction, dateOfBirthAction, emailAction];
 
       try {
+        setLoading(true);
         const response = await customerUpdate(customer.version, updateAction);
 
         if (response) {
           dispatch(setCustomer(response.body));
+          enqueueSnackbar(getSnackbarMessage(SnackbarMessages.CUSTOMER_INFO_CHANGE_SUCCESS, t), { variant: 'success' });
           onSuccess();
           reset({
             firstName: '',
@@ -98,9 +98,11 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
             email: '',
           });
         }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
+      } catch (e) {
+        const error = e as ClientResponse<ErrorObject>;
+        enqueueSnackbar(error.body.message, { variant: 'error' });
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -108,8 +110,8 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
   return (
     <Box sx={{ border: '2px solid #eaecf5', borderRadius: '10px', p: 3, mb: 3 }}>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Typography variant="h5" component="div" sx={{ mb: 1 }}>
-          Change Personal Info
+        <Typography variant="h5" component="div" color="text.primary" sx={{ mb: 1 }}>
+          {t('Change Personal Info')}
         </Typography>
         <TextFieldElement
           sx={{ mb: 1 }}
@@ -117,7 +119,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           required
           fullWidth
           id="firstName"
-          label="First Name"
+          label={t('First Name')}
           autoComplete="given-name"
           value={customer?.firstName}
           control={control}
@@ -127,7 +129,7 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           required
           fullWidth
           id="lastName"
-          label="Last Name"
+          label={t('Last Name')}
           name="lastName"
           autoComplete="family-name"
           value={customer?.lastName}
@@ -137,38 +139,28 @@ export default function EditInfo({ onSuccess }: EditInfoProps) {
           sx={{ mb: 1 }}
           inputProps={{ fullWidth: true, autoComplete: 'bday', id: 'date' }}
           required
-          helperText="You must be at least 18 years old to visit site"
+          helperText={t('You must be at least 18 years old to visit site')}
           name="dateOfBirth"
           defaultValue={customer?.dateOfBirth ? dayjs(customer.dateOfBirth) : undefined}
           control={control}
         />
-        <Typography variant="h6" component="div" sx={{ mb: 1 }}>
-          Email
+        <Typography variant="h6" component="div" color="text.primary" sx={{ mb: 1 }}>
+          {t('Email')}
         </Typography>
         <TextFieldElement
           required
           fullWidth
           id="email"
-          label="Email Address"
+          label={t('Email Address')}
           name="email"
           autoComplete="email"
           value={customer?.email}
           control={control}
         />
-        <Button type="submit" variant="contained" sx={{ mt: 1, mb: 3 }}>
-          Save Changes
-        </Button>
+        <LoadingButton loading={loading} type="submit" variant="contained" sx={{ mt: 1, mb: 3 }}>
+          <span>{t('Save Changes')}</span>
+        </LoadingButton>
       </Box>
-      {changeError && (
-        <Slide in={showAlert} direction="right">
-          <Snackbar open={showAlert} autoHideDuration={2000} onClose={handleSnackBarClose}>
-            <Alert sx={{ width: '100%' }} severity="error" onClose={handleSnackBarClose}>
-              <AlertTitle>Error!</AlertTitle>
-              {changeError}
-            </Alert>
-          </Snackbar>
-        </Slide>
-      )}
     </Box>
   );
 }

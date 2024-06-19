@@ -1,13 +1,16 @@
 import { Box, SxProps, Theme, alpha, styled } from '@mui/material';
-import { CARD_MEDIA_HEIGHT } from './constants';
+import { CARD_IMG_MD_HEIGHT, CARD_IMG_SM_HEIGHT, CARD_IMG_XS_HEIGHT } from './constants';
 
 export const productCardSx: SxProps<Theme> = {
   height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignContent: 'space-between',
 };
 
 export const productCardMediaSx: SxProps<Theme> = {
-  height: CARD_MEDIA_HEIGHT,
   width: '100%',
+  height: { xs: CARD_IMG_XS_HEIGHT, sm: CARD_IMG_SM_HEIGHT, md: CARD_IMG_MD_HEIGHT },
 };
 
 export const productCardContentSx: SxProps<Theme> = {
@@ -19,14 +22,14 @@ export const productCardContentSx: SxProps<Theme> = {
   justifyContent: 'center',
   width: '100%',
   textAlign: 'center',
+  p: 1,
 };
 
 export const productCardActionSx: SxProps<Theme> = {
   display: 'flex',
   flexWrap: 'wrap',
-  justifyContent: 'flex-start',
-  alignContent: 'space-between',
-  height: '100%',
+  justifyContent: 'space-between',
+  height: '85%',
   width: '100%',
 };
 

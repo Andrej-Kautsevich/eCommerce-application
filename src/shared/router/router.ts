@@ -8,21 +8,21 @@ import { RoutePaths } from '../types/enum';
 import ProductPage from '../../pages/ProductPage';
 import UserProfilePage from '../../pages/UserProfile';
 import CatalogPage from '../../pages/CatalogPage';
+import AboutUsPage from '../../pages/AboutUsPage';
 
 // Routes available to ALL users add here
 const commonRoutes: RouteProps[] = [
   { path: RoutePaths.MAIN, Component: MainPage },
   { path: RoutePaths.ERROR404, Component: Error404Page },
+  { path: RoutePaths.BASKET, Component: BasketPage },
   { path: `${RoutePaths.WATCHES}/:categorySlug`, Component: CatalogPage },
   { path: `${RoutePaths.WATCHES}`, Component: CatalogPage },
   { path: `${RoutePaths.PRODUCT}/*`, Component: ProductPage },
+  { path: `${RoutePaths.ABOUT}/*`, Component: AboutUsPage },
 ];
 
 // Routes available to AUTHORIZED users add here
-const onlyPrivateRoutes: RouteProps[] = [
-  { path: RoutePaths.BASKET, Component: BasketPage },
-  { path: RoutePaths.PROFILE, Component: UserProfilePage },
-];
+const onlyPrivateRoutes: RouteProps[] = [{ path: RoutePaths.PROFILE, Component: UserProfilePage }];
 
 // Routes available to UNAUTHORIZED users add here
 const onlyPublicRoutes: RouteProps[] = [

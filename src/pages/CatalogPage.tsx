@@ -1,8 +1,10 @@
 import { ProductProjection } from '@commercetools/platform-sdk';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
-import { Box, Typography } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import ProductCard from '../components/ProductCard';
 import MainLayout from '../shared/ui/MainLayout';
 import useProduct, { FetchQueryArgs } from '../api/hooks/useProduct';
@@ -11,7 +13,8 @@ import { useAppSelector } from '../shared/store/hooks';
 import parseFilterParams from '../shared/utils/parseFilterParams';
 import PageTitle from '../components/PageTitle';
 import CatalogBreadcrumbs from '../components/CatalogBreadcrumbs';
-import { FilterCategories } from '../shared/types/enum';
+import { SnackbarMessages, FilterCategories } from '../shared/types/enum';
+import getSnackbarMessage from '../shared/utils/getSnackbarMessage';
 
 const GRID_COLUMNS_XS = 6;
 const GRID_COLUMNS_SM = 6;
@@ -22,22 +25,33 @@ const GRID_SPACING_XS = 1;
 const GRID_SPACING_SM = 2;
 const GRID_SPACING_MD = 3;
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 6;
 
 const CatalogPage = () => {
+  const { t } = useTranslation();
   const { categorySlug } = useParams();
   const { getProducts } = useProduct();
   const { categories } = useAppSelector((state) => state.products);
   const location = useLocation();
+  const { enqueueSnackbar } = useSnackbar();
   const { filterParams, sortParam, searchParam: searchString } = useAppSelector((state) => state.products);
   const [isProductsFetching, setIsProductsFetching] = useState(true);
-
+  const [totalProducts, setTotalProducts] = useState<number | undefined>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [products, setProducts] = useState<ProductProjection[]>([]);
+  const offsetValue = currentPage * ITEMS_PER_PAGE - ITEMS_PER_PAGE;
+  const totalPages = Math.ceil(totalProducts! / ITEMS_PER_PAGE);
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
       setIsProductsFetching(true);
       const queryArgs: FetchQueryArgs = {
+        limit: ITEMS_PER_PAGE,
+        offset: offsetValue,
         fuzzy: true,
       };
       const filter = [];
@@ -68,22 +82,33 @@ const CatalogPage = () => {
 
       const result = await getProducts(queryArgs).then((res) => {
         setIsProductsFetching(false);
+        setTotalProducts(res.body.total);
         return res.body.results;
       });
       setProducts([...result]);
     };
-    // eslint-disable-next-line no-console
-    fetchProducts().catch((error) => console.error(error));
-  }, [getProducts, filterParams, sortParam, categorySlug, categories, location.pathname, searchString]);
+
+    fetchProducts().catch(() =>
+      enqueueSnackbar(getSnackbarMessage(SnackbarMessages.GENERAL_ERROR, t), { variant: 'error' }),
+    );
+  }, [
+    getProducts,
+    filterParams,
+    sortParam,
+    categorySlug,
+    categories,
+    location.pathname,
+    searchString,
+    offsetValue,
+    enqueueSnackbar,
+    t,
+  ]);
 
   return (
     <MainLayout>
-      <PageTitle>
+      <PageTitle title={t('Catalog')}>
         <Box>
-          <Typography variant="h3" component="h1" fontFamily="Orbitron" color="secondary">
-            Catalog
-            <CatalogBreadcrumbs />
-          </Typography>
+          <CatalogBreadcrumbs />
         </Box>
       </PageTitle>
       <CatalogCategoriesSelect />
@@ -100,7 +125,12 @@ const CatalogPage = () => {
               <CatalogSortPanel />
             </Grid>
           </Grid>
-          <Grid container mt={1} spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}>
+          <Grid
+            container
+            mt={1}
+            spacing={{ xs: GRID_SPACING_XS, sm: GRID_SPACING_SM, md: GRID_SPACING_MD }}
+            sx={{ mb: 3 }}
+          >
             {(isProductsFetching ? Array.from(new Array(ITEMS_PER_PAGE)) : products).map(
               (product: ProductProjection, index) => (
                 <Grid
@@ -115,6 +145,9 @@ const CatalogPage = () => {
               ),
             )}
           </Grid>
+          <Box sx={{ mb: 10, display: 'flex', justifyContent: 'center' }}>
+            <Pagination count={totalPages} color="primary" page={currentPage} onChange={handlePageChange} />
+          </Box>
         </Grid>
       </Grid>
     </MainLayout>
