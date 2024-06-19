@@ -69,29 +69,31 @@ const CartPromoCodeBox = ({ cart }: CartPromoCodeBoxProps) => {
 
   return (
     <Box display="flex" flexDirection="column">
-      <Paper
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          listStyle: 'none',
-          p: 0.5,
-          m: 0,
-          gap: 1,
-        }}
-      >
-        <Stack
-          direction="row"
-          spacing={1}
-          useFlexGap
-          flexWrap="wrap"
-          divider={<Divider orientation="vertical" flexItem />}
+      {activePromoCodes && (
+        <Paper
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            listStyle: 'none',
+            p: 0.5,
+            m: 0,
+            gap: 1,
+          }}
         >
-          {activePromoCodes.map((code) => (
-            <Chip key={code.id} label={code.name?.en ?? code.code} />
-          ))}
-        </Stack>
-      </Paper>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            flexWrap="wrap"
+            divider={<Divider orientation="vertical" flexItem />}
+          >
+            {activePromoCodes.map((code) => (
+              <Chip key={code.id} label={code.name?.en ?? code.code} />
+            ))}
+          </Stack>
+        </Paper>
+      )}
       <Box component="form" onSubmit={handleSubmit} pt={1} pb={1}>
         <Typography color="text.primary">{t('Have a promo code? Type it here:')}</Typography>
         <Box display="flex">
