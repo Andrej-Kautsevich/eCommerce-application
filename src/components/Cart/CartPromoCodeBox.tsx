@@ -69,7 +69,7 @@ const CartPromoCodeBox = ({ cart }: CartPromoCodeBoxProps) => {
 
   return (
     <Box display="flex" flexDirection="column">
-      {activePromoCodes.length && (
+      {activePromoCodes.length > 0 && (
         <Paper
           sx={{
             display: 'flex',
