@@ -15,6 +15,7 @@ const enTranslations = {
     Total: 'Total',
     Sum: 'Sum',
     Discount: 'Discount',
+    'Are you sure?': 'Are you sure?',
 
     // Catalog Page
     'Reset All Filters': 'Reset All Filters',
@@ -94,6 +95,8 @@ const enTranslations = {
 
     // Buttons
     Apply: 'Apply',
+    Cancel: 'Cancel',
+    Confirm: 'Confirm',
     'Order Watch': 'Order Watch',
     'Save Changes': 'Save Changes',
     'Add to Cart': 'Add to Cart',

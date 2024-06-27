@@ -15,6 +15,7 @@ const ruTranslations = {
     Total: 'Итого',
     Sum: 'Сумма',
     Discount: 'Скидка',
+    'Are you sure?': 'Вы уверены?',
 
     // Catalog Page
     'Reset All Filters': 'Сбросить все фильтры',
@@ -94,6 +95,8 @@ const ruTranslations = {
 
     // Buttons
     Apply: 'Применить',
+    Cancel: 'Отмена',
+    Confirm: 'Да',
     'Order Watch': 'Заказать',
     'Save Changes': 'Сохранить изменения',
     'Add to Cart': 'Добавить',

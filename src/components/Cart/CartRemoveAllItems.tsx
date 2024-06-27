@@ -7,9 +7,11 @@ import { useAppSelector } from '../../shared/store/hooks';
 import useCart from '../../api/hooks/useCart';
 import getSnackbarMessage from '../../shared/utils/getSnackbarMessage';
 import { SnackbarMessages } from '../../shared/types/enum';
+import CartConfirmationDialog from './CartConfirmationDialog';
 
 const CartRemoveAllItems = () => {
   const [loading, setLoading] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const { t } = useTranslation();
   const { cart } = useAppSelector((state) => state.cart);
   const { deleteAllItems } = useCart();
@@ -29,15 +31,22 @@ const CartRemoveAllItems = () => {
   };
 
   return (
-    <LoadingButton
-      variant="outlined"
-      loading={loading}
-      endIcon={<Delete />}
-      loadingPosition="end"
-      onClick={handleDeleteItems}
-    >
-      <span>{t('Remove all')}</span>
-    </LoadingButton>
+    <>
+      <LoadingButton
+        variant="outlined"
+        loading={loading}
+        endIcon={<Delete />}
+        loadingPosition="end"
+        onClick={() => setDialogOpen(true)}
+      >
+        <span>{t('Remove all')}</span>
+      </LoadingButton>
+      <CartConfirmationDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)} // Close the dialog
+        onConfirm={handleDeleteItems} // Proceed with clearing the cart
+      />
+    </>
   );
 };
 
